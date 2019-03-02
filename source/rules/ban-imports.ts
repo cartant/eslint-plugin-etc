@@ -4,7 +4,7 @@
  */
 
 import { Rule } from "eslint";
-import * as ESTree from "estree";
+import * as es from "estree";
 
 const rule: Rule.RuleModule = {
     meta: {
@@ -30,7 +30,7 @@ const rule: Rule.RuleModule = {
             }
         });
         return {
-            ImportDeclaration: (node: ESTree.ImportDeclaration) => {
+            ImportDeclaration: (node: es.ImportDeclaration) => {
                 const { source } = node;
                 if (forbiddens.some(forbidden => forbidden.test(source.value as string))) {
                     context.report({
