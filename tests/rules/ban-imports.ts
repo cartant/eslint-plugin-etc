@@ -28,15 +28,15 @@ ruleTester.run("ban-imports", rule, {
     }],
     invalid: [{
         code: `import { a } from "a";`,
+        options,
         errors: [{
             messageId: "forbidden"
-        }],
-        options
+        }]
     }, {
         code: `import { c } from "./c";`,
+        options,
         errors: [{
             messageId: "forbidden"
-        }],
-        options
+        }]
     }]
 });
