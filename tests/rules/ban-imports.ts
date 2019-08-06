@@ -3,15 +3,9 @@
  * can be found in the LICENSE file at https://github.com/cartant/eslint-plugin-etc
  */
 
-import { RuleTester } from "eslint";
 import rule = require("../../source/rules/ban-imports");
+import { ruleTester } from "../utils";
 
-const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: "module"
-  }
-});
 const options = [
   {
     "^a$": true,
@@ -20,7 +14,7 @@ const options = [
   }
 ];
 
-ruleTester.run("ban-imports", rule, {
+ruleTester({ types: false }).run("ban-imports", rule, {
   valid: [
     {
       code: `import { b } from "b";`,
