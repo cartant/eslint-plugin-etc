@@ -18,15 +18,13 @@ const rule: Rule.RuleModule = {
       forbidden: "Single-character type parameters are forbidden."
     }
   },
-  create: context => {
-    return {
-      "TSTypeParameter > Identifier[name=/^.$/]": (node: es.Identifier) =>
-        context.report({
-          messageId: "forbidden",
-          node
-        })
-    };
-  }
+  create: context => ({
+    "TSTypeParameter > Identifier[name=/^.$/]": (node: es.Identifier) =>
+      context.report({
+        messageId: "forbidden",
+        node
+      })
+  })
 };
 
 export = rule;
