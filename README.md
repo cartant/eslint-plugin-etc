@@ -34,6 +34,7 @@ module.exports = {
   rules: {
     "etc/no-t": "error"
   }
+};
 ```
 
 # Rules
