@@ -32,7 +32,7 @@ module.exports = {
   plugins: ["etc"],
   extends: [],
   rules: {
-    "rxjs/no-t": "error"
+    "etc/no-t": "error"
   }
 ```
 
