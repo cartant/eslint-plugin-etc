@@ -2,7 +2,7 @@
 
 This repo is a WIP.
 
-Eventually, it will contain ESLint versions of the rules in the `tslint-etc` package.
+Eventually, it will contain ESLint versions of the rules in the [`tslint-etc`](https://github.com/cartant/tslint-etc) package.
 
 # Install
 
