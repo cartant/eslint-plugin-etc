@@ -6,11 +6,18 @@
 import { RuleTester } from "eslint";
 import { join } from "path";
 
-export function ruleTester({ types }: { types: boolean }) {
+export function ruleTester({
+  comments = false,
+  types
+}: {
+  comments?: boolean;
+  types: boolean;
+}) {
   const filename = join(__dirname, "file.ts");
   const tester = new RuleTester({
     parser: join(__dirname, "../node_modules/@typescript-eslint/parser"),
     parserOptions: {
+      comments,
       ecmaVersion: 6,
       project: types ? join(__dirname, "./tsconfig.json") : undefined,
       sourceType: "module"
