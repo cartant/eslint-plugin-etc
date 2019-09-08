@@ -4,9 +4,9 @@
  */
 
 import { Rule } from "eslint";
+import { getLoc, getParserServices } from "eslint-etc";
 import * as es from "estree";
 import * as ts from "typescript";
-import { getLoc, getParserServices } from "../utils";
 
 const rule: Rule.RuleModule = {
   meta: {

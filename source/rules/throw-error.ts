@@ -4,15 +4,15 @@
  */
 
 import { Rule } from "eslint";
-import * as es from "estree";
-import { couldBeType, isAny } from "tsutils-etc";
-import * as ts from "typescript";
 import {
   getLoc,
   getParent,
   getParserServices,
   isCallExpression
-} from "../utils";
+} from "eslint-etc";
+import * as es from "estree";
+import { couldBeType, isAny } from "tsutils-etc";
+import * as ts from "typescript";
 
 const rule: Rule.RuleModule = {
   meta: {

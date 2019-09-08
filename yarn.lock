@@ -560,6 +560,11 @@ escape-string-regexp@1.0.5, escape-string-regexp@^1.0.2, escape-string-regexp@^1
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
+eslint-etc@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-etc/-/eslint-etc-0.0.1.tgz#e082e6ed4de09e901378a950c7d48efe3a4c4b60"
+  integrity sha512-XqVDWFXffrRW/RKB2dojpz+xcoox+WikWjkwUNW2cKdqhE/puJGu1Gd7wo4qWLozvirS7WXCoTY5xhVsQkhgUw==
+
 eslint-scope@^4.0.0:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-4.0.3.tgz#ca03833310f6889a3264781aa82e63eb9cfe7848"
