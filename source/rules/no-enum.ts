@@ -12,12 +12,12 @@ const rule: Rule.RuleModule = {
   meta: {
     docs: {
       category: "General",
-      description: "Forbids the use of enum.",
+      description: "Forbids the use of `enum`.",
       recommended: false
     },
     fixable: null,
     messages: {
-      forbidden: "enum is forbidden."
+      forbidden: "`enum` is forbidden."
     }
   },
   create: context => ({

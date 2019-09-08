@@ -13,12 +13,12 @@ const rule: Rule.RuleModule = {
   meta: {
     docs: {
       category: "General",
-      description: "Forbids the use of const enum.",
+      description: "Forbids the use of `const enum`.",
       recommended: false
     },
     fixable: null,
     messages: {
-      forbidden: "const enum is forbidden."
+      forbidden: "`const enum` is forbidden."
     },
     schema: [
       {

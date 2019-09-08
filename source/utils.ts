@@ -23,6 +23,10 @@ export function getLoc(node: ts.Node): es.SourceLocation {
   };
 }
 
+export function getParent(node: es.Node): es.Node | undefined {
+  return (node as any).parent;
+}
+
 export function getParserServices(
   context: Rule.RuleContext
 ): {
@@ -39,4 +43,8 @@ export function getParserServices(
     );
   }
   return context.parserServices;
+}
+
+export function isCallExpression(node: es.Node): node is es.CallExpression {
+  return node.type === "CallExpression";
 }
