@@ -6,7 +6,7 @@
 import { Rule } from "eslint";
 import * as es from "estree";
 import * as ts from "typescript";
-import { getParserServices } from "../utils";
+import { getLoc, getParserServices } from "../utils";
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -48,28 +48,11 @@ const rule: Rule.RuleModule = {
       if (ignores.some(ignore => ignore.test(text))) {
         return;
       }
-      const start = ts.getLineAndCharacterOfPosition(
-        name.getSourceFile(),
-        name.getStart()
-      );
-      const end = ts.getLineAndCharacterOfPosition(
-        name.getSourceFile(),
-        name.getEnd()
-      );
       context.report({
         data: {
           comment: tag.comment
         },
-        loc: {
-          start: {
-            line: start.line + 1,
-            column: start.character
-          },
-          end: {
-            line: end.line + 1,
-            column: end.character
-          }
-        },
+        loc: getLoc(name),
         messageId: "forbidden"
       });
     };
