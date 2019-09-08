@@ -45,4 +45,6 @@ The package includes the following rules:
 | --- | --- | --- |
 [`ban-imports`](https://github.com/cartant/eslint-plugin-etc/blob/master/source/rules/ban-imports.ts) | Forbids using the configured import locations. | TBD |
 [`deprecation`](https://github.com/cartant/eslint-plugin-etc/blob/master/source/rules/deprecation.ts) | Forbids the use of deprecated APIs. | TBD |
+[`no-const-enum`](https://github.com/cartant/eslint-plugin-etc/blob/master/source/rules/no-const-enum.ts) | Forbids the use of `const enum`. | TBD |
+[`no-enum`](https://github.com/cartant/eslint-plugin-etc/blob/master/source/rules/no-enum.ts) | Forbids the use of `enum`. | TBD |
 [`no-t`](https://github.com/cartant/eslint-plugin-etc/blob/master/source/rules/no-t.ts) | Forbids single-character type parameters. | TBD |
