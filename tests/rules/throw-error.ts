@@ -38,6 +38,18 @@ ruleTester({ types: true }).run("throw-error", rule, {
         export const h = new Promise(function (resolve, reject) { reject(kaboom); });
         export const i = new Promise(function func(resolve, reject) { reject(kaboom); });
       `
+    },
+    {
+      code: stripIndent`
+          const watchIntegrationAssets = gulp.series(
+            copyIntegrationAssets,
+            async function watchIntegrationAssets(): Promise<void> {
+              await new Promise<never>((_, reject) => {
+                gulp.watch(INTEGRATION_FILES, copyIntegrationAssets).on('error', reject)
+              })
+            }
+          );
+        `
     }
   ],
   invalid: [
