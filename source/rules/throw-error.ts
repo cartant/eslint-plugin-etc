@@ -74,10 +74,7 @@ const rule: Rule.RuleModule = {
         }
         variable.references.forEach(({ identifier }) => {
           const parent = getParent(identifier);
-          if (
-            isCallExpression(parent) &&
-            !parent.arguments.includes(identifier)
-          ) {
+          if (isCallExpression(parent) && identifier === parent.callee) {
             validateRejection(parent);
           }
         });
