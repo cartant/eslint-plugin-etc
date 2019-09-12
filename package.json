@@ -74,5 +74,5 @@
     "prepublishOnly": "yarn run test && yarn run dist",
     "test": "mocha -r ts-node/register tests/**/*.ts"
   },
-  "version": "0.0.1-beta.8"
+  "version": "0.0.1-beta.9"
 }
