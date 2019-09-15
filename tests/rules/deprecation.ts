@@ -18,6 +18,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
   valid: [
     {
       code: stripIndent`
+        // no deprecation
         interface SomeInterface {
           someProperty: string;
           someMethod(): void;
@@ -42,6 +43,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     },
     {
       code: stripIndent`
+        // ignored deprecation
         /** @deprecated Don't use this */
         function foo() {}
       `,
@@ -55,6 +57,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
   invalid: [
     {
       code: stripIndent`
+        // interface deprecation
         /** @deprecated Don't use this */
         interface SomeInterface {
           /** @deprecated Don't use this */
@@ -66,29 +69,30 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       errors: [
         {
           ...message,
-          line: 2,
+          line: 3,
           column: 11,
-          endLine: 2,
+          endLine: 3,
           endColumn: 24
         },
         {
           ...message,
-          line: 4,
+          line: 5,
           column: 3,
-          endLine: 4,
+          endLine: 5,
           endColumn: 15
         },
         {
           ...message,
-          line: 6,
+          line: 7,
           column: 3,
-          endLine: 6,
+          endLine: 7,
           endColumn: 13
         }
       ]
     },
     {
       code: stripIndent`
+        // type deprecation
         /** @deprecated Don't use this */
         type SomeType = {
           /** @deprecated Don't use this */
@@ -100,29 +104,30 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       errors: [
         {
           ...message,
-          line: 2,
+          line: 3,
           column: 6,
-          endLine: 2,
+          endLine: 3,
           endColumn: 14
         },
         {
           ...message,
-          line: 4,
+          line: 5,
           column: 3,
-          endLine: 4,
+          endLine: 5,
           endColumn: 15
         },
         {
           ...message,
-          line: 6,
+          line: 7,
           column: 3,
-          endLine: 6,
+          endLine: 7,
           endColumn: 13
         }
       ]
     },
     {
       code: stripIndent`
+        // class deprecation
         /** @deprecated Don't use this */
         class SomeClass {
           /** @deprecated Don't use this */
@@ -140,50 +145,51 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       errors: [
         {
           ...message,
-          line: 2,
+          line: 3,
           column: 7,
-          endLine: 2,
+          endLine: 3,
           endColumn: 16
         },
         {
           ...message,
-          line: 4,
+          line: 5,
           column: 3,
-          endLine: 4,
+          endLine: 5,
           endColumn: 15
         },
         {
           ...message,
-          line: 6,
+          line: 7,
           column: 7,
-          endLine: 6,
+          endLine: 7,
           endColumn: 17
         },
         {
           ...message,
-          line: 8,
+          line: 9,
           column: 7,
-          endLine: 8,
+          endLine: 9,
           endColumn: 17
         },
         {
           ...message,
-          line: 10,
+          line: 11,
           column: 3,
-          endLine: 10,
+          endLine: 11,
           endColumn: 13
         },
         {
           ...message,
-          line: 12,
+          line: 13,
           column: 10,
-          endLine: 12,
+          endLine: 13,
           endColumn: 20
         }
       ]
     },
     {
       code: stripIndent`
+        // enum deprecation
         /** @deprecated Don't use this */
         enum SomeEnum {
           /** @deprecated Don't use this */
@@ -193,52 +199,55 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       errors: [
         {
           ...message,
-          line: 2,
+          line: 3,
           column: 6,
-          endLine: 2,
+          endLine: 3,
           endColumn: 14
         },
         {
           ...message,
-          line: 4,
+          line: 5,
           column: 3,
-          endLine: 4,
+          endLine: 5,
           endColumn: 13
         }
       ]
     },
     {
       code: stripIndent`
+        // variable deprecation
         /** @deprecated Don't use this */
         const someVariable = {};
       `,
       errors: [
         {
           ...message,
-          line: 2,
+          line: 3,
           column: 7,
-          endLine: 2,
+          endLine: 3,
           endColumn: 19
         }
       ]
     },
     {
       code: stripIndent`
+        // function deprecation
         /** @deprecated Don't use this */
         function someFunction() {}
       `,
       errors: [
         {
           ...message,
-          line: 2,
+          line: 3,
           column: 10,
-          endLine: 2,
+          endLine: 3,
           endColumn: 22
         }
       ]
     },
     {
       code: stripIndent`
+        // not ignored deprecation
         /** @deprecated Don't use this */
         function foo() {}
         /** @deprecated Don't use this */
@@ -252,9 +261,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       errors: [
         {
           ...message,
-          line: 4,
+          line: 5,
           column: 10,
-          endLine: 4,
+          endLine: 5,
           endColumn: 13
         }
       ]
