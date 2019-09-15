@@ -6,5 +6,6 @@
     "skipLibCheck": true,
     "target": "es2017"
   },
+  "include": ["others/*.ts"],
   "files": ["file.ts"]
 }

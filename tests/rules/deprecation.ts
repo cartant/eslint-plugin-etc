@@ -18,38 +18,123 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
   valid: [
     {
       code: stripIndent`
-        // no deprecation
-        interface SomeInterface {
-          someProperty: string;
-          someMethod(): void;
-        };
-        type SomeType = {
-          someProperty: string;
-          someMethod(): void;
-        };
-        class SomeClass {
-          someProperty: string;
-          get someGetter(): string { return ""; }
-          set someSetter(value: string);
-          someMethod() {}
-          static someMethod() {}
-        }
-        enum SomeEnum {
-          SomeMember = 1
-        };
-        const someVariable = {};
-        function someFunction() {}
+        // Not deprecated interface
+        import { NotDeprecatedInterface } from "./modules/deprecation";
+        let a: NotDeprecatedInterface;
       `
     },
     {
       code: stripIndent`
-        // ignored deprecation
-        /** @deprecated Don't use this */
-        function foo() {}
+        // Not deprecated type
+        import { NotDeprecatedType } from "./modules/deprecation";
+        let a: NotDeprecatedType;
+      `
+    },
+    {
+      code: stripIndent`
+        // Not deprecated class
+        import { NotDeprecatedClass } from "./modules/deprecation";
+        let a: NotDeprecatedClass;
+      `
+    },
+    {
+      code: stripIndent`
+        // Not deprecated class
+        import { NotDeprecatedClass } from "./modules/deprecation";
+        let a = new NotDeprecatedClass();
+      `
+    },
+    {
+      code: stripIndent`
+        // Not deprecated enum
+        import { NotDeprecatedEnum } from "./modules/deprecation";
+        let a: NotDeprecatedEnum;
+      `
+    },
+    {
+      code: stripIndent`
+        // Not deprecated variable
+        import { notDeprecatedVariable } from "./modules/deprecation";
+        let a = notDeprecatedVariable;
+      `
+    },
+    {
+      code: stripIndent`
+        // Not deprecated function
+        import { notDeprecatedFunction } from "./modules/deprecation";
+        notDeprecatedFunction();
+      `
+    },
+    {
+      code: stripIndent`
+        // Some not deprecated interface
+        import { SomeDeprecatedInterface } from "./modules/deprecation";
+        let a: SomeDeprecatedInterface;
+        console.log(a.notDeprecatedProperty);
+        a.notDeprecatedMethod();
+      `
+    },
+    {
+      code: stripIndent`
+        // Some not deprecated type
+        import { SomeDeprecatedType } from "./modules/deprecation";
+        let a: SomeDeprecatedType;
+        console.log(a.notDeprecatedProperty);
+        a.notDeprecatedMethod();
+      `
+    },
+    {
+      code: stripIndent`
+        // Some not deprecated class
+        import { SomeDeprecatedClass } from "./modules/deprecation";
+        SomeDeprecatedClass.notDeprecatedStaticMethod();
+        let a: SomeDeprecatedClass;
+        console.log(a.notDeprecatedProperty);
+        console.log(a.notDeprecatedGetter);
+        a.notDeprecatedSetter = "42";
+        a.notDeprecatedMethod();
+      `
+    },
+    {
+      code: stripIndent`
+        // Some not deprecated enum
+        import { SomeDeprecatedEnum } from "./modules/deprecation";
+        let a: SomeDeprecatedEnum;
+        a = SomeDeprecatedEnum.NotDeprecatedMember;
+      `
+    },
+    {
+      code: stripIndent`
+        // Some signatures not deprecated class
+        import { DeprecatedSignatureClass } from "./modules/deprecation";
+        DeprecatedSignatureClass.deprecatedSignatureStaticMethod(42);
+        let a: DeprecatedSignatureClass;
+        a.deprecatedSignatureMethod(42);
+      `
+    },
+    {
+      code: stripIndent`
+        // Some signatures not deprecated function
+        import { deprecatedSignatureFunction } from "./modules/deprecation";
+        deprecatedSignatureFunction(42);
+      `
+    },
+    {
+      code: stripIndent`
+        // Not deprecated constructor
+        import { DeprecatedConstructorSignatureClass } from "./modules/deprecation";
+        let a = new DeprecatedConstructorSignatureClass(42);
+      `
+    },
+    {
+      code: stripIndent`
+        // Ignored deprecated interface
+        import { DeprecatedInterface } from "./modules/deprecation";
+        let a: DeprecatedInterface;
       `,
       options: [
         {
-          "^foo$": false
+          "^DeprecatedInterface$": false
         }
       ]
     }
@@ -57,189 +142,31 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
   invalid: [
     {
       code: stripIndent`
-        // interface deprecation
-        /** @deprecated Don't use this */
-        interface SomeInterface {
-          /** @deprecated Don't use this */
-          someProperty: string;
-          /** @deprecated Don't use this */
-          someMethod(): void;
-        };
+        // Deprecated interface
+        import { DeprecatedInterface } from "./modules/deprecation";
+        let a: DeprecatedInterface;
       `,
       errors: [
         {
           ...message,
           line: 3,
-          column: 11,
+          column: 8,
           endLine: 3,
-          endColumn: 24
-        },
-        {
-          ...message,
-          line: 5,
-          column: 3,
-          endLine: 5,
-          endColumn: 15
-        },
-        {
-          ...message,
-          line: 7,
-          column: 3,
-          endLine: 7,
-          endColumn: 13
+          endColumn: 27
         }
       ]
     },
     {
       code: stripIndent`
-        // type deprecation
-        /** @deprecated Don't use this */
-        type SomeType = {
-          /** @deprecated Don't use this */
-          someProperty: string;
-          /** @deprecated Don't use this */
-          someMethod(): void;
-        };
+        // Deprecated type
+        import { DeprecatedType } from "./modules/deprecation";
+        let a: DeprecatedType;
       `,
       errors: [
         {
           ...message,
           line: 3,
-          column: 6,
-          endLine: 3,
-          endColumn: 14
-        },
-        {
-          ...message,
-          line: 5,
-          column: 3,
-          endLine: 5,
-          endColumn: 15
-        },
-        {
-          ...message,
-          line: 7,
-          column: 3,
-          endLine: 7,
-          endColumn: 13
-        }
-      ]
-    },
-    {
-      code: stripIndent`
-        // class deprecation
-        /** @deprecated Don't use this */
-        class SomeClass {
-          /** @deprecated Don't use this */
-          someProperty: string;
-          /** @deprecated Don't use this */
-          get someGetter(): string { return ""; }
-          /** @deprecated Don't use this */
-          set someSetter(value: string);
-          /** @deprecated Don't use this */
-          someMethod() {}
-          /** @deprecated Don't use this */
-          static someMethod() {}
-        }
-      `,
-      errors: [
-        {
-          ...message,
-          line: 3,
-          column: 7,
-          endLine: 3,
-          endColumn: 16
-        },
-        {
-          ...message,
-          line: 5,
-          column: 3,
-          endLine: 5,
-          endColumn: 15
-        },
-        {
-          ...message,
-          line: 7,
-          column: 7,
-          endLine: 7,
-          endColumn: 17
-        },
-        {
-          ...message,
-          line: 9,
-          column: 7,
-          endLine: 9,
-          endColumn: 17
-        },
-        {
-          ...message,
-          line: 11,
-          column: 3,
-          endLine: 11,
-          endColumn: 13
-        },
-        {
-          ...message,
-          line: 13,
-          column: 10,
-          endLine: 13,
-          endColumn: 20
-        }
-      ]
-    },
-    {
-      code: stripIndent`
-        // enum deprecation
-        /** @deprecated Don't use this */
-        enum SomeEnum {
-          /** @deprecated Don't use this */
-          SomeMember = 1
-        };
-      `,
-      errors: [
-        {
-          ...message,
-          line: 3,
-          column: 6,
-          endLine: 3,
-          endColumn: 14
-        },
-        {
-          ...message,
-          line: 5,
-          column: 3,
-          endLine: 5,
-          endColumn: 13
-        }
-      ]
-    },
-    {
-      code: stripIndent`
-        // variable deprecation
-        /** @deprecated Don't use this */
-        const someVariable = {};
-      `,
-      errors: [
-        {
-          ...message,
-          line: 3,
-          column: 7,
-          endLine: 3,
-          endColumn: 19
-        }
-      ]
-    },
-    {
-      code: stripIndent`
-        // function deprecation
-        /** @deprecated Don't use this */
-        function someFunction() {}
-      `,
-      errors: [
-        {
-          ...message,
-          line: 3,
-          column: 10,
+          column: 8,
           endLine: 3,
           endColumn: 22
         }
@@ -247,24 +174,275 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     },
     {
       code: stripIndent`
-        // not ignored deprecation
-        /** @deprecated Don't use this */
-        function foo() {}
-        /** @deprecated Don't use this */
-        function bar() {}
+        // Deprecated class
+        import { DeprecatedClass } from "./modules/deprecation";
+        let a: DeprecatedClass;
       `,
-      options: [
-        {
-          "^foo$": false
-        }
-      ],
       errors: [
         {
           ...message,
+          line: 3,
+          column: 8,
+          endLine: 3,
+          endColumn: 23
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Deprecated class
+        import { DeprecatedClass } from "./modules/deprecation";
+        let a = new DeprecatedClass();
+      `,
+      errors: [
+        {
+          ...message,
+          line: 3,
+          column: 13,
+          endLine: 3,
+          endColumn: 28
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Deprecated enum
+        import { DeprecatedEnum } from "./modules/deprecation";
+        let a: DeprecatedEnum;
+      `,
+      errors: [
+        {
+          ...message,
+          line: 3,
+          column: 8,
+          endLine: 3,
+          endColumn: 22
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Deprecated variable
+        import { deprecatedVariable } from "./modules/deprecation";
+        let a = deprecatedVariable;
+      `,
+      errors: [
+        {
+          ...message,
+          line: 3,
+          column: 9,
+          endLine: 3,
+          endColumn: 27
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Deprecated function
+        import { deprecatedFunction } from "./modules/deprecation";
+        deprecatedFunction();
+      `,
+      errors: [
+        {
+          ...message,
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 19
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Some deprecated interface
+        import { SomeDeprecatedInterface } from "./modules/deprecation";
+        let a: SomeDeprecatedInterface;
+        console.log(a.deprecatedProperty);
+        a.deprecatedMethod();
+      `,
+      errors: [
+        {
+          ...message,
+          line: 4,
+          column: 15,
+          endLine: 4,
+          endColumn: 33
+        },
+        {
+          ...message,
           line: 5,
-          column: 10,
+          column: 3,
           endLine: 5,
-          endColumn: 13
+          endColumn: 19
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Some deprecated type
+        import { SomeDeprecatedType } from "./modules/deprecation";
+        let a: SomeDeprecatedType;
+        console.log(a.deprecatedProperty);
+        a.deprecatedMethod();
+      `,
+      errors: [
+        {
+          ...message,
+          line: 4,
+          column: 15,
+          endLine: 4,
+          endColumn: 33
+        },
+        {
+          ...message,
+          line: 5,
+          column: 3,
+          endLine: 5,
+          endColumn: 19
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Some deprecated class
+        import { SomeDeprecatedClass } from "./modules/deprecation";
+        SomeDeprecatedClass.deprecatedStaticMethod();
+        let a: SomeDeprecatedClass;
+        console.log(a.deprecatedProperty);
+        console.log(a.deprecatedGetter);
+        a.deprecatedSetter = "42";
+        a.deprecatedMethod();
+      `,
+      errors: [
+        {
+          ...message,
+          line: 3,
+          column: 21,
+          endLine: 3,
+          endColumn: 43
+        },
+        {
+          ...message,
+          line: 5,
+          column: 15,
+          endLine: 5,
+          endColumn: 33
+        },
+        {
+          ...message,
+          line: 6,
+          column: 15,
+          endLine: 6,
+          endColumn: 31
+        },
+        {
+          ...message,
+          line: 7,
+          column: 3,
+          endLine: 7,
+          endColumn: 19
+        },
+        {
+          ...message,
+          line: 8,
+          column: 3,
+          endLine: 8,
+          endColumn: 19
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Some deprecated enum
+        import { SomeDeprecatedEnum } from "./modules/deprecation";
+        let a: SomeDeprecatedEnum;
+        a = SomeDeprecatedEnum.DeprecatedMember;
+      `,
+      errors: [
+        {
+          ...message,
+          line: 4,
+          column: 24,
+          endLine: 4,
+          endColumn: 40
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Some signatures deprecated class
+        import { DeprecatedSignatureClass } from "./modules/deprecation";
+        DeprecatedSignatureClass.deprecatedSignatureStaticMethod("42");
+        let a: DeprecatedSignatureClass;
+        a.deprecatedSignatureMethod("42");
+      `,
+      errors: [
+        {
+          ...message,
+          line: 3,
+          column: 26,
+          endLine: 3,
+          endColumn: 57
+        },
+        {
+          ...message,
+          line: 5,
+          column: 3,
+          endLine: 5,
+          endColumn: 28
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Some signatures deprecated function
+        import { deprecatedSignatureFunction } from "./modules/deprecation";
+        deprecatedSignatureFunction("42");
+      `,
+      errors: [
+        {
+          ...message,
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 28
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Deprecated constructor
+        import { DeprecatedConstructorSignatureClass } from "./modules/deprecation";
+        let a = new DeprecatedConstructorSignatureClass("42");
+      `,
+      errors: [
+        {
+          ...message,
+          line: 3,
+          column: 13,
+          endLine: 3,
+          endColumn: 48
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Not ignored deprecated interface
+        import { DeprecatedInterface } from "./modules/deprecation";
+        let a: DeprecatedInterface;
+      `,
+      errors: [
+        {
+          ...message,
+          line: 3,
+          column: 8,
+          endLine: 3,
+          endColumn: 27
+        }
+      ],
+      options: [
+        {
+          "^Foo$": false
         }
       ]
     }
