@@ -11,6 +11,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
   valid: [
     {
       code: stripIndent`
+        // expression statements
         const a = [0, 1, 2, 3];
         a.fill(0);
         a.reverse();
@@ -20,6 +21,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
     },
     {
       code: stripIndent`
+        // mapped & mutated variable initialization
         const a = [0, 1, 2, 3];
         const b = a;
         const c = a.map(x => x);
@@ -31,6 +33,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
     },
     {
       code: stripIndent`
+        // mapped & mutated variable assignment
         const a = [0, 1, 2, 3];
         let b;
         b = a;
@@ -43,6 +46,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
     },
     {
       code: stripIndent`
+        // sliced & mutated variable initialization
         const a = [0, 1, 2, 3];
         const b = a.slice().fill(0);
         const c = a.slice().reverse();
@@ -52,6 +56,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
     },
     {
       code: stripIndent`
+        // sliced & mutated variable assignment
         const a = [0, 1, 2, 3];
         let b;
         b = a.slice().fill(0);
@@ -62,6 +67,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
     },
     {
       code: stripIndent`
+        // twice-mutated variable assignment
         const a = [0, 1, 2, 3];
         let b;
 
@@ -69,6 +75,13 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         b = a.slice().reverse().reverse();
         b = a.slice().sort((x, y) => x - y).sort((x, y) => x - y);
         b = a.slice().splice(0, 1).splice(0, 1);
+      `
+    },
+    {
+      code: stripIndent`
+        // spread & mutated variable assignment
+        const a = [0, 1, 2, 3];
+        let b;
 
         b = [...a].fill(0);
         b = [...a].reverse();
@@ -83,6 +96,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
     },
     {
       code: stripIndent`
+        // mapped & mutated property initialization
         const a = [0, 1, 2, 3];
         const b = {
           a: a.map(x => x).fill(0),
@@ -94,6 +108,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
     },
     {
       code: stripIndent`
+        // mapped & mutated array initialization
         const a = [0, 1, 2, 3];
         const b = [
           a.map(x => x).fill(0),
@@ -105,6 +120,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
     },
     {
       code: stripIndent`
+        // mapped & mutated function arguments
         const a = [0, 1, 2, 3];
         function n(p: number[]): void {}
         n(a.map(x => x).fill(0));
@@ -115,6 +131,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
     },
     {
       code: stripIndent`
+        // mapped & mutated constructor arguments
         const a = [0, 1, 2, 3];
         class Thing { contructor(p: number[]) {} }
         t = new Thing(
@@ -135,6 +152,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
   invalid: [
     {
       code: stripIndent`
+        // mutated variable initialization
         const a = [0, 1, 2, 3];
         const b = a.fill(0);
         const c = a.reverse();
@@ -144,36 +162,37 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
       errors: [
         {
           messageId: "forbidden",
-          line: 2,
-          column: 13,
-          endLine: 2,
-          endColumn: 17
-        },
-        {
-          messageId: "forbidden",
           line: 3,
           column: 13,
           endLine: 3,
-          endColumn: 20
+          endColumn: 17
         },
         {
           messageId: "forbidden",
           line: 4,
           column: 13,
           endLine: 4,
-          endColumn: 17
+          endColumn: 20
         },
         {
           messageId: "forbidden",
           line: 5,
           column: 13,
           endLine: 5,
+          endColumn: 17
+        },
+        {
+          messageId: "forbidden",
+          line: 6,
+          column: 13,
+          endLine: 6,
           endColumn: 19
         }
       ]
     },
     {
       code: stripIndent`
+        // mutated variable assignment
         const a = [0, 1, 2, 3];
         let b;
         b = a.fill(0);
@@ -184,36 +203,37 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
       errors: [
         {
           messageId: "forbidden",
-          line: 3,
-          column: 7,
-          endLine: 3,
-          endColumn: 11
-        },
-        {
-          messageId: "forbidden",
           line: 4,
           column: 7,
           endLine: 4,
-          endColumn: 14
+          endColumn: 11
         },
         {
           messageId: "forbidden",
           line: 5,
           column: 7,
           endLine: 5,
-          endColumn: 11
+          endColumn: 14
         },
         {
           messageId: "forbidden",
           line: 6,
           column: 7,
           endLine: 6,
+          endColumn: 11
+        },
+        {
+          messageId: "forbidden",
+          line: 7,
+          column: 7,
+          endLine: 7,
           endColumn: 13
         }
       ]
     },
     {
       code: stripIndent`
+        // mutated property initialization
         const a = [0, 1, 2, 3];
         const b = {
           a: a.fill(0),
@@ -225,36 +245,37 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
       errors: [
         {
           messageId: "forbidden",
-          line: 3,
-          column: 8,
-          endLine: 3,
-          endColumn: 12
-        },
-        {
-          messageId: "forbidden",
           line: 4,
           column: 8,
           endLine: 4,
-          endColumn: 15
+          endColumn: 12
         },
         {
           messageId: "forbidden",
           line: 5,
           column: 8,
           endLine: 5,
-          endColumn: 12
+          endColumn: 15
         },
         {
           messageId: "forbidden",
           line: 6,
           column: 8,
           endLine: 6,
+          endColumn: 12
+        },
+        {
+          messageId: "forbidden",
+          line: 7,
+          column: 8,
+          endLine: 7,
           endColumn: 14
         }
       ]
     },
     {
       code: stripIndent`
+        // mutated array initialization
         const a = [0, 1, 2, 3];
         const b = [
           a.fill(0),
@@ -266,36 +287,37 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
       errors: [
         {
           messageId: "forbidden",
-          line: 3,
-          column: 5,
-          endLine: 3,
-          endColumn: 9
-        },
-        {
-          messageId: "forbidden",
           line: 4,
           column: 5,
           endLine: 4,
-          endColumn: 12
+          endColumn: 9
         },
         {
           messageId: "forbidden",
           line: 5,
           column: 5,
           endLine: 5,
-          endColumn: 9
+          endColumn: 12
         },
         {
           messageId: "forbidden",
           line: 6,
           column: 5,
           endLine: 6,
+          endColumn: 9
+        },
+        {
+          messageId: "forbidden",
+          line: 7,
+          column: 5,
+          endLine: 7,
           endColumn: 11
         }
       ]
     },
     {
       code: stripIndent`
+        // mutated function arguments
         const a = [0, 1, 2, 3];
         function n(p: number[]): void {}
         n(a.fill(0));
@@ -306,36 +328,37 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
       errors: [
         {
           messageId: "forbidden",
-          line: 3,
-          column: 5,
-          endLine: 3,
-          endColumn: 9
-        },
-        {
-          messageId: "forbidden",
           line: 4,
           column: 5,
           endLine: 4,
-          endColumn: 12
+          endColumn: 9
         },
         {
           messageId: "forbidden",
           line: 5,
           column: 5,
           endLine: 5,
-          endColumn: 9
+          endColumn: 12
         },
         {
           messageId: "forbidden",
           line: 6,
           column: 5,
           endLine: 6,
+          endColumn: 9
+        },
+        {
+          messageId: "forbidden",
+          line: 7,
+          column: 5,
+          endLine: 7,
           endColumn: 11
         }
       ]
     },
     {
       code: stripIndent`
+        // mutated constructor arguments
         const a = [0, 1, 2, 3];
         class Thing { contructor(p: number[]) {} }
         let t = new Thing(
@@ -354,30 +377,30 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
       errors: [
         {
           messageId: "forbidden",
-          line: 4,
+          line: 5,
           column: 5,
-          endLine: 4,
+          endLine: 5,
           endColumn: 9
         },
         {
           messageId: "forbidden",
-          line: 7,
+          line: 8,
           column: 5,
-          endLine: 7,
+          endLine: 8,
           endColumn: 12
         },
         {
           messageId: "forbidden",
-          line: 10,
+          line: 11,
           column: 5,
-          endLine: 10,
+          endLine: 11,
           endColumn: 9
         },
         {
           messageId: "forbidden",
-          line: 13,
+          line: 14,
           column: 5,
-          endLine: 13,
+          endLine: 14,
           endColumn: 11
         }
       ]
