@@ -4,7 +4,7 @@
  */
 
 import { Rule } from "eslint";
-import { getParserServices, getParent } from "eslint-etc";
+import { getParent, getParserServices } from "eslint-etc";
 import * as es from "estree";
 import * as ts from "typescript";
 import { getDeprecation, isDeclaration } from "../tslint-deprecation";
@@ -38,15 +38,15 @@ const rule: Rule.RuleModule = {
         case "path":
           ignoredPaths.push(new RegExp(key));
           break;
+        default:
+          break;
       }
     });
     const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
     const typeChecker = program.getTypeChecker();
     const getPath = (identifier: ts.Identifier) => {
       const type = typeChecker.getTypeAtLocation(identifier);
-      const result = typeChecker.getFullyQualifiedName(type.symbol);
-      console.log(result);
-      return result;
+      return typeChecker.getFullyQualifiedName(type.symbol);
     };
     return {
       Identifier: (node: es.Identifier) => {
@@ -56,6 +56,8 @@ const rule: Rule.RuleModule = {
           case "ImportNamespaceSpecifier":
           case "ImportSpecifier":
             return;
+          default:
+            break;
         }
         const identifier = esTreeNodeToTSNodeMap.get(node) as ts.Identifier;
         if (
