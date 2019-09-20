@@ -11,6 +11,7 @@ ruleTester({ types: true }).run("no-missing-dollar-expect", rule, {
   valid: [
     {
       code: stripIndent`
+        // Expectations with $
         const a = "a"; // $ExpectType string
         const b: number = "b"; // $ExpectError
       `
@@ -19,22 +20,23 @@ ruleTester({ types: true }).run("no-missing-dollar-expect", rule, {
   invalid: [
     {
       code: stripIndent`
+        // Expectations without $
         const a = "a"; // ExpectType string
         const b: number = "b"; // ExpectError
       `,
       errors: [
         {
           messageId: "forbidden",
-          line: 1,
+          line: 2,
           column: 16,
-          endLine: 1,
+          endLine: 2,
           endColumn: 29
         },
         {
           messageId: "forbidden",
-          line: 2,
+          line: 3,
           column: 24,
-          endLine: 2,
+          endLine: 3,
           endColumn: 38
         }
       ]
