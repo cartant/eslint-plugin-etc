@@ -128,13 +128,25 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     },
     {
       code: stripIndent`
-        // Ignored deprecated interface
+        // Ignored name
         import { DeprecatedInterface } from "./modules/deprecation";
         let a: DeprecatedInterface;
       `,
       options: [
         {
-          "^DeprecatedInterface$": false
+          "^DeprecatedInterface$": "name"
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Ignored path
+        import { DeprecatedInterface } from "./modules/deprecation";
+        let a: DeprecatedInterface;
+      `,
+      options: [
+        {
+          "modules/deprecation": "path"
         }
       ]
     }
@@ -427,7 +439,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     },
     {
       code: stripIndent`
-        // Not ignored deprecated interface
+        // Not ignored name
         import { DeprecatedInterface } from "./modules/deprecation";
         let a: DeprecatedInterface;
       `,
@@ -442,7 +454,28 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       ],
       options: [
         {
-          "^Foo$": false
+          "^Foo$": "name"
+        }
+      ]
+    },
+    {
+      code: stripIndent`
+        // Not ignored path
+        import { DeprecatedInterface } from "./modules/deprecation";
+        let a: DeprecatedInterface;
+      `,
+      errors: [
+        {
+          ...message,
+          line: 3,
+          column: 8,
+          endLine: 3,
+          endColumn: 27
+        }
+      ],
+      options: [
+        {
+          "modules/foo": "path"
         }
       ]
     }

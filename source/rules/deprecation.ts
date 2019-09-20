@@ -28,14 +28,26 @@ const rule: Rule.RuleModule = {
   },
   create: context => {
     const [config = {}] = context.options;
-    const ignores: RegExp[] = [];
+    const ignoredNames: RegExp[] = [];
+    const ignoredPaths: RegExp[] = [];
     Object.entries(config).forEach(([key, value]) => {
-      if (value === false) {
-        ignores.push(new RegExp(key));
+      switch (value) {
+        case "name":
+          ignoredNames.push(new RegExp(key));
+          break;
+        case "path":
+          ignoredPaths.push(new RegExp(key));
+          break;
       }
     });
     const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
     const typeChecker = program.getTypeChecker();
+    const getPath = (identifier: ts.Identifier) => {
+      const type = typeChecker.getTypeAtLocation(identifier);
+      const result = typeChecker.getFullyQualifiedName(type.symbol);
+      console.log(result);
+      return result;
+    };
     return {
       Identifier: (node: es.Identifier) => {
         switch (getParent(node).type) {
@@ -48,7 +60,8 @@ const rule: Rule.RuleModule = {
         const identifier = esTreeNodeToTSNodeMap.get(node) as ts.Identifier;
         if (
           !isDeclaration(identifier) &&
-          !ignores.some(ignore => ignore.test(identifier.text))
+          !ignoredNames.some(ignored => ignored.test(identifier.text)) &&
+          !ignoredPaths.some(ignored => ignored.test(getPath(identifier)))
         ) {
           const deprecation = getDeprecation(identifier, typeChecker);
           if (deprecation !== undefined) {
