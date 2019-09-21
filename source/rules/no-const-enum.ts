@@ -31,7 +31,8 @@ const rule: Rule.RuleModule = {
   },
   create: context => ({
     TSEnumDeclaration: (node: es.Node) => {
-      const [{ allowLocal = false } = {}] = context.options;
+      const [config = {}] = context.options;
+      const { allowLocal = false } = config;
       const { esTreeNodeToTSNodeMap } = getParserServices(context);
       const enumDeclaration = esTreeNodeToTSNodeMap.get(
         node

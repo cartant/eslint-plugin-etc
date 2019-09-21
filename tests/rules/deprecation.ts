@@ -134,7 +134,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       options: [
         {
-          "^DeprecatedInterface$": "name"
+          ignored: {
+            "^DeprecatedInterface$": "name"
+          }
         }
       ]
     },
@@ -146,7 +148,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       options: [
         {
-          "modules/deprecation": "path"
+          ignored: {
+            "modules/deprecation": "path"
+          }
         }
       ]
     }
@@ -454,7 +458,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       ],
       options: [
         {
-          "^Foo$": "name"
+          ignored: {
+            "^Foo$": "name"
+          }
         }
       ]
     },
@@ -475,7 +481,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       ],
       options: [
         {
-          "modules/foo": "path"
+          ignored: {
+            "modules/foo": "path"
+          }
         }
       ]
     }

@@ -22,21 +22,25 @@ const rule: Rule.RuleModule = {
     },
     schema: [
       {
+        properties: {
+          ignored: { type: "object" }
+        },
         type: "object"
       }
     ]
   },
   create: context => {
     const [config = {}] = context.options;
-    const ignoredNames: RegExp[] = [];
-    const ignoredPaths: RegExp[] = [];
-    Object.entries(config).forEach(([key, value]) => {
+    const { ignored = {} } = config;
+    const ignoredNameRegExps: RegExp[] = [];
+    const ignoredPathRegExps: RegExp[] = [];
+    Object.entries(ignored).forEach(([key, value]) => {
       switch (value) {
         case "name":
-          ignoredNames.push(new RegExp(key));
+          ignoredNameRegExps.push(new RegExp(key));
           break;
         case "path":
-          ignoredPaths.push(new RegExp(key));
+          ignoredPathRegExps.push(new RegExp(key));
           break;
         default:
           break;
@@ -62,8 +66,8 @@ const rule: Rule.RuleModule = {
         const identifier = esTreeNodeToTSNodeMap.get(node) as ts.Identifier;
         if (
           !isDeclaration(identifier) &&
-          !ignoredNames.some(ignored => ignored.test(identifier.text)) &&
-          !ignoredPaths.some(ignored => ignored.test(getPath(identifier)))
+          !ignoredNameRegExps.some(regExp => regExp.test(identifier.text)) &&
+          !ignoredPathRegExps.some(regExp => regExp.test(getPath(identifier)))
         ) {
           const deprecation = getDeprecation(identifier, typeChecker);
           if (deprecation !== undefined) {

@@ -25,17 +25,17 @@ const rule: Rule.RuleModule = {
   },
   create: context => {
     const [config = {}] = context.options;
-    const forbiddens: RegExp[] = [];
+    const forbiddenRegExps: RegExp[] = [];
     Object.entries(config).forEach(([key, value]) => {
       if (value !== false) {
-        forbiddens.push(new RegExp(key));
+        forbiddenRegExps.push(new RegExp(key));
       }
     });
     return {
       ImportDeclaration: (node: es.ImportDeclaration) => {
         const { source } = node;
         if (
-          forbiddens.some(forbidden => forbidden.test(source.value as string))
+          forbiddenRegExps.some(regExp => regExp.test(source.value as string))
         ) {
           context.report({
             messageId: "forbidden",
