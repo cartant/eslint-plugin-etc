@@ -49,4 +49,5 @@ The package includes the following rules:
 [`no-const-enum`](https://github.com/cartant/eslint-plugin-etc/blob/master/source/rules/no-const-enum.ts) | Forbids the use of `const enum`. | TBD |
 [`no-enum`](https://github.com/cartant/eslint-plugin-etc/blob/master/source/rules/no-enum.ts) | Forbids the use of `enum`. | TBD |
 [`no-t`](https://github.com/cartant/eslint-plugin-etc/blob/master/source/rules/no-t.ts) | Forbids single-character type parameters. | TBD |
+[`no-unused-declaration`](https://github.com/cartant/eslint-plugin-etc/blob/master/source/rules/no-unused-declaration.ts) | Forbids unused declarations. | TBD |
 [`throw-error`](https://github.com/cartant/eslint-plugin-etc/blob/master/source/rules/throw-error.ts) | Forbids throwing - or rejecting with - non-`Error` values. | TBD |
