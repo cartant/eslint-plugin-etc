@@ -171,6 +171,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         console.log(a, b);
       `
     },
+    // TODO:
     // {
     //   code: stripIndent`
     //     // used type imports
