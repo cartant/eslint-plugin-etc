@@ -773,7 +773,11 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       //   console.log("the end");
       // `
     },
-    // TODO:
+    // TODO: to implement this:
+    // - Use tsquery to search for InterfaceDeclaration and TypeAliasDeclaration
+    // - Get the parent of any found nodes
+    // - Use tsquery to search - in the parent - for TypeReference nodes with `TypeReference[typeName.text="${name}"]`
+    // - If none is found, then the interface or type is unused.
     // {
     //   code: stripIndent`
     //     // unused types
