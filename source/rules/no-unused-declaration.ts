@@ -3,8 +3,9 @@
  * can be found in the LICENSE file at https://github.com/cartant/eslint-plugin-etc
  */
 
+import { tsquery } from "@phenomnomnominal/tsquery";
 import { Rule, Scope } from "eslint";
-import { getParent } from "eslint-etc";
+import { getParent, getParserServices } from "eslint-etc";
 import * as es from "estree";
 
 const rule: Rule.RuleModule = {
@@ -38,6 +39,7 @@ const rule: Rule.RuleModule = {
         ignoredRegExps.push(new RegExp(key));
       }
     });
+    const { esTreeNodeToTSNodeMap } = getParserServices(context);
 
     const isAssignee = (identifier: es.Identifier) => {
       const parent = getParent(identifier);
@@ -160,20 +162,26 @@ const rule: Rule.RuleModule = {
               return shouldCountReference(identifier);
             });
             if (filtered.length === 0) {
-              identifiers.forEach(identifier => {
-                const specifier = getImportSpecifier(identifier);
-                if (specifier) {
-                  // TODO:
-                  // console.log(
-                  //   "fix",
-                  //   context.getSourceCode().getText(specifier)
-                  // );
-                }
-                context.report({
-                  messageId: "forbidden",
-                  node: identifier
+              const typeReferences = tsquery(
+                esTreeNodeToTSNodeMap.get(scope.block),
+                `TypeReference[typeName.text="${variable.name}"]`
+              );
+              if (typeReferences.length === 0) {
+                identifiers.forEach(identifier => {
+                  const specifier = getImportSpecifier(identifier);
+                  if (specifier) {
+                    // TODO:
+                    // console.log(
+                    //   "fix",
+                    //   context.getSourceCode().getText(specifier)
+                    // );
+                  }
+                  context.report({
+                    messageId: "forbidden",
+                    node: identifier
+                  });
                 });
-              });
+              }
             }
           }
         });

@@ -4,6 +4,7 @@
     "url": "https://github.com/cartant/eslint-plugin-etc/issues"
   },
   "dependencies": {
+    "@phenomnomnominal/tsquery": "^3.0.0",
     "eslint-etc": "^0.0.3",
     "requireindex": "~1.2.0",
     "tslib": "^1.8.0",

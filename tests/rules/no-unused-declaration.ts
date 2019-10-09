@@ -171,16 +171,15 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         console.log(a, b);
       `
     },
-    // TODO:
-    // {
-    //   code: stripIndent`
-    //     // used type imports
-    //     import { Thing } from "./thing";
+    {
+      code: stripIndent`
+        // used type imports
+        import { Thing } from "./thing";
 
-    //     const t: Thing | null = null;
-    //     console.log(t);
-    //   `
-    // },
+        const t: Thing | null = null;
+        console.log(t);
+      `
+    },
     {
       code: stripIndent`
         // used variables object calculated
