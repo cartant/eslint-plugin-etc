@@ -76,5 +76,5 @@
     "test": "mocha -r ts-node/register tests/**/*.ts",
     "test:debug": "mocha -r ts-node/register tests/rules/no-unused-declaration.ts"
   },
-  "version": "0.0.1-beta.11"
+  "version": "0.0.1-beta.12"
 }
