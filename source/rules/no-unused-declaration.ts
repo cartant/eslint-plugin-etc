@@ -7,6 +7,8 @@ import { tsquery } from "@phenomnomnominal/tsquery";
 import { Rule, Scope } from "eslint";
 import { getParent, getParserServices } from "eslint-etc";
 import * as es from "estree";
+import * as tsutils from "tsutils";
+import * as ts from "typescript";
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -189,8 +191,30 @@ const rule: Rule.RuleModule = {
       scope.childScopes.forEach(check);
     };
 
+    const checkTypeDeclaration = (node: es.Node & { id: es.Identifier }) => {
+      const typeDeclaration = esTreeNodeToTSNodeMap.get(node) as
+        | ts.InterfaceDeclaration
+        | ts.TypeAliasDeclaration;
+      const { modifiers, name, parent } = typeDeclaration;
+      if (tsutils.hasModifier(modifiers, ts.SyntaxKind.ExportKeyword)) {
+        return;
+      }
+      const typeReferences = tsquery(
+        parent,
+        `TypeReference[typeName.text="${name.text}"]`
+      );
+      if (typeReferences.length === 0) {
+        context.report({
+          messageId: "forbidden",
+          node: node.id
+        });
+      }
+    };
+
     return {
-      Program: () => check(context.getScope())
+      Program: () => check(context.getScope()),
+      TSInterfaceDeclaration: checkTypeDeclaration,
+      TSTypeAliasDeclaration: checkTypeDeclaration
     };
   }
 };

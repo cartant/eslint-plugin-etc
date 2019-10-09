@@ -173,6 +173,13 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
     },
     {
       code: stripIndent`
+        // exported types
+        export interface SomeInterface {}
+        export type SomeType = {};
+      `
+    },
+    {
+      code: stripIndent`
         // used type imports
         import { Thing } from "./thing";
 
@@ -773,39 +780,35 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       //   console.log("the end");
       // `
     },
-    // TODO: to implement this:
-    // - Use tsquery to search for InterfaceDeclaration and TypeAliasDeclaration
-    // - Get the parent of any found nodes
-    // - Use tsquery to search - in the parent - for TypeReference nodes with `TypeReference[typeName.text="${name}"]`
-    // - If none is found, then the interface or type is unused.
-    // {
-    //   code: stripIndent`
-    //     // unused types
-    //     interface SomeInterface {}
-    //     type SomeType = {};
-    //   `,
-    //   errors: [
-    //     {
-    //       messageId: "forbidden",
-    //       line: 2,
-    //       column: 11,
-    //       endLine: 2,
-    //       endColumn: 24
-    //     },
-    //     {
-    //       messageId: "forbidden",
-    //       line: 3,
-    //       column: 6,
-    //       endLine: 3,
-    //       endColumn: 14
-    //     }
-    //   ],
-    //   output: stripIndent`
-    //     // unused types
-    //     interface SomeInterface {}
-    //     type SomeType = {};
-    //   `
-    // },
+    {
+      code: stripIndent`
+        // unused types
+        interface SomeInterface {}
+        type SomeType = {};
+      `,
+      errors: [
+        {
+          messageId: "forbidden",
+          line: 2,
+          column: 11,
+          endLine: 2,
+          endColumn: 24
+        },
+        {
+          messageId: "forbidden",
+          line: 3,
+          column: 6,
+          endLine: 3,
+          endColumn: 14
+        }
+      ]
+      // TODO:
+      // output: stripIndent`
+      //   // unused types
+      //   interface SomeInterface {}
+      //   type SomeType = {};
+      // `
+    },
     {
       code: stripIndent`
         // unused variables
