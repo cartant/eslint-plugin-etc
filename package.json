@@ -73,8 +73,8 @@
     "lint:source": "tslint --project tsconfig.json source/**/*.ts",
     "lint:tests": "tslint --project tsconfig.json tests/**/*.ts",
     "prepublishOnly": "yarn run test && yarn run dist",
-    "test": "mocha -r ts-node/register tests/**/*.ts",
-    "test:debug": "mocha -r ts-node/register tests/rules/no-unused-declaration.ts"
+    "test": "mocha -r ts-node/register -t 5000 tests/**/*.ts",
+    "test:debug": "mocha -r ts-node/register -t 5000 tests/rules/no-unused-declaration.ts"
   },
   "version": "0.0.1-beta.12"
 }
