@@ -4,6 +4,7 @@
  */
 
 import { tsquery } from "@phenomnomnominal/tsquery";
+import { oneLineCommaLists } from "common-tags";
 import { Rule, Scope } from "eslint";
 import { getParent, getParserServices } from "eslint-etc";
 import * as es from "estree";
@@ -166,25 +167,16 @@ const rule: Rule.RuleModule = {
             if (filtered.length > 0) {
               return;
             }
-            const jsxElements = tsquery(
+            const nodes = tsquery(
               esTreeNodeToTSNodeMap.get(scope.block),
-              `JsxOpeningElement[tagName.text="${variable.name}"]`
+              [
+                `HeritageClause Identifier[text="${variable.name}"]`,
+                `JsxOpeningElement[tagName.text="${variable.name}"]`,
+                `TypeReference[typeName.text="${variable.name}"]`,
+                `TypeReference[typeName.left.text="${variable.name}"]`
+              ].join(",")
             );
-            if (jsxElements.length > 0) {
-              return;
-            }
-            const typeReferences = tsquery(
-              esTreeNodeToTSNodeMap.get(scope.block),
-              `TypeReference[typeName.text="${variable.name}"],TypeReference[typeName.left.text="${variable.name}"]`
-            );
-            if (typeReferences.length > 0) {
-              return;
-            }
-            const heritageClauses = tsquery(
-              esTreeNodeToTSNodeMap.get(scope.block),
-              `HeritageClause Identifier[text="${variable.name}"]`
-            );
-            if (heritageClauses.length > 0) {
+            if (nodes.length > 0) {
               return;
             }
             identifiers.forEach(identifier => {
