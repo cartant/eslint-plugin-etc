@@ -173,6 +173,22 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
     },
     {
       code: stripIndent`
+        // used base class
+        import { Base } from "./base";
+
+        export class Derived extends Base {}
+      `
+    },
+    {
+      code: stripIndent`
+        // used base interface
+        import { Base } from "./base";
+
+        export interface Derived extends Base {}
+      `
+    },
+    {
+      code: stripIndent`
         // exported types
         export interface SomeInterface {}
         export type SomeType = {};

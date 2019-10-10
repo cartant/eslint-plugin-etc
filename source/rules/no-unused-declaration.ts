@@ -180,6 +180,13 @@ const rule: Rule.RuleModule = {
             if (typeReferences.length > 0) {
               return;
             }
+            const heritageClauses = tsquery(
+              esTreeNodeToTSNodeMap.get(scope.block),
+              `HeritageClause Identifier[text="${variable.name}"]`
+            );
+            if (heritageClauses.length > 0) {
+              return;
+            }
             identifiers.forEach(identifier => {
               const specifier = getImportSpecifier(identifier);
               if (specifier) {
