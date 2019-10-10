@@ -260,7 +260,8 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         // used JSX components
         import { Thing } from "./thing";
 
-        export const WrappedThing = ({ children, ...props }) => <Thing {...props}>{children}</Thing>;
+        export const OpenCloseThing = ({ children, ...props }) => <Thing {...props}>{children}</Thing>;
+        export const SelfCloseThing = props => <Thing {...props}/>;
       `
     }
   ],

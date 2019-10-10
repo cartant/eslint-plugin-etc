@@ -158,7 +158,7 @@ const rule: Rule.RuleModule = {
       if (!["class", "global"].includes(type)) {
         const { variables } = scope;
         variables.forEach(variable => {
-          const { identifiers, references } = variable;
+          const { identifiers, name, references } = variable;
           if (identifiers.every(shouldCheckReferences)) {
             const filtered = references.filter(reference => {
               const { identifier } = reference;
@@ -170,10 +170,11 @@ const rule: Rule.RuleModule = {
             const nodes = tsquery(
               esTreeNodeToTSNodeMap.get(scope.block),
               [
-                `HeritageClause Identifier[text="${variable.name}"]`,
-                `JsxOpeningElement[tagName.text="${variable.name}"]`,
-                `TypeReference[typeName.text="${variable.name}"]`,
-                `TypeReference[typeName.left.text="${variable.name}"]`
+                `HeritageClause Identifier[text="${name}"]`,
+                `JsxOpeningElement[tagName.text="${name}"]`,
+                `JsxSelfClosingElement[tagName.text="${name}"]`,
+                `TypeReference[typeName.text="${name}"]`,
+                `TypeReference[typeName.left.text="${name}"]`
               ].join(",")
             );
             if (nodes.length > 0) {
