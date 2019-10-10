@@ -189,6 +189,15 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
     },
     {
       code: stripIndent`
+        // used qualified type imports
+        import { Thing } from "./thing";
+
+        const t: Thing.Name | null = null;
+        console.log(t);
+      `
+    },
+    {
+      code: stripIndent`
         // used variables object calculated
         const a = "a";
         let b = "b";

@@ -166,7 +166,7 @@ const rule: Rule.RuleModule = {
             if (filtered.length === 0) {
               const typeReferences = tsquery(
                 esTreeNodeToTSNodeMap.get(scope.block),
-                `TypeReference[typeName.text="${variable.name}"]`
+                `TypeReference[typeName.text="${variable.name}"],TypeReference[typeName.left.text="${variable.name}"]`
               );
               if (typeReferences.length === 0) {
                 identifiers.forEach(identifier => {
