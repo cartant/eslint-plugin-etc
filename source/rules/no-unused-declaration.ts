@@ -4,7 +4,6 @@
  */
 
 import { tsquery } from "@phenomnomnominal/tsquery";
-import { oneLineCommaLists } from "common-tags";
 import { Rule, Scope } from "eslint";
 import { getParent, getParserServices } from "eslint-etc";
 import * as es from "estree";
