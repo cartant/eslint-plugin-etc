@@ -177,22 +177,23 @@ const rule: Rule.RuleModule = {
               esTreeNodeToTSNodeMap.get(scope.block),
               `TypeReference[typeName.text="${variable.name}"],TypeReference[typeName.left.text="${variable.name}"]`
             );
-            if (typeReferences.length === 0) {
-              identifiers.forEach(identifier => {
-                const specifier = getImportSpecifier(identifier);
-                if (specifier) {
-                  // TODO:
-                  // console.log(
-                  //   "fix",
-                  //   context.getSourceCode().getText(specifier)
-                  // );
-                }
-                context.report({
-                  messageId: "forbidden",
-                  node: identifier
-                });
-              });
+            if (typeReferences.length > 0) {
+              return;
             }
+            identifiers.forEach(identifier => {
+              const specifier = getImportSpecifier(identifier);
+              if (specifier) {
+                // TODO:
+                // console.log(
+                //   "fix",
+                //   context.getSourceCode().getText(specifier)
+                // );
+              }
+              context.report({
+                messageId: "forbidden",
+                node: identifier
+              });
+            });
           }
         });
       }
