@@ -163,27 +163,35 @@ const rule: Rule.RuleModule = {
               const { identifier } = reference;
               return shouldCountReference(identifier);
             });
-            if (filtered.length === 0) {
-              const typeReferences = tsquery(
-                esTreeNodeToTSNodeMap.get(scope.block),
-                `TypeReference[typeName.text="${variable.name}"],TypeReference[typeName.left.text="${variable.name}"]`
-              );
-              if (typeReferences.length === 0) {
-                identifiers.forEach(identifier => {
-                  const specifier = getImportSpecifier(identifier);
-                  if (specifier) {
-                    // TODO:
-                    // console.log(
-                    //   "fix",
-                    //   context.getSourceCode().getText(specifier)
-                    // );
-                  }
-                  context.report({
-                    messageId: "forbidden",
-                    node: identifier
-                  });
+            if (filtered.length > 0) {
+              return;
+            }
+            const jsxElements = tsquery(
+              esTreeNodeToTSNodeMap.get(scope.block),
+              `JsxOpeningElement[tagName.text="${variable.name}"]`
+            );
+            if (jsxElements.length > 0) {
+              return;
+            }
+            const typeReferences = tsquery(
+              esTreeNodeToTSNodeMap.get(scope.block),
+              `TypeReference[typeName.text="${variable.name}"],TypeReference[typeName.left.text="${variable.name}"]`
+            );
+            if (typeReferences.length === 0) {
+              identifiers.forEach(identifier => {
+                const specifier = getImportSpecifier(identifier);
+                if (specifier) {
+                  // TODO:
+                  // console.log(
+                  //   "fix",
+                  //   context.getSourceCode().getText(specifier)
+                  // );
+                }
+                context.report({
+                  messageId: "forbidden",
+                  node: identifier
                 });
-              }
+              });
             }
           }
         });

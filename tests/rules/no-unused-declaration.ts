@@ -238,6 +238,14 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         console.log(a, b, c);
       `
+    },
+    {
+      code: stripIndent`
+        // used JSX components
+        import { Thing } from "./thing";
+
+        export const WrappedThing = ({ children, ...props }) => <Thing {...props}>{children}</Thing>;
+      `
     }
   ],
   invalid: [
