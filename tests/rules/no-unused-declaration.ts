@@ -276,6 +276,18 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           </div>
         };
       `
+    },
+    {
+      code: stripIndent`
+        // used within class scope
+        let draging = false;
+        let popupVisible = false;
+
+        class DragAndDropStore {
+          isDraging = () => draging;
+          isPopupVisible = () => popupVisible;
+        }
+      `
     }
   ],
   invalid: [
