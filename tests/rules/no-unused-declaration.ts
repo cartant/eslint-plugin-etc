@@ -263,6 +263,19 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         export const OpenCloseThing = ({ children, ...props }) => <Thing {...props}>{children}</Thing>;
         export const SelfCloseThing = props => <Thing {...props}/>;
       `
+    },
+    {
+      code: stripIndent`
+        // used JSX namespace components
+        import * as Icons from "./icons";
+
+        export const App = () => {
+          return <div>
+            <Icons.One/>
+            <Icons.Two/>
+          </div>
+        };
+      `
     }
   ],
   invalid: [

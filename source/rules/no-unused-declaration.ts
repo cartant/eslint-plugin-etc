@@ -171,7 +171,9 @@ const rule: Rule.RuleModule = {
               [
                 `HeritageClause Identifier[text="${name}"]`,
                 `JsxOpeningElement[tagName.text="${name}"]`,
+                `JsxOpeningElement[tagName.expression.text="${name}"]`,
                 `JsxSelfClosingElement[tagName.text="${name}"]`,
+                `JsxSelfClosingElement[tagName.expression.text="${name}"]`,
                 `TypeReference[typeName.text="${name}"]`,
                 `TypeReference[typeName.left.text="${name}"]`
               ].join(",")
