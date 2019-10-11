@@ -106,6 +106,7 @@ const rule: Rule.RuleModule = {
         case "ObjectPattern":
           return isDeclaration(parent);
         case "ArrowFunctionExpression":
+          return node !== parent.body;
         case "ClassDeclaration":
         case "FunctionDeclaration":
           return true;

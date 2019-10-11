@@ -283,7 +283,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         let draging = false;
         let popupVisible = false;
 
-        class DragAndDropStore {
+        export class DragAndDropStore {
           isDraging = () => draging;
           isPopupVisible = () => popupVisible;
         }
