@@ -174,6 +174,30 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     },
     {
       code: stripIndent`
+        // Multiple uses
+        import { DeprecatedInterface } from "./modules/deprecation";
+        let a: DeprecatedInterface;
+        let b: DeprecatedInterface;
+      `,
+      errors: [
+        {
+          ...message,
+          line: 3,
+          column: 8,
+          endLine: 3,
+          endColumn: 27
+        },
+        {
+          ...message,
+          line: 4,
+          column: 8,
+          endLine: 4,
+          endColumn: 27
+        }
+      ]
+    },
+    {
+      code: stripIndent`
         // Deprecated type
         import { DeprecatedType } from "./modules/deprecation";
         let a: DeprecatedType;

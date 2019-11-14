@@ -52,6 +52,7 @@ const rule: Rule.RuleModule = {
       const type = typeChecker.getTypeAtLocation(identifier);
       return typeChecker.getFullyQualifiedName(type.symbol);
     };
+    const deprecations = new WeakMap<ts.Symbol, string | undefined>();
     return {
       Identifier: (node: es.Identifier) => {
         switch (getParent(node).type) {
@@ -64,19 +65,31 @@ const rule: Rule.RuleModule = {
             break;
         }
         const identifier = esTreeNodeToTSNodeMap.get(node) as ts.Identifier;
-        if (
-          !isDeclaration(identifier) &&
-          !ignoredNameRegExps.some(regExp => regExp.test(identifier.text)) &&
-          !ignoredPathRegExps.some(regExp => regExp.test(getPath(identifier)))
-        ) {
-          const deprecation = getDeprecation(identifier, typeChecker);
-          if (deprecation !== undefined) {
-            context.report({
-              data: { comment: deprecation },
-              messageId: "forbidden",
-              node
-            });
+        if (isDeclaration(identifier)) {
+          return;
+        }
+        const symbol = typeChecker.getSymbolAtLocation(identifier);
+        if (!symbol) {
+          return;
+        }
+        let deprecation: string | undefined;
+        if (deprecations.has(symbol)) {
+          deprecation = deprecations.get(symbol);
+        } else {
+          if (
+            !ignoredNameRegExps.some(regExp => regExp.test(identifier.text)) &&
+            !ignoredPathRegExps.some(regExp => regExp.test(getPath(identifier)))
+          ) {
+            deprecation = getDeprecation(identifier, typeChecker);
           }
+          deprecations.set(symbol, deprecation);
+        }
+        if (deprecation !== undefined) {
+          context.report({
+            data: { comment: deprecation },
+            messageId: "forbidden",
+            node
+          });
         }
       }
     };
