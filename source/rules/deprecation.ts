@@ -3,11 +3,14 @@
  * can be found in the LICENSE file at https://github.com/cartant/eslint-plugin-etc
  */
 
+import { tsquery } from "@phenomnomnominal/tsquery";
 import { Rule } from "eslint";
 import { getParent, getParserServices } from "eslint-etc";
 import * as es from "estree";
 import * as ts from "typescript";
 import { getDeprecation, isDeclaration } from "../tslint-deprecation";
+
+const deprecatedNamesByProgram = new WeakMap<ts.Program, Set<string>>();
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -52,7 +55,13 @@ const rule: Rule.RuleModule = {
       const type = typeChecker.getTypeAtLocation(identifier);
       return typeChecker.getFullyQualifiedName(type.symbol);
     };
-    const deprecations = new WeakMap<ts.Symbol, string | undefined>();
+    let deprecatedNames: Set<string>;
+    if (deprecatedNamesByProgram.has(program)) {
+      deprecatedNames = deprecatedNamesByProgram.get(program);
+    } else {
+      deprecatedNames = findDeprecatedNames(program);
+      deprecatedNamesByProgram.set(program, deprecatedNames);
+    }
     return {
       Identifier: (node: es.Identifier) => {
         switch (getParent(node).type) {
@@ -65,25 +74,19 @@ const rule: Rule.RuleModule = {
             break;
         }
         const identifier = esTreeNodeToTSNodeMap.get(node) as ts.Identifier;
+        if (!deprecatedNames.has(identifier.text)) {
+          return;
+        }
         if (isDeclaration(identifier)) {
           return;
         }
-        const symbol = typeChecker.getSymbolAtLocation(identifier);
-        if (!symbol) {
+        if (
+          ignoredNameRegExps.some(regExp => regExp.test(identifier.text)) ||
+          ignoredPathRegExps.some(regExp => regExp.test(getPath(identifier)))
+        ) {
           return;
         }
-        let deprecation: string | undefined;
-        if (deprecations.has(symbol)) {
-          deprecation = deprecations.get(symbol);
-        } else {
-          if (
-            !ignoredNameRegExps.some(regExp => regExp.test(identifier.text)) &&
-            !ignoredPathRegExps.some(regExp => regExp.test(getPath(identifier)))
-          ) {
-            deprecation = getDeprecation(identifier, typeChecker);
-          }
-          deprecations.set(symbol, deprecation);
-        }
+        const deprecation = getDeprecation(identifier, typeChecker);
         if (deprecation !== undefined) {
           context.report({
             data: { comment: deprecation },
@@ -95,5 +98,33 @@ const rule: Rule.RuleModule = {
     };
   }
 };
+
+function findDeprecatedNames(program: ts.Program): Set<string> {
+  const deprecatedNames = new Set<string>();
+  program.getSourceFiles().forEach(sourceFile => {
+    if (!/@deprecated/.test(sourceFile.text)) {
+      return;
+    }
+    const nodes = tsquery(
+      sourceFile,
+      `ClassDeclaration, Constructor, EnumDeclaration, EnumMember, FunctionDeclaration, GetAccessor, InterfaceDeclaration, MethodDeclaration, MethodSignature, PropertyDeclaration, PropertySignature, SetAccessor, TypeAliasDeclaration, VariableDeclaration`
+    );
+    nodes.forEach(node => {
+      const tags = ts.getJSDocTags(node);
+      if (!tags.some(tag => tag.tagName.text === "deprecated")) {
+        return;
+      }
+      if (ts.isConstructorDeclaration(node)) {
+        const { parent } = node;
+        const { name } = parent;
+        deprecatedNames.add(name.text);
+      } else {
+        const { name } = node as ts.Node & { name: ts.Identifier };
+        deprecatedNames.add(name.text);
+      }
+    });
+  });
+  return deprecatedNames;
+}
 
 export = rule;
