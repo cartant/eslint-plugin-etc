@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "lib": ["es2017"],
+    "lib": ["esnext"],
     "jsx": "react",
     "module": "commonjs",
     "moduleResolution": "node",
     "skipLibCheck": true,
-    "target": "es2017"
+    "target": "esnext"
   },
   "include": ["modules/*.ts"],
   "files": ["file.tsx"]
