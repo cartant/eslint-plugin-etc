@@ -7,6 +7,13 @@ import { stripIndent } from "common-tags";
 import rule = require("../../source/rules/no-unused-declaration");
 import { ruleTester } from "../utils";
 
+const message = (name: string) => ({
+  messageId: "forbidden",
+  data: {
+    name
+  }
+});
+
 ruleTester({ types: true }).run("no-unused-declaration", rule, {
   valid: [
     {
@@ -306,21 +313,21 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       `,
       errors: [
         {
-          messageId: "forbidden",
+          ...message("x"),
           line: 8,
           column: 7,
           endLine: 8,
           endColumn: 8
         },
         {
-          messageId: "forbidden",
+          ...message("y"),
           line: 9,
           column: 8,
           endLine: 9,
           endColumn: 9
         },
         {
-          messageId: "forbidden",
+          ...message("z"),
           line: 10,
           column: 9,
           endLine: 10,
@@ -361,42 +368,42 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       `,
       errors: [
         {
-          messageId: "forbidden",
+          ...message("a"),
           line: 2,
           column: 10,
           endLine: 2,
           endColumn: 11
         },
         {
-          messageId: "forbidden",
+          ...message("alias"),
           line: 3,
           column: 15,
           endLine: 3,
           endColumn: 20
         },
         {
-          messageId: "forbidden",
+          ...message("l"),
           line: 4,
           column: 13,
           endLine: 4,
           endColumn: 14
         },
         {
-          messageId: "forbidden",
+          ...message("letters"),
           line: 5,
           column: 8,
           endLine: 5,
           endColumn: 15
         },
         {
-          messageId: "forbidden",
+          ...message("L"),
           line: 6,
           column: 8,
           endLine: 6,
           endColumn: 9
         },
         {
-          messageId: "forbidden",
+          ...message("e"),
           line: 6,
           column: 13,
           endLine: 6,
@@ -429,14 +436,14 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       `,
       errors: [
         {
-          messageId: "forbidden",
+          ...message("b"),
           line: 3,
           column: 5,
           endLine: 3,
           endColumn: 6
         },
         {
-          messageId: "forbidden",
+          ...message("c"),
           line: 4,
           column: 5,
           endLine: 4,
@@ -465,14 +472,14 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       `,
       errors: [
         {
-          messageId: "forbidden",
+          ...message("b"),
           line: 2,
           column: 10,
           endLine: 2,
           endColumn: 11
         },
         {
-          messageId: "forbidden",
+          ...message("a"),
           line: 3,
           column: 7,
           endLine: 3,
@@ -509,70 +516,70 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       `,
       errors: [
         {
-          messageId: "forbidden",
+          ...message("a"),
           line: 2,
           column: 10,
           endLine: 2,
           endColumn: 11
         },
         {
-          messageId: "forbidden",
+          ...message("c"),
           line: 2,
           column: 16,
           endLine: 2,
           endColumn: 17
         },
         {
-          messageId: "forbidden",
+          ...message("apple"),
           line: 4,
           column: 8,
           endLine: 4,
           endColumn: 13
         },
         {
-          messageId: "forbidden",
+          ...message("cherry"),
           line: 6,
           column: 8,
           endLine: 6,
           endColumn: 14
         },
         {
-          messageId: "forbidden",
+          ...message("d"),
           line: 9,
           column: 13,
           endLine: 9,
           endColumn: 14
         },
         {
-          messageId: "forbidden",
+          ...message("egg"),
           line: 10,
           column: 18,
           endLine: 10,
           endColumn: 21
         },
         {
-          messageId: "forbidden",
+          ...message("v"),
           line: 12,
           column: 8,
           endLine: 12,
           endColumn: 9
         },
         {
-          messageId: "forbidden",
+          ...message("f"),
           line: 12,
           column: 13,
           endLine: 12,
           endColumn: 14
         },
         {
-          messageId: "forbidden",
+          ...message("w"),
           line: 13,
           column: 8,
           endLine: 13,
           endColumn: 9
         },
         {
-          messageId: "forbidden",
+          ...message("grape"),
           line: 13,
           column: 18,
           endLine: 13,
@@ -600,7 +607,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       `,
       errors: [
         {
-          messageId: "forbidden",
+          ...message("Person"),
           line: 2,
           column: 7,
           endLine: 2,
@@ -635,35 +642,35 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       `,
       errors: [
         {
-          messageId: "forbidden",
+          ...message("property"),
           line: 7,
           column: 9,
           endLine: 7,
           endColumn: 17
         },
         {
-          messageId: "forbidden",
+          ...message("renamed"),
           line: 8,
           column: 19,
           endLine: 8,
           endColumn: 26
         },
         {
-          messageId: "forbidden",
+          ...message("element"),
           line: 9,
           column: 8,
           endLine: 9,
           endColumn: 15
         },
         {
-          messageId: "forbidden",
+          ...message("b"),
           line: 16,
           column: 12,
           endLine: 16,
           endColumn: 13
         },
         {
-          messageId: "forbidden",
+          ...message("rest"),
           line: 16,
           column: 18,
           endLine: 16,
@@ -698,7 +705,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       `,
       errors: [
         {
-          messageId: "forbidden",
+          ...message("WTF"),
           line: 2,
           column: 6,
           endLine: 2,
@@ -718,14 +725,14 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       `,
       errors: [
         {
-          messageId: "forbidden",
+          ...message("f"),
           line: 2,
           column: 10,
           endLine: 2,
           endColumn: 11
         },
         {
-          messageId: "forbidden",
+          ...message("g"),
           line: 3,
           column: 7,
           endLine: 3,
@@ -759,70 +766,70 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       `,
       errors: [
         {
-          messageId: "forbidden",
+          ...message("a"),
           line: 2,
           column: 10,
           endLine: 2,
           endColumn: 11
         },
         {
-          messageId: "forbidden",
+          ...message("c"),
           line: 4,
           column: 10,
           endLine: 4,
           endColumn: 11
         },
         {
-          messageId: "forbidden",
+          ...message("d"),
           line: 4,
           column: 13,
           endLine: 4,
           endColumn: 14
         },
         {
-          messageId: "forbidden",
+          ...message("anise"),
           line: 5,
           column: 15,
           endLine: 5,
           endColumn: 20
         },
         {
-          messageId: "forbidden",
+          ...message("carrot"),
           line: 8,
           column: 8,
           endLine: 8,
           endColumn: 14
         },
         {
-          messageId: "forbidden",
+          ...message("dill"),
           line: 9,
           column: 8,
           endLine: 9,
           endColumn: 12
         },
         {
-          messageId: "forbidden",
+          ...message("l"),
           line: 11,
           column: 13,
           endLine: 11,
           endColumn: 14
         },
         {
-          messageId: "forbidden",
+          ...message("letters"),
           line: 12,
           column: 8,
           endLine: 12,
           endColumn: 15
         },
         {
-          messageId: "forbidden",
+          ...message("L"),
           line: 13,
           column: 8,
           endLine: 13,
           endColumn: 9
         },
         {
-          messageId: "forbidden",
+          ...message("e"),
           line: 13,
           column: 13,
           endLine: 13,
@@ -847,14 +854,14 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       `,
       errors: [
         {
-          messageId: "forbidden",
+          ...message("SomeInterface"),
           line: 2,
           column: 11,
           endLine: 2,
           endColumn: 24
         },
         {
-          messageId: "forbidden",
+          ...message("SomeType"),
           line: 3,
           column: 6,
           endLine: 3,
@@ -877,21 +884,21 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       `,
       errors: [
         {
-          messageId: "forbidden",
+          ...message("a"),
           line: 2,
           column: 7,
           endLine: 2,
           endColumn: 8
         },
         {
-          messageId: "forbidden",
+          ...message("b"),
           line: 3,
           column: 5,
           endLine: 3,
           endColumn: 6
         },
         {
-          messageId: "forbidden",
+          ...message("c"),
           line: 4,
           column: 5,
           endLine: 4,

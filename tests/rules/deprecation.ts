@@ -7,12 +7,13 @@ import { stripIndent } from "common-tags";
 import rule = require("../../source/rules/deprecation");
 import { ruleTester } from "../utils";
 
-const message = {
+const message = (name: string) => ({
   messageId: "forbidden",
   data: {
-    comment: "Don't use this"
+    comment: "Don't use this",
+    name
   }
-};
+});
 
 ruleTester({ comments: true, types: true }).run("deprecation", rule, {
   valid: [
@@ -164,7 +165,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("DeprecatedInterface"),
           line: 3,
           column: 8,
           endLine: 3,
@@ -181,14 +182,14 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("DeprecatedInterface"),
           line: 3,
           column: 8,
           endLine: 3,
           endColumn: 27
         },
         {
-          ...message,
+          ...message("DeprecatedInterface"),
           line: 4,
           column: 8,
           endLine: 4,
@@ -204,7 +205,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("DeprecatedType"),
           line: 3,
           column: 8,
           endLine: 3,
@@ -220,7 +221,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("DeprecatedClass"),
           line: 3,
           column: 8,
           endLine: 3,
@@ -236,7 +237,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("DeprecatedClass"),
           line: 3,
           column: 13,
           endLine: 3,
@@ -252,7 +253,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("DeprecatedEnum"),
           line: 3,
           column: 8,
           endLine: 3,
@@ -268,7 +269,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("deprecatedVariable"),
           line: 3,
           column: 9,
           endLine: 3,
@@ -284,7 +285,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("deprecatedFunction"),
           line: 3,
           column: 1,
           endLine: 3,
@@ -302,14 +303,14 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("deprecatedProperty"),
           line: 4,
           column: 15,
           endLine: 4,
           endColumn: 33
         },
         {
-          ...message,
+          ...message("deprecatedMethod"),
           line: 5,
           column: 3,
           endLine: 5,
@@ -327,14 +328,14 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("deprecatedProperty"),
           line: 4,
           column: 15,
           endLine: 4,
           endColumn: 33
         },
         {
-          ...message,
+          ...message("deprecatedMethod"),
           line: 5,
           column: 3,
           endLine: 5,
@@ -355,35 +356,35 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("deprecatedStaticMethod"),
           line: 3,
           column: 21,
           endLine: 3,
           endColumn: 43
         },
         {
-          ...message,
+          ...message("deprecatedProperty"),
           line: 5,
           column: 15,
           endLine: 5,
           endColumn: 33
         },
         {
-          ...message,
+          ...message("deprecatedGetter"),
           line: 6,
           column: 15,
           endLine: 6,
           endColumn: 31
         },
         {
-          ...message,
+          ...message("deprecatedSetter"),
           line: 7,
           column: 3,
           endLine: 7,
           endColumn: 19
         },
         {
-          ...message,
+          ...message("deprecatedMethod"),
           line: 8,
           column: 3,
           endLine: 8,
@@ -400,7 +401,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("DeprecatedMember"),
           line: 4,
           column: 24,
           endLine: 4,
@@ -418,14 +419,14 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("deprecatedSignatureStaticMethod"),
           line: 3,
           column: 26,
           endLine: 3,
           endColumn: 57
         },
         {
-          ...message,
+          ...message("deprecatedSignatureMethod"),
           line: 5,
           column: 3,
           endLine: 5,
@@ -441,7 +442,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("deprecatedSignatureFunction"),
           line: 3,
           column: 1,
           endLine: 3,
@@ -457,7 +458,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("DeprecatedConstructorSignatureClass"),
           line: 3,
           column: 13,
           endLine: 3,
@@ -473,7 +474,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("DeprecatedInterface"),
           line: 3,
           column: 8,
           endLine: 3,
@@ -496,7 +497,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       `,
       errors: [
         {
-          ...message,
+          ...message("DeprecatedInterface"),
           line: 3,
           column: 8,
           endLine: 3,

@@ -17,6 +17,7 @@ ruleTester({ types: true }).run("no-t", rule, {
       code: `type Thing<T> = { value: T };`,
       errors: [
         {
+          data: { name: "T" },
           messageId: "forbidden",
           line: 1,
           column: 12,

@@ -21,7 +21,7 @@ const rule: Rule.RuleModule = {
     },
     fixable: null,
     messages: {
-      forbidden: "Deprecated: {{comment}}"
+      forbidden: `"{{name}}" is deprecated: {{comment}}`
     },
     schema: [
       {
@@ -89,7 +89,7 @@ const rule: Rule.RuleModule = {
         const deprecation = getDeprecation(identifier, typeChecker);
         if (deprecation !== undefined) {
           context.report({
-            data: { comment: deprecation },
+            data: { comment: deprecation, name: identifier.text },
             messageId: "forbidden",
             node
           });

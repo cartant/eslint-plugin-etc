@@ -19,7 +19,7 @@ const rule: Rule.RuleModule = {
     },
     fixable: null,
     messages: {
-      forbidden: "Unused declarations are forbidden."
+      forbidden: `"{{name}}" is not used; unused declarations are forbidden.`
     },
     schema: [
       {
@@ -192,6 +192,7 @@ const rule: Rule.RuleModule = {
                 // );
               }
               context.report({
+                data: { name: identifier.name },
                 messageId: "forbidden",
                 node: identifier
               });
@@ -216,6 +217,7 @@ const rule: Rule.RuleModule = {
       );
       if (typeReferences.length === 0) {
         context.report({
+          data: { name: name.text },
           messageId: "forbidden",
           node: node.id
         });
