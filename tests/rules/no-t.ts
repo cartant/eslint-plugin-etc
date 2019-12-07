@@ -10,6 +10,10 @@ ruleTester({ types: true }).run("no-t", rule, {
   valid: [
     {
       code: `type Thing<Value> = { value: Value };`
+    },
+    {
+      code: `type Thing<TValue> = { value: TValue };`,
+      options: [{ prefix: "T" }]
     }
   ],
   invalid: [
@@ -25,6 +29,20 @@ ruleTester({ types: true }).run("no-t", rule, {
           endColumn: 13
         }
       ]
+    },
+    {
+      code: `type Thing<Value> = { value: Value };`,
+      errors: [
+        {
+          data: { name: "Value", prefix: "T" },
+          messageId: "forbidden",
+          line: 1,
+          column: 12,
+          endLine: 1,
+          endColumn: 17
+        }
+      ],
+      options: [{ prefix: "T" }]
     }
   ]
 });

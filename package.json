@@ -76,7 +76,7 @@
     "prettier": "prettier --write \"./{src,tests}/**/*.{js,json,ts,tsx}\"",
     "prettier:ci": "prettier --check \"./{src,tests}/**/*.{js,json,ts,tsx}\"",
     "test": "mocha -r ts-node/register -t 5000 tests/**/*.ts",
-    "test:debug": "mocha -r ts-node/register -t 5000 tests/rules/deprecation.ts"
+    "test:debug": "mocha -r ts-node/register -t 5000 tests/rules/no-t.ts"
   },
   "version": "0.0.1-beta.23"
 }
