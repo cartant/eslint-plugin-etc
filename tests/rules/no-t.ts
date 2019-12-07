@@ -35,7 +35,7 @@ ruleTester({ types: true }).run("no-t", rule, {
       errors: [
         {
           data: { name: "Value", prefix: "T" },
-          messageId: "forbidden",
+          messageId: "prefix",
           line: 1,
           column: 12,
           endLine: 1,

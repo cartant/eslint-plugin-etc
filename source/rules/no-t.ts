@@ -15,17 +15,40 @@ const rule: Rule.RuleModule = {
     },
     fixable: null,
     messages: {
-      forbidden: `Single-character type parameters are forbidden. Choose a more descriptive name for "{{name}}"`
-    }
+      forbidden: `Single-character type parameters are forbidden. Choose a more descriptive name for "{{name}}"`,
+      prefix: `Type parameter "{{name}}" does not have prefix "{{prefix}}"`
+    },
+    schema: [
+      {
+        properties: {
+          prefix: { type: "string" }
+        },
+        type: "object"
+      }
+    ]
   },
-  create: context => ({
-    "TSTypeParameter > Identifier[name=/^.$/]": (node: es.Identifier) =>
-      context.report({
-        data: { name: node.name },
-        messageId: "forbidden",
-        node
-      })
-  })
+  create: context => {
+    const [config = {}] = context.options;
+    const { prefix } = config;
+    return {
+      "TSTypeParameter > Identifier[name=/^.$/]": (node: es.Identifier) =>
+        context.report({
+          data: { name: node.name },
+          messageId: "forbidden",
+          node
+        }),
+      "TSTypeParameter > Identifier[name=/^.{2,}$/]": (node: es.Identifier) => {
+        const { name } = node;
+        if (prefix && name.indexOf(prefix) !== 0) {
+          context.report({
+            data: { name, prefix },
+            messageId: "prefix",
+            node
+          });
+        }
+      }
+    };
+  }
 };
 
 export = rule;
