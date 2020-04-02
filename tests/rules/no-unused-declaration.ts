@@ -265,15 +265,24 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
     {
       code: stripIndent`
         // used JSX components
+        import React from "react";
         import { Thing } from "./thing";
 
         export const OpenCloseThing = ({ children, ...props }) => <Thing {...props}>{children}</Thing>;
         export const SelfCloseThing = props => <Thing {...props}/>;
       `,
+      options: [
+        {
+          ignored: {
+            React: true,
+          },
+        },
+      ],
     },
     {
       code: stripIndent`
         // used JSX namespace components
+        import React from "react";
         import * as Icons from "./icons";
 
         export const App = () => {
@@ -283,6 +292,13 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           </div>
         };
       `,
+      options: [
+        {
+          ignored: {
+            React: true,
+          },
+        },
+      ],
     },
     {
       code: stripIndent`
