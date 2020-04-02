@@ -5,7 +5,7 @@
   },
   "dependencies": {
     "@phenomnomnominal/tsquery": "^4.0.0",
-    "eslint-etc": "^0.0.8",
+    "eslint-etc": "^0.0.9",
     "requireindex": "~1.2.0",
     "tslib": "^1.8.0",
     "tsutils": "^3.0.0",
@@ -23,7 +23,7 @@
     "common-tags": "^1.8.0",
     "eslint": "^6.0.0",
     "husky": "^4.0.0",
-    "lint-staged": "^9.0.0",
+    "lint-staged": "^10.1.1",
     "mocha": "^7.0.0",
     "prettier": "~1.19.0",
     "rimraf": "^3.0.0",
@@ -45,10 +45,7 @@
   ],
   "license": "MIT",
   "lint-staged": {
-    "*.{js,ts}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js,ts}": "prettier --write"
   },
   "main": "./dist/index.js",
   "name": "eslint-plugin-etc",
