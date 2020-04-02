@@ -10,20 +10,20 @@ const options = [
   {
     "^a$": true,
     "^b$": false,
-    "(^|/)c$": true
-  }
+    "(^|/)c$": true,
+  },
 ];
 
 ruleTester({ types: false }).run("ban-imports", rule, {
   valid: [
     {
       code: `import { b } from "b";`,
-      options
+      options,
     },
     {
       code: `import { d } from "./d";`,
-      options
-    }
+      options,
+    },
   ],
   invalid: [
     {
@@ -31,18 +31,18 @@ ruleTester({ types: false }).run("ban-imports", rule, {
       options,
       errors: [
         {
-          messageId: "forbidden"
-        }
-      ]
+          messageId: "forbidden",
+        },
+      ],
     },
     {
       code: `import { c } from "./c";`,
       options,
       errors: [
         {
-          messageId: "forbidden"
-        }
-      ]
-    }
-  ]
+          messageId: "forbidden",
+        },
+      ],
+    },
+  ],
 });

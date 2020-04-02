@@ -21,7 +21,7 @@ export class NotDeprecatedClass {
 }
 
 export enum NotDeprecatedEnum {
-  NotDeprecatedMember = 1
+  NotDeprecatedMember = 1,
 }
 
 export const notDeprecatedVariable = {};
@@ -55,7 +55,7 @@ export class DeprecatedClass {
 
 /** @deprecated Don't use this */
 export enum DeprecatedEnum {
-  NotDeprecatedMember = 1
+  NotDeprecatedMember = 1,
 }
 
 /** @deprecated Don't use this */
@@ -109,7 +109,7 @@ export class SomeDeprecatedClass {
 export enum SomeDeprecatedEnum {
   /** @deprecated Don't use this */
   DeprecatedMember = 1,
-  NotDeprecatedMember = 2
+  NotDeprecatedMember = 2,
 }
 
 // Some deprecated signatures

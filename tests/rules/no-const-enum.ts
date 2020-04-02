@@ -9,16 +9,16 @@ import { ruleTester } from "../utils";
 ruleTester({ types: true }).run("no-const-enum", rule, {
   valid: [
     {
-      code: `enum Numbers { one = 1 };`
+      code: `enum Numbers { one = 1 };`,
     },
     {
       code: `const enum Numbers { one = 1 };`,
       options: [
         {
-          allowLocal: true
-        }
-      ]
-    }
+          allowLocal: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -29,9 +29,9 @@ ruleTester({ types: true }).run("no-const-enum", rule, {
           line: 1,
           column: 12,
           endLine: 1,
-          endColumn: 19
-        }
-      ]
+          endColumn: 19,
+        },
+      ],
     },
     {
       code: `export const enum Numbers { one = 1 };`,
@@ -41,9 +41,9 @@ ruleTester({ types: true }).run("no-const-enum", rule, {
           line: 1,
           column: 19,
           endLine: 1,
-          endColumn: 26
-        }
-      ]
+          endColumn: 26,
+        },
+      ],
     },
     {
       code: `export const enum Numbers { one = 1 };`,
@@ -53,14 +53,14 @@ ruleTester({ types: true }).run("no-const-enum", rule, {
           line: 1,
           column: 19,
           endLine: 1,
-          endColumn: 26
-        }
+          endColumn: 26,
+        },
       ],
       options: [
         {
-          allowLocal: false
-        }
-      ]
-    }
-  ]
+          allowLocal: false,
+        },
+      ],
+    },
+  ],
 });

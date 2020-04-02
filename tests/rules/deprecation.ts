@@ -11,8 +11,8 @@ const message = (name: string) => ({
   messageId: "forbidden",
   data: {
     comment: "Don't use this",
-    name
-  }
+    name,
+  },
 });
 
 ruleTester({ comments: true, types: true }).run("deprecation", rule, {
@@ -22,49 +22,49 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Not deprecated interface
         import { NotDeprecatedInterface } from "./modules/deprecation";
         let a: NotDeprecatedInterface;
-      `
+      `,
     },
     {
       code: stripIndent`
         // Not deprecated type
         import { NotDeprecatedType } from "./modules/deprecation";
         let a: NotDeprecatedType;
-      `
+      `,
     },
     {
       code: stripIndent`
         // Not deprecated class
         import { NotDeprecatedClass } from "./modules/deprecation";
         let a: NotDeprecatedClass;
-      `
+      `,
     },
     {
       code: stripIndent`
         // Not deprecated class
         import { NotDeprecatedClass } from "./modules/deprecation";
         let a = new NotDeprecatedClass();
-      `
+      `,
     },
     {
       code: stripIndent`
         // Not deprecated enum
         import { NotDeprecatedEnum } from "./modules/deprecation";
         let a: NotDeprecatedEnum;
-      `
+      `,
     },
     {
       code: stripIndent`
         // Not deprecated variable
         import { notDeprecatedVariable } from "./modules/deprecation";
         let a = notDeprecatedVariable;
-      `
+      `,
     },
     {
       code: stripIndent`
         // Not deprecated function
         import { notDeprecatedFunction } from "./modules/deprecation";
         notDeprecatedFunction();
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -73,7 +73,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         let a: SomeDeprecatedInterface;
         console.log(a.notDeprecatedProperty);
         a.notDeprecatedMethod();
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -82,7 +82,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         let a: SomeDeprecatedType;
         console.log(a.notDeprecatedProperty);
         a.notDeprecatedMethod();
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -94,7 +94,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         console.log(a.notDeprecatedGetter);
         a.notDeprecatedSetter = "42";
         a.notDeprecatedMethod();
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -102,7 +102,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         import { SomeDeprecatedEnum } from "./modules/deprecation";
         let a: SomeDeprecatedEnum;
         a = SomeDeprecatedEnum.NotDeprecatedMember;
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -111,21 +111,21 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         DeprecatedSignatureClass.deprecatedSignatureStaticMethod(42);
         let a: DeprecatedSignatureClass;
         a.deprecatedSignatureMethod(42);
-      `
+      `,
     },
     {
       code: stripIndent`
         // Some signatures not deprecated function
         import { deprecatedSignatureFunction } from "./modules/deprecation";
         deprecatedSignatureFunction(42);
-      `
+      `,
     },
     {
       code: stripIndent`
         // Not deprecated constructor
         import { DeprecatedConstructorSignatureClass } from "./modules/deprecation";
         let a = new DeprecatedConstructorSignatureClass(42);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -136,10 +136,10 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       options: [
         {
           ignored: {
-            "^DeprecatedInterface$": "name"
-          }
-        }
-      ]
+            "^DeprecatedInterface$": "name",
+          },
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -150,11 +150,11 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
       options: [
         {
           ignored: {
-            "modules/deprecation": "path"
-          }
-        }
-      ]
-    }
+            "modules/deprecation": "path",
+          },
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -169,9 +169,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 8,
           endLine: 3,
-          endColumn: 27
-        }
-      ]
+          endColumn: 27,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -186,16 +186,16 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 8,
           endLine: 3,
-          endColumn: 27
+          endColumn: 27,
         },
         {
           ...message("DeprecatedInterface"),
           line: 4,
           column: 8,
           endLine: 4,
-          endColumn: 27
-        }
-      ]
+          endColumn: 27,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -209,9 +209,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 8,
           endLine: 3,
-          endColumn: 22
-        }
-      ]
+          endColumn: 22,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -225,9 +225,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 8,
           endLine: 3,
-          endColumn: 23
-        }
-      ]
+          endColumn: 23,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -241,9 +241,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 13,
           endLine: 3,
-          endColumn: 28
-        }
-      ]
+          endColumn: 28,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -257,9 +257,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 8,
           endLine: 3,
-          endColumn: 22
-        }
-      ]
+          endColumn: 22,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -273,9 +273,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 9,
           endLine: 3,
-          endColumn: 27
-        }
-      ]
+          endColumn: 27,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -289,9 +289,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 1,
           endLine: 3,
-          endColumn: 19
-        }
-      ]
+          endColumn: 19,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -307,16 +307,16 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 4,
           column: 15,
           endLine: 4,
-          endColumn: 33
+          endColumn: 33,
         },
         {
           ...message("deprecatedMethod"),
           line: 5,
           column: 3,
           endLine: 5,
-          endColumn: 19
-        }
-      ]
+          endColumn: 19,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -332,16 +332,16 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 4,
           column: 15,
           endLine: 4,
-          endColumn: 33
+          endColumn: 33,
         },
         {
           ...message("deprecatedMethod"),
           line: 5,
           column: 3,
           endLine: 5,
-          endColumn: 19
-        }
-      ]
+          endColumn: 19,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -360,37 +360,37 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 21,
           endLine: 3,
-          endColumn: 43
+          endColumn: 43,
         },
         {
           ...message("deprecatedProperty"),
           line: 5,
           column: 15,
           endLine: 5,
-          endColumn: 33
+          endColumn: 33,
         },
         {
           ...message("deprecatedGetter"),
           line: 6,
           column: 15,
           endLine: 6,
-          endColumn: 31
+          endColumn: 31,
         },
         {
           ...message("deprecatedSetter"),
           line: 7,
           column: 3,
           endLine: 7,
-          endColumn: 19
+          endColumn: 19,
         },
         {
           ...message("deprecatedMethod"),
           line: 8,
           column: 3,
           endLine: 8,
-          endColumn: 19
-        }
-      ]
+          endColumn: 19,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -405,9 +405,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 4,
           column: 24,
           endLine: 4,
-          endColumn: 40
-        }
-      ]
+          endColumn: 40,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -423,16 +423,16 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 26,
           endLine: 3,
-          endColumn: 57
+          endColumn: 57,
         },
         {
           ...message("deprecatedSignatureMethod"),
           line: 5,
           column: 3,
           endLine: 5,
-          endColumn: 28
-        }
-      ]
+          endColumn: 28,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -446,9 +446,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 1,
           endLine: 3,
-          endColumn: 28
-        }
-      ]
+          endColumn: 28,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -462,9 +462,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 13,
           endLine: 3,
-          endColumn: 48
-        }
-      ]
+          endColumn: 48,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -478,16 +478,16 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 8,
           endLine: 3,
-          endColumn: 27
-        }
+          endColumn: 27,
+        },
       ],
       options: [
         {
           ignored: {
-            "^Foo$": "name"
-          }
-        }
-      ]
+            "^Foo$": "name",
+          },
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -501,16 +501,16 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
           line: 3,
           column: 8,
           endLine: 3,
-          endColumn: 27
-        }
+          endColumn: 27,
+        },
       ],
       options: [
         {
           ignored: {
-            "modules/foo": "path"
-          }
-        }
-      ]
-    }
-  ]
+            "modules/foo": "path",
+          },
+        },
+      ],
+    },
+  ],
 });

@@ -9,12 +9,12 @@ import { ruleTester } from "../utils";
 ruleTester({ types: true }).run("no-t", rule, {
   valid: [
     {
-      code: `type Thing<Value> = { value: Value };`
+      code: `type Thing<Value> = { value: Value };`,
     },
     {
       code: `type Thing<TValue> = { value: TValue };`,
-      options: [{ prefix: "T" }]
-    }
+      options: [{ prefix: "T" }],
+    },
   ],
   invalid: [
     {
@@ -26,9 +26,9 @@ ruleTester({ types: true }).run("no-t", rule, {
           line: 1,
           column: 12,
           endLine: 1,
-          endColumn: 13
-        }
-      ]
+          endColumn: 13,
+        },
+      ],
     },
     {
       code: `type Thing<Value> = { value: Value };`,
@@ -39,10 +39,10 @@ ruleTester({ types: true }).run("no-t", rule, {
           line: 1,
           column: 12,
           endLine: 1,
-          endColumn: 17
-        }
+          endColumn: 17,
+        },
       ],
-      options: [{ prefix: "T" }]
-    }
-  ]
+      options: [{ prefix: "T" }],
+    },
+  ],
 });

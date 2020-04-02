@@ -17,7 +17,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         a.reverse();
         a.sort((x, y) => x - y);
         a.splice(0, 1);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -29,7 +29,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         const e = a.map(x => x).reverse();
         const f = a.map(x => x).sort((x, y) => x - y);
         const g = a.map(x => x).splice(0, 1);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -42,7 +42,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         b = a.map(x => x).reverse();
         b = a.map(x => x).sort((x, y) => x - y);
         b = a.map(x => x).splice(0, 1);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -52,7 +52,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         const c = a.slice().reverse();
         const d = a.slice().sort((x, y) => x - y);
         const e = a.slice().splice(0, 1);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -63,7 +63,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         b = a.slice().reverse();
         b = a.slice().sort((x, y) => x - y);
         b = a.slice().splice(0, 1);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -75,7 +75,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         b = a.slice().reverse().reverse();
         b = a.slice().sort((x, y) => x - y).sort((x, y) => x - y);
         b = a.slice().splice(0, 1).splice(0, 1);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -92,7 +92,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         b = [...a].reverse().reverse();
         b = [...a].sort((x, y) => x - y).sort((x, y) => x - y);
         b = [...a].splice(0, 1).splice(0, 1);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -104,7 +104,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
           c: a.map(x => x).sort((x, y) => x - y),
           d: a.map(x => x).splice(0, 1)
         };
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -116,7 +116,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
           a.map(x => x).sort((x, y) => x - y),
           a.map(x => x).splice(0, 1)
         ];
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -127,7 +127,7 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         n(a.map(x => x).reverse());
         n(a.map(x => x).sort((x, y) => x - y));
         n(a.map(x => x).splice(0, 1));
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -146,8 +146,8 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         t = new Thing(
           a.map(x => x).splice(0, 1)
         );
-      `
-    }
+      `,
+    },
   ],
   invalid: [
     {
@@ -165,30 +165,30 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
           line: 3,
           column: 13,
           endLine: 3,
-          endColumn: 17
+          endColumn: 17,
         },
         {
           messageId: "forbidden",
           line: 4,
           column: 13,
           endLine: 4,
-          endColumn: 20
+          endColumn: 20,
         },
         {
           messageId: "forbidden",
           line: 5,
           column: 13,
           endLine: 5,
-          endColumn: 17
+          endColumn: 17,
         },
         {
           messageId: "forbidden",
           line: 6,
           column: 13,
           endLine: 6,
-          endColumn: 19
-        }
-      ]
+          endColumn: 19,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -206,30 +206,30 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
           line: 4,
           column: 7,
           endLine: 4,
-          endColumn: 11
+          endColumn: 11,
         },
         {
           messageId: "forbidden",
           line: 5,
           column: 7,
           endLine: 5,
-          endColumn: 14
+          endColumn: 14,
         },
         {
           messageId: "forbidden",
           line: 6,
           column: 7,
           endLine: 6,
-          endColumn: 11
+          endColumn: 11,
         },
         {
           messageId: "forbidden",
           line: 7,
           column: 7,
           endLine: 7,
-          endColumn: 13
-        }
-      ]
+          endColumn: 13,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -248,30 +248,30 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
           line: 4,
           column: 8,
           endLine: 4,
-          endColumn: 12
+          endColumn: 12,
         },
         {
           messageId: "forbidden",
           line: 5,
           column: 8,
           endLine: 5,
-          endColumn: 15
+          endColumn: 15,
         },
         {
           messageId: "forbidden",
           line: 6,
           column: 8,
           endLine: 6,
-          endColumn: 12
+          endColumn: 12,
         },
         {
           messageId: "forbidden",
           line: 7,
           column: 8,
           endLine: 7,
-          endColumn: 14
-        }
-      ]
+          endColumn: 14,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -290,30 +290,30 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
           line: 4,
           column: 5,
           endLine: 4,
-          endColumn: 9
+          endColumn: 9,
         },
         {
           messageId: "forbidden",
           line: 5,
           column: 5,
           endLine: 5,
-          endColumn: 12
+          endColumn: 12,
         },
         {
           messageId: "forbidden",
           line: 6,
           column: 5,
           endLine: 6,
-          endColumn: 9
+          endColumn: 9,
         },
         {
           messageId: "forbidden",
           line: 7,
           column: 5,
           endLine: 7,
-          endColumn: 11
-        }
-      ]
+          endColumn: 11,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -331,30 +331,30 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
           line: 4,
           column: 5,
           endLine: 4,
-          endColumn: 9
+          endColumn: 9,
         },
         {
           messageId: "forbidden",
           line: 5,
           column: 5,
           endLine: 5,
-          endColumn: 12
+          endColumn: 12,
         },
         {
           messageId: "forbidden",
           line: 6,
           column: 5,
           endLine: 6,
-          endColumn: 9
+          endColumn: 9,
         },
         {
           messageId: "forbidden",
           line: 7,
           column: 5,
           endLine: 7,
-          endColumn: 11
-        }
-      ]
+          endColumn: 11,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -380,30 +380,30 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
           line: 5,
           column: 5,
           endLine: 5,
-          endColumn: 9
+          endColumn: 9,
         },
         {
           messageId: "forbidden",
           line: 8,
           column: 5,
           endLine: 8,
-          endColumn: 12
+          endColumn: 12,
         },
         {
           messageId: "forbidden",
           line: 11,
           column: 5,
           endLine: 11,
-          endColumn: 9
+          endColumn: 9,
         },
         {
           messageId: "forbidden",
           line: 14,
           column: 5,
           endLine: 14,
-          endColumn: 11
-        }
-      ]
-    }
-  ]
+          endColumn: 11,
+        },
+      ],
+    },
+  ],
 });

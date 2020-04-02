@@ -14,8 +14,8 @@ ruleTester({ types: true }).run("no-missing-dollar-expect", rule, {
         // Expectations with $
         const a = "a"; // $ExpectType string
         const b: number = "b"; // $ExpectError
-      `
-    }
+      `,
+    },
   ],
   invalid: [
     {
@@ -30,16 +30,16 @@ ruleTester({ types: true }).run("no-missing-dollar-expect", rule, {
           line: 2,
           column: 16,
           endLine: 2,
-          endColumn: 29
+          endColumn: 29,
         },
         {
           messageId: "forbidden",
           line: 3,
           column: 24,
           endLine: 3,
-          endColumn: 38
-        }
-      ]
-    }
-  ]
+          endColumn: 38,
+        },
+      ],
+    },
+  ],
 });

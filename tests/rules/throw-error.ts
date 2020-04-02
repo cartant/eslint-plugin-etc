@@ -23,7 +23,7 @@ ruleTester({ types: true }).run("throw-error", rule, {
         function b(error: any): never {
           throw error;
         }
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -34,7 +34,7 @@ ruleTester({ types: true }).run("throw-error", rule, {
         export const d = new Promise((resolve) => resolve(42));
         export const e = new Promise(function (resolve) { resolve(56); });
         export const f = new Promise(function func(resolve) { resolve(56); });
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -43,7 +43,7 @@ ruleTester({ types: true }).run("throw-error", rule, {
         export const g = Promise.reject(kaboom);
         export const h = new Promise(function (resolve, reject) { reject(kaboom); });
         export const i = new Promise(function func(resolve, reject) { reject(kaboom); });
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -56,8 +56,8 @@ ruleTester({ types: true }).run("throw-error", rule, {
             })
           }
         );
-      `
-    }
+      `,
+    },
   ],
   invalid: [
     {
@@ -82,7 +82,7 @@ ruleTester({ types: true }).run("throw-error", rule, {
           line: 2,
           column: 32,
           endLine: 2,
-          endColumn: 40
+          endColumn: 40,
         },
         {
           messageId: "forbidden",
@@ -90,9 +90,9 @@ ruleTester({ types: true }).run("throw-error", rule, {
           line: 5,
           column: 9,
           endLine: 5,
-          endColumn: 17
-        }
-      ]
+          endColumn: 17,
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -109,7 +109,7 @@ ruleTester({ types: true }).run("throw-error", rule, {
           line: 2,
           column: 33,
           endLine: 2,
-          endColumn: 41
+          endColumn: 41,
         },
         {
           messageId: "forbidden",
@@ -117,7 +117,7 @@ ruleTester({ types: true }).run("throw-error", rule, {
           line: 3,
           column: 58,
           endLine: 3,
-          endColumn: 66
+          endColumn: 66,
         },
         {
           messageId: "forbidden",
@@ -125,7 +125,7 @@ ruleTester({ types: true }).run("throw-error", rule, {
           line: 4,
           column: 66,
           endLine: 4,
-          endColumn: 74
+          endColumn: 74,
         },
         {
           messageId: "forbidden",
@@ -133,9 +133,9 @@ ruleTester({ types: true }).run("throw-error", rule, {
           line: 5,
           column: 70,
           endLine: 5,
-          endColumn: 78
-        }
-      ]
-    }
-  ]
+          endColumn: 78,
+        },
+      ],
+    },
+  ],
 });

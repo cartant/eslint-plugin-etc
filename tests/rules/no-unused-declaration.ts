@@ -10,8 +10,8 @@ import { ruleTester } from "../utils";
 const message = (name: string) => ({
   messageId: "forbidden",
   data: {
-    name
-  }
+    name,
+  },
 });
 
 ruleTester({ types: true }).run("no-unused-declaration", rule, {
@@ -25,7 +25,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         const d: any = { a, b, c };
         console.log(d.e);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -39,7 +39,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         export class Person {}
         export enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -52,10 +52,10 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       options: [
         {
           ignored: {
-            jsx: true
-          }
-        }
-      ]
+            jsx: true,
+          },
+        },
+      ],
     },
     {
       code: stripIndent`
@@ -63,7 +63,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         class Person {}
 
         console.log(new Person());
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -85,7 +85,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
 
         console.log(a, b, rest);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -93,7 +93,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
 
         console.log(WTF.FILE_NOT_FOUND);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -101,7 +101,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         const enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
 
         console.log(WTF.FILE_NOT_FOUND);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -116,7 +116,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         console.log(c);
 
         function d(): void {}
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -125,7 +125,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         const g = () => {};
 
         console.log(f.toString(), g.toString());
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -134,7 +134,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         const d = { [a]: a, [b]: "b", ["c"]: c };
         console.log(d);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -143,7 +143,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         const d = { a: a, b: b, c: c };
         console.log(d);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -152,7 +152,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         const d = { a, b, c };
         console.log(d);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -164,7 +164,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         import L, { e } from "./letters";
 
         console.log(a, alias, l.a, letters, L, e);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -176,7 +176,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         declare const b: SomeType;
 
         console.log(a, b);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -184,7 +184,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         import { Base } from "./base";
 
         export class Derived extends Base {}
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -192,14 +192,14 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         import { Base } from "./base";
 
         export interface Derived extends Base {}
-      `
+      `,
     },
     {
       code: stripIndent`
         // exported types
         export interface SomeInterface {}
         export type SomeType = {};
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -208,7 +208,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         const t: Thing | null = null;
         console.log(t);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -217,7 +217,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         const t: Thing.Name | null = null;
         console.log(t);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -228,7 +228,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         const d = { [a]: a, [b]: "b", ["c"]: c };
         console.log(d);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -239,7 +239,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         const d = { a: a, b: b, c: c };
         console.log(d);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -250,7 +250,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         const d = { a, b, c };
         console.log(d);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -260,7 +260,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         var c = "c";
 
         console.log(a, b, c);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -269,7 +269,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         export const OpenCloseThing = ({ children, ...props }) => <Thing {...props}>{children}</Thing>;
         export const SelfCloseThing = props => <Thing {...props}/>;
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -282,7 +282,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
             <Icons.Two/>
           </div>
         };
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -294,8 +294,8 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           isDraging = () => draging;
           isPopupVisible = () => popupVisible;
         }
-      `
-    }
+      `,
+    },
   ],
   invalid: [
     {
@@ -317,28 +317,28 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           line: 8,
           column: 7,
           endLine: 8,
-          endColumn: 8
+          endColumn: 8,
         },
         {
           ...message("y"),
           line: 9,
           column: 8,
           endLine: 9,
-          endColumn: 9
+          endColumn: 9,
         },
         {
           ...message("z"),
           line: 10,
           column: 9,
           endLine: 10,
-          endColumn: 10
-        }
+          endColumn: 10,
+        },
       ],
       options: [
         {
           declarations: true,
-          imports: false
-        }
+          imports: false,
+        },
       ],
       output: stripIndent`
         // only declarations
@@ -351,7 +351,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         const x = "x";
         const [y] = ["y"];
         const { z } = { z: "z" };
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -372,50 +372,50 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           line: 2,
           column: 10,
           endLine: 2,
-          endColumn: 11
+          endColumn: 11,
         },
         {
           ...message("alias"),
           line: 3,
           column: 15,
           endLine: 3,
-          endColumn: 20
+          endColumn: 20,
         },
         {
           ...message("l"),
           line: 4,
           column: 13,
           endLine: 4,
-          endColumn: 14
+          endColumn: 14,
         },
         {
           ...message("letters"),
           line: 5,
           column: 8,
           endLine: 5,
-          endColumn: 15
+          endColumn: 15,
         },
         {
           ...message("L"),
           line: 6,
           column: 8,
           endLine: 6,
-          endColumn: 9
+          endColumn: 9,
         },
         {
           ...message("e"),
           line: 6,
           column: 13,
           endLine: 6,
-          endColumn: 14
-        }
+          endColumn: 14,
+        },
       ],
       options: [
         {
           declarations: false,
-          imports: true
-        }
-      ]
+          imports: true,
+        },
+      ],
       // TODO:
       // output: stripIndent`
       //   // only imports
@@ -440,15 +440,15 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           line: 3,
           column: 5,
           endLine: 3,
-          endColumn: 6
+          endColumn: 6,
         },
         {
           ...message("c"),
           line: 4,
           column: 5,
           endLine: 4,
-          endColumn: 6
-        }
+          endColumn: 6,
+        },
       ],
       output: stripIndent`
         // reassigned
@@ -458,7 +458,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         b = a;
         c = a;
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -476,16 +476,16 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           line: 2,
           column: 10,
           endLine: 2,
-          endColumn: 11
+          endColumn: 11,
         },
         {
           ...message("a"),
           line: 3,
           column: 7,
           endLine: 3,
-          endColumn: 8
-        }
-      ]
+          endColumn: 8,
+        },
+      ],
       // TODO:
       // output: stripIndent`
       //   // shadowed
@@ -520,72 +520,72 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           line: 2,
           column: 10,
           endLine: 2,
-          endColumn: 11
+          endColumn: 11,
         },
         {
           ...message("c"),
           line: 2,
           column: 16,
           endLine: 2,
-          endColumn: 17
+          endColumn: 17,
         },
         {
           ...message("apple"),
           line: 4,
           column: 8,
           endLine: 4,
-          endColumn: 13
+          endColumn: 13,
         },
         {
           ...message("cherry"),
           line: 6,
           column: 8,
           endLine: 6,
-          endColumn: 14
+          endColumn: 14,
         },
         {
           ...message("d"),
           line: 9,
           column: 13,
           endLine: 9,
-          endColumn: 14
+          endColumn: 14,
         },
         {
           ...message("egg"),
           line: 10,
           column: 18,
           endLine: 10,
-          endColumn: 21
+          endColumn: 21,
         },
         {
           ...message("v"),
           line: 12,
           column: 8,
           endLine: 12,
-          endColumn: 9
+          endColumn: 9,
         },
         {
           ...message("f"),
           line: 12,
           column: 13,
           endLine: 12,
-          endColumn: 14
+          endColumn: 14,
         },
         {
           ...message("w"),
           line: 13,
           column: 8,
           endLine: 13,
-          endColumn: 9
+          endColumn: 9,
         },
         {
           ...message("grape"),
           line: 13,
           column: 18,
           endLine: 13,
-          endColumn: 23
-        }
-      ]
+          endColumn: 23,
+        },
+      ],
       // TODO:
       // output: stripIndent`
       //   // some used imports
@@ -611,13 +611,13 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           line: 2,
           column: 7,
           endLine: 2,
-          endColumn: 13
-        }
+          endColumn: 13,
+        },
       ],
       output: stripIndent`
         // unused classes
         class Person {}
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -646,36 +646,36 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           line: 7,
           column: 9,
           endLine: 7,
-          endColumn: 17
+          endColumn: 17,
         },
         {
           ...message("renamed"),
           line: 8,
           column: 19,
           endLine: 8,
-          endColumn: 26
+          endColumn: 26,
         },
         {
           ...message("element"),
           line: 9,
           column: 8,
           endLine: 9,
-          endColumn: 15
+          endColumn: 15,
         },
         {
           ...message("b"),
           line: 16,
           column: 12,
           endLine: 16,
-          endColumn: 13
+          endColumn: 13,
         },
         {
           ...message("rest"),
           line: 16,
           column: 18,
           endLine: 16,
-          endColumn: 22
-        }
+          endColumn: 22,
+        },
       ],
       output: stripIndent`
         // unused destructuring
@@ -696,7 +696,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
 
         console.log(a);
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -709,13 +709,13 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           line: 2,
           column: 6,
           endLine: 2,
-          endColumn: 9
-        }
+          endColumn: 9,
+        },
       ],
       output: stripIndent`
         // unused enums
         enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -729,21 +729,21 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           line: 2,
           column: 10,
           endLine: 2,
-          endColumn: 11
+          endColumn: 11,
         },
         {
           ...message("g"),
           line: 3,
           column: 7,
           endLine: 3,
-          endColumn: 8
-        }
+          endColumn: 8,
+        },
       ],
       output: stripIndent`
         // unused functions
         function f(): void {}
         const g = () => {};
-      `
+      `,
     },
     {
       code: stripIndent`
@@ -770,72 +770,72 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           line: 2,
           column: 10,
           endLine: 2,
-          endColumn: 11
+          endColumn: 11,
         },
         {
           ...message("c"),
           line: 4,
           column: 10,
           endLine: 4,
-          endColumn: 11
+          endColumn: 11,
         },
         {
           ...message("d"),
           line: 4,
           column: 13,
           endLine: 4,
-          endColumn: 14
+          endColumn: 14,
         },
         {
           ...message("anise"),
           line: 5,
           column: 15,
           endLine: 5,
-          endColumn: 20
+          endColumn: 20,
         },
         {
           ...message("carrot"),
           line: 8,
           column: 8,
           endLine: 8,
-          endColumn: 14
+          endColumn: 14,
         },
         {
           ...message("dill"),
           line: 9,
           column: 8,
           endLine: 9,
-          endColumn: 12
+          endColumn: 12,
         },
         {
           ...message("l"),
           line: 11,
           column: 13,
           endLine: 11,
-          endColumn: 14
+          endColumn: 14,
         },
         {
           ...message("letters"),
           line: 12,
           column: 8,
           endLine: 12,
-          endColumn: 15
+          endColumn: 15,
         },
         {
           ...message("L"),
           line: 13,
           column: 8,
           endLine: 13,
-          endColumn: 9
+          endColumn: 9,
         },
         {
           ...message("e"),
           line: 13,
           column: 13,
           endLine: 13,
-          endColumn: 14
-        }
-      ]
+          endColumn: 14,
+        },
+      ],
       // TODO:
       // output: stripIndent`
       //   // unused imports
@@ -858,16 +858,16 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           line: 2,
           column: 11,
           endLine: 2,
-          endColumn: 24
+          endColumn: 24,
         },
         {
           ...message("SomeType"),
           line: 3,
           column: 6,
           endLine: 3,
-          endColumn: 14
-        }
-      ]
+          endColumn: 14,
+        },
+      ],
       // TODO:
       // output: stripIndent`
       //   // unused types
@@ -888,29 +888,29 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           line: 2,
           column: 7,
           endLine: 2,
-          endColumn: 8
+          endColumn: 8,
         },
         {
           ...message("b"),
           line: 3,
           column: 5,
           endLine: 3,
-          endColumn: 6
+          endColumn: 6,
         },
         {
           ...message("c"),
           line: 4,
           column: 5,
           endLine: 4,
-          endColumn: 6
-        }
+          endColumn: 6,
+        },
       ],
       output: stripIndent`
         // unused variables
         const a = "a";
         let b = "b";
         var c = "c";
-      `
-    }
-  ]
+      `,
+    },
+  ],
 });
