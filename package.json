@@ -5,7 +5,7 @@
   },
   "dependencies": {
     "@phenomnomnominal/tsquery": "^4.0.0",
-    "eslint-etc": "^0.0.13",
+    "eslint-etc": "^0.0.14",
     "requireindex": "~1.2.0",
     "tslib": "^2.0.0",
     "tsutils": "^3.0.0",
@@ -51,7 +51,7 @@
   "name": "eslint-plugin-etc",
   "optionalDependencies": {},
   "peerDependencies": {
-    "eslint": "^5.0.0 || ^6.0.0",
+    "eslint": "^5.0.0 || ^6.0.0 || ^ 7.0.0",
     "typescript": "^3.0.0"
   },
   "private": false,

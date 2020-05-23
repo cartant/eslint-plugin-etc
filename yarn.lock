@@ -573,10 +573,10 @@ escape-string-regexp@1.0.5, escape-string-regexp@^1.0.5:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-eslint-etc@^0.0.13:
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/eslint-etc/-/eslint-etc-0.0.13.tgz#890c78cce0213038bf227ec24ccd352c3fee48b4"
-  integrity sha512-cvzMTJio5N32UuiMX8IZyM22Vz3h1kXugI5Jfu7XsSJ+pv8udnCiS8WjeC96goRi+d7x+2pfJxRwhiMxpEBlgA==
+eslint-etc@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/eslint-etc/-/eslint-etc-0.0.14.tgz#9e20dc6e6236d78c1f4fc1c4be6f47c24bc3c676"
+  integrity sha512-GlE9ezGRB/v8rXU3t659xNMcrlPMQL+G5zQnnv13hi7H14WWMkt9/EWIYPTGoZRDHSY2v1tqkIuS3k+m55Ldfg==
 
 eslint-scope@^5.0.0:
   version "5.0.0"
