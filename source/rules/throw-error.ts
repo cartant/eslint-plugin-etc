@@ -8,7 +8,7 @@ import {
   getLoc,
   getParent,
   getParserServices,
-  isCallExpression
+  isCallExpression,
 } from "eslint-etc";
 import * as es from "estree";
 import { couldBeType, isAny } from "tsutils-etc";
@@ -19,28 +19,28 @@ const rule: Rule.RuleModule = {
     docs: {
       category: "General",
       description: "Forbids throwing - or rejecting with - non-`Error` values.",
-      recommended: false
+      recommended: false,
     },
     fixable: null,
     messages: {
-      forbidden: "{{usage}} non-`Error` values is forbidden."
-    }
+      forbidden: "{{usage}} non-`Error` values is forbidden.",
+    },
   },
-  create: context => {
+  create: (context) => {
     const sourceCode = context.getSourceCode();
     const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
     const typeChecker = program.getTypeChecker();
 
-    const validateRejection = (node: es.CallExpression) => {
+    const checkRejection = (node: es.CallExpression) => {
       const {
-        arguments: [arg]
+        arguments: [arg],
       } = esTreeNodeToTSNodeMap.get(node) as ts.CallExpression;
       const argType = typeChecker.getTypeAtLocation(arg);
       if (!isAny(argType) && !couldBeType(argType, "Error")) {
         context.report({
           data: { usage: "Rejecting with" },
           loc: getLoc(arg),
-          messageId: "forbidden"
+          messageId: "forbidden",
         });
       }
     };
@@ -56,7 +56,7 @@ const rule: Rule.RuleModule = {
         if (!couldBeType(lhsType, /^Promise/)) {
           return;
         }
-        validateRejection(getParent(node) as es.CallExpression);
+        checkRejection(getParent(node) as es.CallExpression);
       },
       "NewExpression[callee.name='Promise'] > ArrowFunctionExpression, NewExpression[callee.name='Promise'] > FunctionExpression": (
         node: es.ArrowFunctionExpression | es.FunctionExpression
@@ -68,14 +68,14 @@ const rule: Rule.RuleModule = {
         const text = sourceCode.getText(param);
         const variable = context
           .getDeclaredVariables(node)
-          .find(variable => variable.name === text);
+          .find((variable) => variable.name === text);
         if (!variable) {
           return;
         }
         variable.references.forEach(({ identifier }) => {
           const parent = getParent(identifier);
           if (isCallExpression(parent) && identifier === parent.callee) {
-            validateRejection(parent);
+            checkRejection(parent);
           }
         });
       },
@@ -88,12 +88,12 @@ const rule: Rule.RuleModule = {
           context.report({
             data: { usage: "Throwing" },
             loc: getLoc(expression),
-            messageId: "forbidden"
+            messageId: "forbidden",
           });
         }
-      }
+      },
     };
-  }
+  },
 };
 
 export = rule;
