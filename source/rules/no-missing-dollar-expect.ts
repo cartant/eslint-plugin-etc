@@ -12,14 +12,14 @@ const rule: Rule.RuleModule = {
       category: "General",
       description:
         "Forbids dtslint `$ExpectType` and `$ExpectError` expectations if the `$` is missing.",
-      recommended: false
+      recommended: false,
     },
     fixable: null,
     messages: {
-      forbidden: "Missing $ in dtslint expectation."
-    }
+      forbidden: "Missing $ in dtslint expectation.",
+    },
   },
-  create: context => {
+  create: (context) => {
     const sourceCode = context.getSourceCode();
     return {
       Program: (node: es.Program) => {
@@ -27,20 +27,18 @@ const rule: Rule.RuleModule = {
         const regExp = /\/\/\s+Expect(Type|Error)/g;
         let result: RegExpExecArray;
 
-        /*tslint:disable:no-conditional-assignment*/
         while ((result = regExp.exec(text))) {
           context.report({
             messageId: "forbidden",
             loc: {
               start: sourceCode.getLocFromIndex(result.index),
-              end: sourceCode.getLocFromIndex(result.index + result[0].length)
-            }
+              end: sourceCode.getLocFromIndex(result.index + result[0].length),
+            },
           });
         }
-        /*tslint:enable:no-conditional-assignment*/
-      }
+      },
     };
-  }
+  },
 };
 
 export = rule;
