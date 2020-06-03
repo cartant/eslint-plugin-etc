@@ -24,9 +24,9 @@
     js-tokens "^4.0.0"
 
 "@cartant/eslint-config@^1.0.0-beta.1":
-  version "1.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@cartant/eslint-config/-/eslint-config-1.0.0-beta.6.tgz#883d030078a22805cee7aa98c8b84e8e39860fe1"
-  integrity sha512-v6u6ePqufwBjhn97+96Vh0YtsGYLYVQe3Ef+wyEIlmxuIXElsKiIqma5e/f31cNxbF9MOvs5+uY6sDsrnaG3yg==
+  version "1.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@cartant/eslint-config/-/eslint-config-1.0.0-beta.7.tgz#0dc91250819fde81172c28acc295dab73f8e4f21"
+  integrity sha512-ywdEF+DysAdg5N54QIOKNmeF4g7NpbFHuVoddw8Aqp4S+GdZeSDZs/TJ4FULHhcKw2mvG09AsRAJMeRHm4Gz0w==
 
 "@cartant/tslint-config-etc@^2.0.0":
   version "2.0.1"
