@@ -24,9 +24,9 @@
     js-tokens "^4.0.0"
 
 "@cartant/eslint-config@^1.0.0-beta.1":
-  version "1.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@cartant/eslint-config/-/eslint-config-1.0.0-beta.2.tgz#03db9c6da68f4d24f0ae8dc0e9692700bee48ca9"
-  integrity sha512-XK+hEa9kDj6QAvzfhItyPoHYAp7xNAVOzv3IVMqSHJ1JXjVVVIVZLl6A90g9UvC3FdCZQ7uSSq8ARiUKZ5gqYw==
+  version "1.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/@cartant/eslint-config/-/eslint-config-1.0.0-beta.6.tgz#883d030078a22805cee7aa98c8b84e8e39860fe1"
+  integrity sha512-v6u6ePqufwBjhn97+96Vh0YtsGYLYVQe3Ef+wyEIlmxuIXElsKiIqma5e/f31cNxbF9MOvs5+uY6sDsrnaG3yg==
 
 "@cartant/tslint-config-etc@^2.0.0":
   version "2.0.1"
@@ -99,6 +99,17 @@
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
+
+"@typescript-eslint/eslint-plugin@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-3.1.0.tgz#4ac00ecca3bbea740c577f1843bc54fa69c3def2"
+  integrity sha512-D52KwdgkjYc+fmTZKW7CZpH5ZBJREJKZXRrveMiRCmlzZ+Rw9wRVJ1JAmHQ9b/+Ehy1ZeaylofDB9wwXUt83wg==
+  dependencies:
+    "@typescript-eslint/experimental-utils" "3.1.0"
+    functional-red-black-tree "^1.0.1"
+    regexpp "^3.0.0"
+    semver "^7.3.2"
+    tsutils "^3.17.1"
 
 "@typescript-eslint/experimental-utils@3.1.0":
   version "3.1.0"
@@ -1722,7 +1733,7 @@ readdirp@~3.2.0:
   dependencies:
     picomatch "^2.0.4"
 
-regexpp@^3.1.0:
+regexpp@^3.0.0, regexpp@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/regexpp/-/regexpp-3.1.0.tgz#206d0ad0a5648cffbdb8ae46438f3dc51c9f78e2"
   integrity sha512-ZOIzd8yVsQQA7j8GCSlPGXwg5PfmA1mrq0JP4nGhh54LaKN3xdai/vHUDu74pKwV8OxseMS65u2NImosQcSD0Q==
