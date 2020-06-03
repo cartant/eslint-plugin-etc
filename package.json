@@ -13,7 +13,7 @@
   },
   "description": "More rules for ESLint",
   "devDependencies": {
-    "@cartant/eslint-config": "^1.0.0-beta.1",
+    "@cartant/eslint-config": "^1.0.0",
     "@types/common-tags": "^1.8.0",
     "@types/eslint": "^6.1.0",
     "@types/mocha": "^7.0.0",

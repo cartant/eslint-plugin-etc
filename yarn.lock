@@ -23,10 +23,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@cartant/eslint-config@^1.0.0-beta.1":
-  version "1.0.0-beta.7"
-  resolved "https://registry.yarnpkg.com/@cartant/eslint-config/-/eslint-config-1.0.0-beta.7.tgz#0dc91250819fde81172c28acc295dab73f8e4f21"
-  integrity sha512-ywdEF+DysAdg5N54QIOKNmeF4g7NpbFHuVoddw8Aqp4S+GdZeSDZs/TJ4FULHhcKw2mvG09AsRAJMeRHm4Gz0w==
+"@cartant/eslint-config@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@cartant/eslint-config/-/eslint-config-1.0.0.tgz#218b0a4ba3d8545dcbdd8001124a26f2ac05fb34"
+  integrity sha512-xi8NzS7AxY51TpEO1KhmQTMXA1RcK/GH2x86gxKLpLpOzP9SvsBHCQBJDQN32bAHYqF0wIkhqsfQcqY3CW9evw==
 
 "@phenomnomnominal/tsquery@^4.0.0":
   version "4.1.0"
