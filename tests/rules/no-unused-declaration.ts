@@ -330,6 +330,15 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         export { another };
       `,
     },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/tslint-etc/issues/7
+        import * as React from "react";
+        import { Foo } from "./foo";
+
+        export const foo = <Foo>foo</Foo>;
+      `,
+    },
   ],
   invalid: [
     fromFixture(
@@ -672,5 +681,13 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         `,
       }
     ),
+    // TODO:
+    // fromFixture(
+    //   stripIndent`
+    //     // no JSX
+    //     import * as React from "react";
+    //                 ~~~~~ [forbidden]
+    //   `
+    // ),
   ],
 });

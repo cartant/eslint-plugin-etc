@@ -15,24 +15,24 @@ const rule: Rule.RuleModule = {
     docs: {
       category: "General",
       description: "Forbids unused declarations.",
-      recommended: false
+      recommended: false,
     },
     fixable: null,
     messages: {
-      forbidden: `"{{name}}" is not used; unused declarations are forbidden.`
+      forbidden: `"{{name}}" is not used; unused declarations are forbidden.`,
     },
     schema: [
       {
         properties: {
           declarations: { type: "boolean" },
           ignored: { type: "object" },
-          imports: { type: "boolean" }
+          imports: { type: "boolean" },
         },
-        type: "object"
-      }
-    ]
+        type: "object",
+      },
+    ],
   },
-  create: context => {
+  create: (context) => {
     const [config = {}] = context.options;
     const { declarations = true, ignored = {}, imports = true } = config;
     const ignoredRegExps: RegExp[] = [];
@@ -41,7 +41,16 @@ const rule: Rule.RuleModule = {
         ignoredRegExps.push(new RegExp(key));
       }
     });
-    const { esTreeNodeToTSNodeMap } = getParserServices(context);
+    const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
+
+    const jsxFactory =
+      program.getCompilerOptions().jsxFactory || "React.createElement";
+    const index = jsxFactory.indexOf(".");
+    ignoredRegExps.push(
+      new RegExp(
+        `^${index === -1 ? jsxFactory : jsxFactory.substring(0, index)}$`
+      )
+    );
 
     const isAssignee = (identifier: es.Identifier) => {
       const parent = getParent(identifier);
@@ -131,7 +140,7 @@ const rule: Rule.RuleModule = {
       if (isExported(identifier)) {
         return false;
       }
-      if (ignoredRegExps.some(regExp => regExp.test(identifier.name))) {
+      if (ignoredRegExps.some((regExp) => regExp.test(identifier.name))) {
         return false;
       }
       if (isParameter(identifier)) {
@@ -157,10 +166,10 @@ const rule: Rule.RuleModule = {
       }
       if (!["class", "global"].includes(type)) {
         const { variables } = scope;
-        variables.forEach(variable => {
+        variables.forEach((variable) => {
           const { identifiers, name, references } = variable;
           if (identifiers.every(shouldCheckReferences)) {
-            const filtered = references.filter(reference => {
+            const filtered = references.filter((reference) => {
               const { identifier } = reference;
               return shouldCountReference(identifier);
             });
@@ -176,13 +185,13 @@ const rule: Rule.RuleModule = {
                 `JsxSelfClosingElement[tagName.text="${name}"]`,
                 `JsxSelfClosingElement[tagName.expression.text="${name}"]`,
                 `TypeReference[typeName.text="${name}"]`,
-                `TypeReference[typeName.left.text="${name}"]`
+                `TypeReference[typeName.left.text="${name}"]`,
               ].join(",")
             );
             if (nodes.length > 0) {
               return;
             }
-            identifiers.forEach(identifier => {
+            identifiers.forEach((identifier) => {
               const specifier = getImportSpecifier(identifier);
               if (specifier) {
                 // TODO:
@@ -194,7 +203,7 @@ const rule: Rule.RuleModule = {
               context.report({
                 data: { name: identifier.name },
                 messageId: "forbidden",
-                node: identifier
+                node: identifier,
               });
             });
           }
@@ -219,7 +228,7 @@ const rule: Rule.RuleModule = {
         context.report({
           data: { name: name.text },
           messageId: "forbidden",
-          node: node.id
+          node: node.id,
         });
       }
     };
@@ -227,9 +236,9 @@ const rule: Rule.RuleModule = {
     return {
       Program: () => check(context.getScope()),
       TSInterfaceDeclaration: checkTypeDeclaration,
-      TSTypeAliasDeclaration: checkTypeDeclaration
+      TSTypeAliasDeclaration: checkTypeDeclaration,
     };
-  }
+  },
 };
 
 export = rule;
