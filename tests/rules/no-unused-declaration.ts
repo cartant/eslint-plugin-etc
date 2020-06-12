@@ -339,6 +339,69 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         export const foo = <Foo>foo</Foo>;
       `,
     },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/tslint-etc/issues/8
+        function getList<T>(resource: string, urlParams: {}): Promise<{}> {
+        }
+        export default {
+          getList,
+        }
+      `,
+    },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/tslint-etc/issues/10
+        it('works', () => {
+          let count = 0;
+          const result = doSomething(() => count++);
+          expect(result).to.equal(0);
+        });
+
+        function doSomething(factory: Function) {
+          return factory();
+        }
+      `,
+    },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/tslint-etc/issues/13
+        import * as React from "react";
+
+        export const HeaderButton = (props: IHeaderButtonProps) => {
+          return (
+            <TouchableOpacity
+              {...props}
+            >
+              <RText
+                style={{
+                  color: props.disabled ? "gray" : "black",
+                  ...props.textStyle,
+                }}
+              >
+                {props.content}
+              </RText>
+            </TouchableOpacity>
+          );
+        };
+
+        HeaderButton.defaultProps = { disabled: false };
+      `,
+    },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/tslint-etc/issues/19
+        import bit, { bot, but } from "./bit";
+
+        const infoWrapper = {
+          bit,
+          bot,
+          but: but
+        };
+
+        export default infoWrapper;
+      `,
+    },
   ],
   invalid: [
     fromFixture(
