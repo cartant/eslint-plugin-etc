@@ -4,6 +4,7 @@
  */
 
 import { stripIndent } from "common-tags";
+import { fromFixture } from "eslint-etc";
 import rule = require("../../source/rules/no-unused-declaration");
 import { ruleTester } from "../utils";
 
@@ -314,8 +315,8 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
     },
   ],
   invalid: [
-    {
-      code: stripIndent`
+    fromFixture(
+      stripIndent`
         // only declarations
         import { a } from "./letters";
         import { a as alias } from "./letters";
@@ -324,319 +325,178 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         import L, { e } from "./letters";
 
         const x = "x";
+              ~ [forbidden]
         const [y] = ["y"];
+               ~ [forbidden]
         const { z } = { z: "z" };
+                ~ [forbidden]
       `,
-      errors: [
-        {
-          ...message("x"),
-          line: 8,
-          column: 7,
-          endLine: 8,
-          endColumn: 8,
-        },
-        {
-          ...message("y"),
-          line: 9,
-          column: 8,
-          endLine: 9,
-          endColumn: 9,
-        },
-        {
-          ...message("z"),
-          line: 10,
-          column: 9,
-          endLine: 10,
-          endColumn: 10,
-        },
-      ],
-      options: [
-        {
-          declarations: true,
-          imports: false,
-        },
-      ],
-      output: stripIndent`
-        // only declarations
-        import { a } from "./letters";
-        import { a as alias } from "./letters";
-        import * as l from "./letters";
-        import letters from "./letters";
-        import L, { e } from "./letters";
+      {},
+      {
+        options: [
+          {
+            declarations: true,
+            imports: false,
+          },
+        ],
+        output: stripIndent`
+          // only declarations
+          import { a } from "./letters";
+          import { a as alias } from "./letters";
+          import * as l from "./letters";
+          import letters from "./letters";
+          import L, { e } from "./letters";
 
-        const x = "x";
-        const [y] = ["y"];
-        const { z } = { z: "z" };
-      `,
-    },
-    {
-      code: stripIndent`
+          const x = "x";
+          const [y] = ["y"];
+          const { z } = { z: "z" };
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
         // only imports
         import { a } from "./letters";
+                 ~ [forbidden]
         import { a as alias } from "./letters";
+                      ~~~~~ [forbidden]
         import * as l from "./letters";
+                    ~ [forbidden]
         import letters from "./letters";
+               ~~~~~~~ [forbidden]
         import L, { e } from "./letters";
-
+               ~ [forbidden]
+                    ~ [forbidden]
         const x = "x";
         const [y] = ["y"];
         const { z } = { z: "z" };
       `,
-      errors: [
-        {
-          ...message("a"),
-          line: 2,
-          column: 10,
-          endLine: 2,
-          endColumn: 11,
-        },
-        {
-          ...message("alias"),
-          line: 3,
-          column: 15,
-          endLine: 3,
-          endColumn: 20,
-        },
-        {
-          ...message("l"),
-          line: 4,
-          column: 13,
-          endLine: 4,
-          endColumn: 14,
-        },
-        {
-          ...message("letters"),
-          line: 5,
-          column: 8,
-          endLine: 5,
-          endColumn: 15,
-        },
-        {
-          ...message("L"),
-          line: 6,
-          column: 8,
-          endLine: 6,
-          endColumn: 9,
-        },
-        {
-          ...message("e"),
-          line: 6,
-          column: 13,
-          endLine: 6,
-          endColumn: 14,
-        },
-      ],
-      options: [
-        {
-          declarations: false,
-          imports: true,
-        },
-      ],
-      // TODO:
-      // output: stripIndent`
-      //   // only imports
-      //   const x = "x";
-      //   const [y] = ["y"];
-      //   const { z } = { z: "z" };
-      // `
-    },
-    {
-      code: stripIndent`
+      {},
+      {
+        options: [
+          {
+            declarations: false,
+            imports: true,
+          },
+        ],
+        // TODO:
+        // output: stripIndent`
+        //   // only imports
+        //   const x = "x";
+        //   const [y] = ["y"];
+        //   const { z } = { z: "z" };
+        // `
+      }
+    ),
+    fromFixture(
+      stripIndent`
         // reassigned
         const a = "a";
         let b = "b";
+            ~ [forbidden]
         var c = "c";
+            ~ [forbidden]
 
         b = a;
         c = a;
       `,
-      errors: [
-        {
-          ...message("b"),
-          line: 3,
-          column: 5,
-          endLine: 3,
-          endColumn: 6,
-        },
-        {
-          ...message("c"),
-          line: 4,
-          column: 5,
-          endLine: 4,
-          endColumn: 6,
-        },
-      ],
-      output: stripIndent`
-        // reassigned
-        const a = "a";
-        let b = "b";
-        var c = "c";
+      {},
+      {
+        output: stripIndent`
+          // reassigned
+          const a = "a";
+          let b = "b";
+          var c = "c";
 
-        b = a;
-        c = a;
-      `,
-    },
-    {
-      code: stripIndent`
+          b = a;
+          c = a;
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
         // shadowed
         import { b } from "./letters";
+                 ~ [forbidden]
         const a = "a";
+              ~ [forbidden]
 
         export function f(a: string, b: string): void {
-            console.log(a, b);
+          console.log(a, b);
         }
       `,
-      errors: [
-        {
-          ...message("b"),
-          line: 2,
-          column: 10,
-          endLine: 2,
-          endColumn: 11,
-        },
-        {
-          ...message("a"),
-          line: 3,
-          column: 7,
-          endLine: 3,
-          endColumn: 8,
-        },
-      ],
-      // TODO:
-      // output: stripIndent`
-      //   // shadowed
-      //   const a = "a";
-
-      //   export function f(a: string, b: string): void {
-      //       console.log(a, b);
-      //   }
-      // `
-    },
-    {
-      code: stripIndent`
+      {},
+      {
+        // TODO:
+        // output: stripIndent`
+        //   // shadowed
+        //   const a = "a";
+        //
+        //   export function f(a: string, b: string): void {
+        //     console.log(a, b);
+        //   }
+        // `
+      }
+    ),
+    fromFixture(
+      stripIndent`
         // some used imports
         import { a, b, c } from "./letters";
+                 ~ [forbidden]
+                       ~ [forbidden]
         import {
           a as apple,
+               ~~~~~ [forbidden]
           b as banana,
           c as cherry
+               ~~~~~~ [forbidden]
         } from "./letters";
 
         import t, { d } from "./letters";
+                    ~ [forbidden]
         import u, { e as egg } from "./letters";
-
+                         ~~~ [forbidden]
         import v, { f } from "./letters";
+               ~ [forbidden]
+                    ~ [forbidden]
         import w, { g as grape } from "./letters";
-
+               ~ [forbidden]
+                         ~~~~~ [forbidden]
         console.log(b, banana, t, u);
       `,
-      errors: [
-        {
-          ...message("a"),
-          line: 2,
-          column: 10,
-          endLine: 2,
-          endColumn: 11,
-        },
-        {
-          ...message("c"),
-          line: 2,
-          column: 16,
-          endLine: 2,
-          endColumn: 17,
-        },
-        {
-          ...message("apple"),
-          line: 4,
-          column: 8,
-          endLine: 4,
-          endColumn: 13,
-        },
-        {
-          ...message("cherry"),
-          line: 6,
-          column: 8,
-          endLine: 6,
-          endColumn: 14,
-        },
-        {
-          ...message("d"),
-          line: 9,
-          column: 13,
-          endLine: 9,
-          endColumn: 14,
-        },
-        {
-          ...message("egg"),
-          line: 10,
-          column: 18,
-          endLine: 10,
-          endColumn: 21,
-        },
-        {
-          ...message("v"),
-          line: 12,
-          column: 8,
-          endLine: 12,
-          endColumn: 9,
-        },
-        {
-          ...message("f"),
-          line: 12,
-          column: 13,
-          endLine: 12,
-          endColumn: 14,
-        },
-        {
-          ...message("w"),
-          line: 13,
-          column: 8,
-          endLine: 13,
-          endColumn: 9,
-        },
-        {
-          ...message("grape"),
-          line: 13,
-          column: 18,
-          endLine: 13,
-          endColumn: 23,
-        },
-      ],
-      // TODO:
-      // output: stripIndent`
-      //   // some used imports
-      //   import { b } from "./letters";
-      //   import {
-      //     b as banana
-      //   } from "./letters";
-
-      //   import t from "./letters";
-      //   import u from "./letters";
-
-      //   console.log(b, banana, t, u);
-      // `
-    },
-    {
-      code: stripIndent`
+      {},
+      {
+        // TODO:
+        // output: stripIndent`
+        //   // some used imports
+        //   import { b } from "./letters";
+        //   import {
+        //     b as banana
+        //   } from "./letters";
+        //
+        //   import t from "./letters";
+        //   import u from "./letters";
+        //
+        //   console.log(b, banana, t, u);
+        // `
+      }
+    ),
+    fromFixture(
+      stripIndent`
         // unused classes
         class Person {}
+              ~~~~~~ [forbidden]
       `,
-      errors: [
-        {
-          ...message("Person"),
-          line: 2,
-          column: 7,
-          endLine: 2,
-          endColumn: 13,
-        },
-      ],
-      output: stripIndent`
-        // unused classes
-        class Person {}
-      `,
-    },
-    {
-      code: stripIndent`
+      {},
+      {
+        output: stripIndent`
+          // unused classes
+          class Person {}
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
         // unused destructuring
         const instance = { property: 42 };
         const array = [54];
@@ -644,8 +504,11 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         console.log(instance, array);
 
         const { property } = instance;
+                ~~~~~~~~ [forbidden]
         const { property: renamed } = instance;
+                          ~~~~~~~ [forbidden]
         const [element] = array;
+               ~~~~~~~ [forbidden]
 
         function f({ name }: { name?: string }): void {}
         function g({ name: renamed }: { name?: string }): void {}
@@ -653,280 +516,144 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         console.log(f.toString(), g.toString());
 
         const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
+                   ~ [forbidden]
+                         ~~~~ [forbidden]
 
         console.log(a);
       `,
-      errors: [
-        {
-          ...message("property"),
-          line: 7,
-          column: 9,
-          endLine: 7,
-          endColumn: 17,
-        },
-        {
-          ...message("renamed"),
-          line: 8,
-          column: 19,
-          endLine: 8,
-          endColumn: 26,
-        },
-        {
-          ...message("element"),
-          line: 9,
-          column: 8,
-          endLine: 9,
-          endColumn: 15,
-        },
-        {
-          ...message("b"),
-          line: 16,
-          column: 12,
-          endLine: 16,
-          endColumn: 13,
-        },
-        {
-          ...message("rest"),
-          line: 16,
-          column: 18,
-          endLine: 16,
-          endColumn: 22,
-        },
-      ],
-      output: stripIndent`
-        // unused destructuring
-        const instance = { property: 42 };
-        const array = [54];
+      {},
+      {
+        output: stripIndent`
+          // unused destructuring
+          const instance = { property: 42 };
+          const array = [54];
 
-        console.log(instance, array);
+          console.log(instance, array);
 
-        const { property } = instance;
-        const { property: renamed } = instance;
-        const [element] = array;
+          const { property } = instance;
+          const { property: renamed } = instance;
+          const [element] = array;
 
-        function f({ name }: { name?: string }): void {}
-        function g({ name: renamed }: { name?: string }): void {}
+          function f({ name }: { name?: string }): void {}
+          function g({ name: renamed }: { name?: string }): void {}
 
-        console.log(f.toString(), g.toString());
+          console.log(f.toString(), g.toString());
 
-        const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
+          const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
 
-        console.log(a);
-      `,
-    },
-    {
-      code: stripIndent`
+          console.log(a);
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
         // unused enums
         enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
+             ~~~ [forbidden]
       `,
-      errors: [
-        {
-          ...message("WTF"),
-          line: 2,
-          column: 6,
-          endLine: 2,
-          endColumn: 9,
-        },
-      ],
-      output: stripIndent`
-        // unused enums
-        enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
-      `,
-    },
-    {
-      code: stripIndent`
+      {},
+      {
+        output: stripIndent`
+          // unused enums
+          enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
         // unused functions
         function f(): void {}
+                 ~ [forbidden]
         const g = () => {};
+              ~ [forbidden]
       `,
-      errors: [
-        {
-          ...message("f"),
-          line: 2,
-          column: 10,
-          endLine: 2,
-          endColumn: 11,
-        },
-        {
-          ...message("g"),
-          line: 3,
-          column: 7,
-          endLine: 3,
-          endColumn: 8,
-        },
-      ],
-      output: stripIndent`
-        // unused functions
-        function f(): void {}
-        const g = () => {};
-      `,
-    },
-    {
-      code: stripIndent`
+      {},
+      {
+        output: stripIndent`
+          // unused functions
+          function f(): void {}
+          const g = () => {};
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
         // unused imports
         import { a } from "./letters";
+                 ~ [forbidden]
         import { b } from "./letters";
         import { c, d } from "./letters";
+                 ~ [forbidden]
+                    ~ [forbidden]
         import { a as anise } from "./letters";
+                      ~~~~~ [forbidden]
         import { b as basil } from "./letters";
         import {
           c as carrot,
+               ~~~~~~ [forbidden]
           d as dill
+               ~~~~ [forbidden]
         } from "./letters";
         import * as l from "./letters";
+                    ~ [forbidden]
         import letters from "./letters";
+               ~~~~~~~ [forbidden]
         import L, { e } from "./letters";
+               ~ [forbidden]
+                    ~ [forbidden]
 
         console.log(b, basil);
         console.log("the end");
       `,
-      errors: [
-        {
-          ...message("a"),
-          line: 2,
-          column: 10,
-          endLine: 2,
-          endColumn: 11,
-        },
-        {
-          ...message("c"),
-          line: 4,
-          column: 10,
-          endLine: 4,
-          endColumn: 11,
-        },
-        {
-          ...message("d"),
-          line: 4,
-          column: 13,
-          endLine: 4,
-          endColumn: 14,
-        },
-        {
-          ...message("anise"),
-          line: 5,
-          column: 15,
-          endLine: 5,
-          endColumn: 20,
-        },
-        {
-          ...message("carrot"),
-          line: 8,
-          column: 8,
-          endLine: 8,
-          endColumn: 14,
-        },
-        {
-          ...message("dill"),
-          line: 9,
-          column: 8,
-          endLine: 9,
-          endColumn: 12,
-        },
-        {
-          ...message("l"),
-          line: 11,
-          column: 13,
-          endLine: 11,
-          endColumn: 14,
-        },
-        {
-          ...message("letters"),
-          line: 12,
-          column: 8,
-          endLine: 12,
-          endColumn: 15,
-        },
-        {
-          ...message("L"),
-          line: 13,
-          column: 8,
-          endLine: 13,
-          endColumn: 9,
-        },
-        {
-          ...message("e"),
-          line: 13,
-          column: 13,
-          endLine: 13,
-          endColumn: 14,
-        },
-      ],
-      // TODO:
-      // output: stripIndent`
-      //   // unused imports
-      //   import { b } from "./letters";
-      //   import { b as basil } from "./letters";
-
-      //   console.log(b, basil);
-      //   console.log("the end");
-      // `
-    },
-    {
-      code: stripIndent`
+      {},
+      {
+        // TODO:
+        // output: stripIndent`
+        //   // unused imports
+        //   import { b } from "./letters";
+        //   import { b as basil } from "./letters";
+        //
+        //   console.log(b, basil);
+        //   console.log("the end");
+        // `
+      }
+    ),
+    fromFixture(
+      stripIndent`
         // unused types
         interface SomeInterface {}
+                  ~~~~~~~~~~~~~ [forbidden]
         type SomeType = {};
+             ~~~~~~~~ [forbidden]
       `,
-      errors: [
-        {
-          ...message("SomeInterface"),
-          line: 2,
-          column: 11,
-          endLine: 2,
-          endColumn: 24,
-        },
-        {
-          ...message("SomeType"),
-          line: 3,
-          column: 6,
-          endLine: 3,
-          endColumn: 14,
-        },
-      ],
-      // TODO:
-      // output: stripIndent`
-      //   // unused types
-      //   interface SomeInterface {}
-      //   type SomeType = {};
-      // `
-    },
-    {
-      code: stripIndent`
+      {},
+      {
+        output: stripIndent`
+          // unused types
+          interface SomeInterface {}
+          type SomeType = {};
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
         // unused variables
         const a = "a";
+              ~ [forbidden]
         let b = "b";
+            ~ [forbidden]
         var c = "c";
+            ~ [forbidden]
       `,
-      errors: [
-        {
-          ...message("a"),
-          line: 2,
-          column: 7,
-          endLine: 2,
-          endColumn: 8,
-        },
-        {
-          ...message("b"),
-          line: 3,
-          column: 5,
-          endLine: 3,
-          endColumn: 6,
-        },
-        {
-          ...message("c"),
-          line: 4,
-          column: 5,
-          endLine: 4,
-          endColumn: 6,
-        },
-      ],
-      output: stripIndent`
-        // unused variables
-        const a = "a";
-        let b = "b";
-        var c = "c";
-      `,
-    },
+      {},
+      {
+        output: stripIndent`
+          // unused variables
+          const a = "a";
+          let b = "b";
+          var c = "c";
+        `,
+      }
+    ),
   ],
 });

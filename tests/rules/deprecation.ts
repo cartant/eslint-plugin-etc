@@ -4,16 +4,9 @@
  */
 
 import { stripIndent } from "common-tags";
+import { fromFixture } from "eslint-etc";
 import rule = require("../../source/rules/deprecation");
 import { ruleTester } from "../utils";
-
-const message = (name: string) => ({
-  messageId: "forbidden",
-  data: {
-    comment: "Don't use this",
-    name,
-  },
-});
 
 ruleTester({ comments: true, types: true }).run("deprecation", rule, {
   valid: [
@@ -157,360 +150,182 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     },
   ],
   invalid: [
-    {
-      code: stripIndent`
+    fromFixture(
+      stripIndent`
         // Deprecated interface
         import { DeprecatedInterface } from "./modules/deprecation";
         let a: DeprecatedInterface;
-      `,
-      errors: [
-        {
-          ...message("DeprecatedInterface"),
-          line: 3,
-          column: 8,
-          endLine: 3,
-          endColumn: 27,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+               ~~~~~~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Multiple uses
         import { DeprecatedInterface } from "./modules/deprecation";
         let a: DeprecatedInterface;
+               ~~~~~~~~~~~~~~~~~~~ [forbidden]
         let b: DeprecatedInterface;
-      `,
-      errors: [
-        {
-          ...message("DeprecatedInterface"),
-          line: 3,
-          column: 8,
-          endLine: 3,
-          endColumn: 27,
-        },
-        {
-          ...message("DeprecatedInterface"),
-          line: 4,
-          column: 8,
-          endLine: 4,
-          endColumn: 27,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+               ~~~~~~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Deprecated type
         import { DeprecatedType } from "./modules/deprecation";
         let a: DeprecatedType;
-      `,
-      errors: [
-        {
-          ...message("DeprecatedType"),
-          line: 3,
-          column: 8,
-          endLine: 3,
-          endColumn: 22,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+               ~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Deprecated class
         import { DeprecatedClass } from "./modules/deprecation";
         let a: DeprecatedClass;
-      `,
-      errors: [
-        {
-          ...message("DeprecatedClass"),
-          line: 3,
-          column: 8,
-          endLine: 3,
-          endColumn: 23,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
-        // Deprecated class
+               ~~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
+        // Deprecated class with new
         import { DeprecatedClass } from "./modules/deprecation";
         let a = new DeprecatedClass();
-      `,
-      errors: [
-        {
-          ...message("DeprecatedClass"),
-          line: 3,
-          column: 13,
-          endLine: 3,
-          endColumn: 28,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+                    ~~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Deprecated enum
         import { DeprecatedEnum } from "./modules/deprecation";
         let a: DeprecatedEnum;
-      `,
-      errors: [
-        {
-          ...message("DeprecatedEnum"),
-          line: 3,
-          column: 8,
-          endLine: 3,
-          endColumn: 22,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+               ~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Deprecated variable
         import { deprecatedVariable } from "./modules/deprecation";
         let a = deprecatedVariable;
-      `,
-      errors: [
-        {
-          ...message("deprecatedVariable"),
-          line: 3,
-          column: 9,
-          endLine: 3,
-          endColumn: 27,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+                ~~~~~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Deprecated function
         import { deprecatedFunction } from "./modules/deprecation";
         deprecatedFunction();
-      `,
-      errors: [
-        {
-          ...message("deprecatedFunction"),
-          line: 3,
-          column: 1,
-          endLine: 3,
-          endColumn: 19,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+        ~~~~~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Some deprecated interface
         import { SomeDeprecatedInterface } from "./modules/deprecation";
         let a: SomeDeprecatedInterface;
         console.log(a.deprecatedProperty);
+                      ~~~~~~~~~~~~~~~~~~ [forbidden]
         a.deprecatedMethod();
-      `,
-      errors: [
-        {
-          ...message("deprecatedProperty"),
-          line: 4,
-          column: 15,
-          endLine: 4,
-          endColumn: 33,
-        },
-        {
-          ...message("deprecatedMethod"),
-          line: 5,
-          column: 3,
-          endLine: 5,
-          endColumn: 19,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+          ~~~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Some deprecated type
         import { SomeDeprecatedType } from "./modules/deprecation";
         let a: SomeDeprecatedType;
         console.log(a.deprecatedProperty);
+                      ~~~~~~~~~~~~~~~~~~ [forbidden]
         a.deprecatedMethod();
-      `,
-      errors: [
-        {
-          ...message("deprecatedProperty"),
-          line: 4,
-          column: 15,
-          endLine: 4,
-          endColumn: 33,
-        },
-        {
-          ...message("deprecatedMethod"),
-          line: 5,
-          column: 3,
-          endLine: 5,
-          endColumn: 19,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+          ~~~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Some deprecated class
         import { SomeDeprecatedClass } from "./modules/deprecation";
         SomeDeprecatedClass.deprecatedStaticMethod();
+                            ~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
         let a: SomeDeprecatedClass;
         console.log(a.deprecatedProperty);
+                      ~~~~~~~~~~~~~~~~~~ [forbidden]
         console.log(a.deprecatedGetter);
+                      ~~~~~~~~~~~~~~~~ [forbidden]
         a.deprecatedSetter = "42";
+          ~~~~~~~~~~~~~~~~ [forbidden]
         a.deprecatedMethod();
-      `,
-      errors: [
-        {
-          ...message("deprecatedStaticMethod"),
-          line: 3,
-          column: 21,
-          endLine: 3,
-          endColumn: 43,
-        },
-        {
-          ...message("deprecatedProperty"),
-          line: 5,
-          column: 15,
-          endLine: 5,
-          endColumn: 33,
-        },
-        {
-          ...message("deprecatedGetter"),
-          line: 6,
-          column: 15,
-          endLine: 6,
-          endColumn: 31,
-        },
-        {
-          ...message("deprecatedSetter"),
-          line: 7,
-          column: 3,
-          endLine: 7,
-          endColumn: 19,
-        },
-        {
-          ...message("deprecatedMethod"),
-          line: 8,
-          column: 3,
-          endLine: 8,
-          endColumn: 19,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+          ~~~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Some deprecated enum
         import { SomeDeprecatedEnum } from "./modules/deprecation";
         let a: SomeDeprecatedEnum;
         a = SomeDeprecatedEnum.DeprecatedMember;
-      `,
-      errors: [
-        {
-          ...message("DeprecatedMember"),
-          line: 4,
-          column: 24,
-          endLine: 4,
-          endColumn: 40,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+                               ~~~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Some signatures deprecated class
         import { DeprecatedSignatureClass } from "./modules/deprecation";
         DeprecatedSignatureClass.deprecatedSignatureStaticMethod("42");
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
         let a: DeprecatedSignatureClass;
         a.deprecatedSignatureMethod("42");
-      `,
-      errors: [
-        {
-          ...message("deprecatedSignatureStaticMethod"),
-          line: 3,
-          column: 26,
-          endLine: 3,
-          endColumn: 57,
-        },
-        {
-          ...message("deprecatedSignatureMethod"),
-          line: 5,
-          column: 3,
-          endLine: 5,
-          endColumn: 28,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+          ~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Some signatures deprecated function
         import { deprecatedSignatureFunction } from "./modules/deprecation";
         deprecatedSignatureFunction("42");
-      `,
-      errors: [
-        {
-          ...message("deprecatedSignatureFunction"),
-          line: 3,
-          column: 1,
-          endLine: 3,
-          endColumn: 28,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Deprecated constructor
         import { DeprecatedConstructorSignatureClass } from "./modules/deprecation";
         let a = new DeprecatedConstructorSignatureClass("42");
-      `,
-      errors: [
-        {
-          ...message("DeprecatedConstructorSignatureClass"),
-          line: 3,
-          column: 13,
-          endLine: 3,
-          endColumn: 48,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // Not ignored name
         import { DeprecatedInterface } from "./modules/deprecation";
         let a: DeprecatedInterface;
+               ~~~~~~~~~~~~~~~~~~~ [forbidden]
       `,
-      errors: [
-        {
-          ...message("DeprecatedInterface"),
-          line: 3,
-          column: 8,
-          endLine: 3,
-          endColumn: 27,
-        },
-      ],
-      options: [
-        {
-          ignored: {
-            "^Foo$": "name",
+      {},
+      {
+        options: [
+          {
+            ignored: {
+              "^Foo$": "name",
+            },
           },
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+        ],
+      }
+    ),
+    fromFixture(
+      stripIndent`
         // Not ignored path
         import { DeprecatedInterface } from "./modules/deprecation";
         let a: DeprecatedInterface;
+               ~~~~~~~~~~~~~~~~~~~ [forbidden]
       `,
-      errors: [
-        {
-          ...message("DeprecatedInterface"),
-          line: 3,
-          column: 8,
-          endLine: 3,
-          endColumn: 27,
-        },
-      ],
-      options: [
-        {
-          ignored: {
-            "modules/foo": "path",
+      {},
+      {
+        options: [
+          {
+            ignored: {
+              "modules/foo": "path",
+            },
           },
-        },
-      ],
-    },
+        ],
+      }
+    ),
   ],
 });

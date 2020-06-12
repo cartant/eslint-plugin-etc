@@ -4,6 +4,7 @@
  */
 
 import { stripIndent } from "common-tags";
+import { fromFixture } from "eslint-etc";
 import rule = require("../../source/rules/no-missing-dollar-expect");
 import { ruleTester } from "../utils";
 
@@ -18,28 +19,14 @@ ruleTester({ types: true }).run("no-missing-dollar-expect", rule, {
     },
   ],
   invalid: [
-    {
-      code: stripIndent`
+    fromFixture(
+      stripIndent`
         // Expectations without $
         const a = "a"; // ExpectType string
+                       ~~~~~~~~~~~~~ [forbidden]
         const b: number = "b"; // ExpectError
-      `,
-      errors: [
-        {
-          messageId: "forbidden",
-          line: 2,
-          column: 16,
-          endLine: 2,
-          endColumn: 29,
-        },
-        {
-          messageId: "forbidden",
-          line: 3,
-          column: 24,
-          endLine: 3,
-          endColumn: 38,
-        },
-      ],
-    },
+                               ~~~~~~~~~~~~~~ [forbidden]
+      `
+    ),
   ],
 });

@@ -3,6 +3,8 @@
  * can be found in the LICENSE file at https://github.com/cartant/eslint-plugin-etc
  */
 
+import { stripIndent } from "common-tags";
+import { fromFixture } from "eslint-etc";
 import rule = require("../../source/rules/ban-imports");
 import { ruleTester } from "../utils";
 
@@ -26,23 +28,21 @@ ruleTester({ types: false }).run("ban-imports", rule, {
     },
   ],
   invalid: [
-    {
-      code: `import { a } from "a";`,
-      options,
-      errors: [
-        {
-          messageId: "forbidden",
-        },
-      ],
-    },
-    {
-      code: `import { c } from "./c";`,
-      options,
-      errors: [
-        {
-          messageId: "forbidden",
-        },
-      ],
-    },
+    fromFixture(
+      stripIndent`
+        import { a } from "a";
+        ~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+      `,
+      {},
+      { options }
+    ),
+    fromFixture(
+      stripIndent`
+        import { c } from "./c";
+        ~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+      `,
+      {},
+      { options }
+    ),
   ],
 });

@@ -4,6 +4,7 @@
  */
 
 import { stripIndent } from "common-tags";
+import { fromFixture } from "eslint-etc";
 import rule = require("../../source/rules/throw-error");
 import { ruleTester } from "../utils";
 
@@ -60,13 +61,14 @@ ruleTester({ types: true }).run("throw-error", rule, {
     },
   ],
   invalid: [
-    {
-      code: stripIndent`
+    fromFixture(
+      stripIndent`
         // throwing non-errors
         export const a = () => { throw "kaboom"; };
-
+                                       ~~~~~~~~ [forbidden]
         try {
           throw "kaboom";
+                ~~~~~~~~ [forbidden]
         } catch (error: any) {
           throw error;
         }
@@ -74,68 +76,20 @@ ruleTester({ types: true }).run("throw-error", rule, {
         function b(error: any): never {
           throw error;
         }
-      `,
-      errors: [
-        {
-          messageId: "forbidden",
-          data: { usage: "Throwing" },
-          line: 2,
-          column: 32,
-          endLine: 2,
-          endColumn: 40,
-        },
-        {
-          messageId: "forbidden",
-          data: { usage: "Throwing" },
-          line: 5,
-          column: 9,
-          endLine: 5,
-          endColumn: 17,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // rejecting non-errors
         export const a = Promise.reject("kaboom");
+                                        ~~~~~~~~ [forbidden]
         export const b = new Promise((resolve, reject) => reject("kaboom"));
+                                                                 ~~~~~~~~ [forbidden]
         export const c = new Promise(function (resolve, reject) { reject("kaboom"); });
+                                                                         ~~~~~~~~ [forbidden]
         export const d = new Promise(function func(resolve, reject) { reject("kaboom"); });
-      `,
-      errors: [
-        {
-          messageId: "forbidden",
-          data: { usage: "Rejecting with" },
-          line: 2,
-          column: 33,
-          endLine: 2,
-          endColumn: 41,
-        },
-        {
-          messageId: "forbidden",
-          data: { usage: "Rejecting with" },
-          line: 3,
-          column: 58,
-          endLine: 3,
-          endColumn: 66,
-        },
-        {
-          messageId: "forbidden",
-          data: { usage: "Rejecting with" },
-          line: 4,
-          column: 66,
-          endLine: 4,
-          endColumn: 74,
-        },
-        {
-          messageId: "forbidden",
-          data: { usage: "Rejecting with" },
-          line: 5,
-          column: 70,
-          endLine: 5,
-          endColumn: 78,
-        },
-      ],
-    },
+                                                                             ~~~~~~~~ [forbidden]
+      `
+    ),
   ],
 });

@@ -4,6 +4,7 @@
  */
 
 import { stripIndent } from "common-tags";
+import { fromFixture } from "eslint-etc";
 import rule = require("../../source/rules/no-assign-mutated-array");
 import { ruleTester } from "../utils";
 
@@ -150,260 +151,104 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
     },
   ],
   invalid: [
-    {
-      code: stripIndent`
+    fromFixture(
+      stripIndent`
         // mutated variable initialization
         const a = [0, 1, 2, 3];
         const b = a.fill(0);
+                    ~~~~ [forbidden]
         const c = a.reverse();
+                    ~~~~~~~ [forbidden]
         const d = a.sort((x, y) => x - y);
+                    ~~~~ [forbidden]
         const e = a.splice(0, 1);
-      `,
-      errors: [
-        {
-          messageId: "forbidden",
-          line: 3,
-          column: 13,
-          endLine: 3,
-          endColumn: 17,
-        },
-        {
-          messageId: "forbidden",
-          line: 4,
-          column: 13,
-          endLine: 4,
-          endColumn: 20,
-        },
-        {
-          messageId: "forbidden",
-          line: 5,
-          column: 13,
-          endLine: 5,
-          endColumn: 17,
-        },
-        {
-          messageId: "forbidden",
-          line: 6,
-          column: 13,
-          endLine: 6,
-          endColumn: 19,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+                    ~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // mutated variable assignment
         const a = [0, 1, 2, 3];
         let b;
         b = a.fill(0);
+              ~~~~ [forbidden]
         b = a.reverse();
+              ~~~~~~~ [forbidden]
         b = a.sort((x, y) => x - y);
+              ~~~~ [forbidden]
         b = a.splice(0, 1);
-      `,
-      errors: [
-        {
-          messageId: "forbidden",
-          line: 4,
-          column: 7,
-          endLine: 4,
-          endColumn: 11,
-        },
-        {
-          messageId: "forbidden",
-          line: 5,
-          column: 7,
-          endLine: 5,
-          endColumn: 14,
-        },
-        {
-          messageId: "forbidden",
-          line: 6,
-          column: 7,
-          endLine: 6,
-          endColumn: 11,
-        },
-        {
-          messageId: "forbidden",
-          line: 7,
-          column: 7,
-          endLine: 7,
-          endColumn: 13,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+              ~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // mutated property initialization
         const a = [0, 1, 2, 3];
         const b = {
           a: a.fill(0),
+               ~~~~ [forbidden]
           b: a.reverse(),
+               ~~~~~~~ [forbidden]
           c: a.sort((x, y) => x - y),
+               ~~~~ [forbidden]
           d: a.splice(0, 1)
+               ~~~~~~ [forbidden]
         };
-      `,
-      errors: [
-        {
-          messageId: "forbidden",
-          line: 4,
-          column: 8,
-          endLine: 4,
-          endColumn: 12,
-        },
-        {
-          messageId: "forbidden",
-          line: 5,
-          column: 8,
-          endLine: 5,
-          endColumn: 15,
-        },
-        {
-          messageId: "forbidden",
-          line: 6,
-          column: 8,
-          endLine: 6,
-          endColumn: 12,
-        },
-        {
-          messageId: "forbidden",
-          line: 7,
-          column: 8,
-          endLine: 7,
-          endColumn: 14,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // mutated array initialization
         const a = [0, 1, 2, 3];
         const b = [
           a.fill(0),
+            ~~~~ [forbidden]
           a.reverse(),
+            ~~~~~~~ [forbidden]
           a.sort((x, y) => x - y),
+            ~~~~ [forbidden]
           a.splice(0, 1)
+            ~~~~~~ [forbidden]
         ];
-      `,
-      errors: [
-        {
-          messageId: "forbidden",
-          line: 4,
-          column: 5,
-          endLine: 4,
-          endColumn: 9,
-        },
-        {
-          messageId: "forbidden",
-          line: 5,
-          column: 5,
-          endLine: 5,
-          endColumn: 12,
-        },
-        {
-          messageId: "forbidden",
-          line: 6,
-          column: 5,
-          endLine: 6,
-          endColumn: 9,
-        },
-        {
-          messageId: "forbidden",
-          line: 7,
-          column: 5,
-          endLine: 7,
-          endColumn: 11,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // mutated function arguments
         const a = [0, 1, 2, 3];
         function n(p: number[]): void {}
         n(a.fill(0));
+            ~~~~ [forbidden]
         n(a.reverse());
+            ~~~~~~~ [forbidden]
         n(a.sort((x, y) => x - y));
+            ~~~~ [forbidden]
         n(a.splice(0, 1));
-      `,
-      errors: [
-        {
-          messageId: "forbidden",
-          line: 4,
-          column: 5,
-          endLine: 4,
-          endColumn: 9,
-        },
-        {
-          messageId: "forbidden",
-          line: 5,
-          column: 5,
-          endLine: 5,
-          endColumn: 12,
-        },
-        {
-          messageId: "forbidden",
-          line: 6,
-          column: 5,
-          endLine: 6,
-          endColumn: 9,
-        },
-        {
-          messageId: "forbidden",
-          line: 7,
-          column: 5,
-          endLine: 7,
-          endColumn: 11,
-        },
-      ],
-    },
-    {
-      code: stripIndent`
+            ~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // mutated constructor arguments
         const a = [0, 1, 2, 3];
         class Thing { contructor(p: number[]) {} }
         let t = new Thing(
           a.fill(0)
+            ~~~~ [forbidden]
         );
         t = new Thing(
           a.reverse()
+            ~~~~~~~ [forbidden]
         );
         t = new Thing(
           a.sort((x, y) => x - y)
+            ~~~~ [forbidden]
         );
         t = new Thing(
           a.splice(0, 1)
+            ~~~~~~ [forbidden]
         );
-      `,
-      errors: [
-        {
-          messageId: "forbidden",
-          line: 5,
-          column: 5,
-          endLine: 5,
-          endColumn: 9,
-        },
-        {
-          messageId: "forbidden",
-          line: 8,
-          column: 5,
-          endLine: 8,
-          endColumn: 12,
-        },
-        {
-          messageId: "forbidden",
-          line: 11,
-          column: 5,
-          endLine: 11,
-          endColumn: 9,
-        },
-        {
-          messageId: "forbidden",
-          line: 14,
-          column: 5,
-          endLine: 14,
-          endColumn: 11,
-        },
-      ],
-    },
+      `
+    ),
   ],
 });
