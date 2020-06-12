@@ -313,6 +313,23 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         }
       `,
     },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/tslint-etc/issues/3
+        export const h = hoisted();
+        function hoisted(): number { return 42; }
+      `,
+    },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/tslint-etc/issues/6
+        import { other } from "./other";
+        export { other };
+
+        const another = "another";
+        export { another };
+      `,
+    },
   ],
   invalid: [
     fromFixture(
