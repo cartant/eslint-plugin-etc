@@ -5,7 +5,7 @@
   },
   "dependencies": {
     "@phenomnomnominal/tsquery": "^4.0.0",
-    "eslint-etc": "^0.0.14",
+    "eslint-etc": "^0.0.17",
     "requireindex": "~1.2.0",
     "tslib": "^2.0.0",
     "tsutils": "^3.0.0",
