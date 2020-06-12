@@ -752,5 +752,179 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
     //                 ~~~~~ [forbidden]
     //   `
     // ),
+    fromFixture(
+      stripIndent`
+        // https://github.com/cartant/tslint-etc/issues/15 (1)
+        import * as dotenv from "dotenv";
+        import * as Hapi from "hapi";
+        import * as path from "path";
+        dotenv.config({ path: path.join(__dirname, "../.env") });
+        import { ResetTemplateCache } from "./getTemplate";
+                 ~~~~~~~~~~~~~~~~~~ [forbidden]
+        import {
+        RequestMethod,
+        ~~~~~~~~~~~~~ [forbidden]
+        sendAsanaRequest,
+        ~~~~~~~~~~~~~~~~ [forbidden]
+        } from "./sendAsanaRequest";
+        import "./arrayIncludesShim";
+        import { startAsanaTimer } from "./startAsanaTimer";
+                 ~~~~~~~~~~~~~~~ [forbidden]
+        const server = new Hapi.Server();
+              ~~~~~~ [forbidden]
+      `,
+      {},
+      {
+        // TODO:
+        // output: stripIndent`
+        //   // https://github.com/cartant/tslint-etc/issues/15 (1)
+        //   import * as dotenv from "dotenv";
+        //   import * as Hapi from "hapi";
+        //   import * as path from "path";
+        //   dotenv.config({ path: path.join(__dirname, "../.env") });
+        //   import "./arrayIncludesShim";
+        //   const server = new Hapi.Server();
+        // `
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        // https://github.com/cartant/tslint-etc/issues/15 (2)
+        import * as dotenv from "dotenv";
+        import * as Hapi from "hapi";
+        import * as path from "path";
+        dotenv.config({ path: path.join(__dirname, "../.env") });
+        import {
+        ResetTemplateCache,
+        ~~~~~~~~~~~~~~~~~~ [forbidden]
+        } from "./getTemplate";
+        import {
+        hasActiveRequest,
+        ~~~~~~~~~~~~~~~~ [forbidden]
+        RequestMethod,
+        ~~~~~~~~~~~~~ [forbidden]
+        sendAsanaRequest,
+        ~~~~~~~~~~~~~~~~ [forbidden]
+        } from "./sendAsanaRequest";
+        import "./arrayIncludesShim";
+        import { startAsanaTimer } from "./startAsanaTimer";
+                 ~~~~~~~~~~~~~~~ [forbidden]
+        const server = new Hapi.Server();
+              ~~~~~~ [forbidden]
+      `,
+      {},
+      {
+        // TODO:
+        // output: stripIndent`
+        //   // https://github.com/cartant/tslint-etc/issues/15 (2)
+        //   import * as dotenv from "dotenv";
+        //   import * as Hapi from "hapi";
+        //   import * as path from "path";
+        //   dotenv.config({ path: path.join(__dirname, "../.env") });
+        //   import "./arrayIncludesShim";
+        //   const server = new Hapi.Server();
+        // `
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        // https://github.com/cartant/tslint-etc/issues/15 (3)
+        import * as dotenv from "dotenv";
+        import * as Hapi from "hapi";
+        import * as path from "path";
+        dotenv.config({ path: path.join(__dirname, "../.env") });
+        import { ResetTemplateCache } from "./getTemplate";
+                 ~~~~~~~~~~~~~~~~~~ [forbidden]
+        import {
+        RequestMethod,
+        ~~~~~~~~~~~~~ [forbidden]
+        sendAsanaRequest,
+        ~~~~~~~~~~~~~~~~ [forbidden]
+        } from "./sendAsanaRequest";
+        // Just import the module to run the code inside and create global Array shim
+        import "./arrayIncludesShim";
+        import { startAsanaTimer } from "./startAsanaTimer";
+                 ~~~~~~~~~~~~~~~ [forbidden]
+        const server = new Hapi.Server();
+              ~~~~~~ [forbidden]
+      `,
+      {},
+      {
+        // TODO:
+        // output: stripIndent`
+        //   // https://github.com/cartant/tslint-etc/issues/15 (3)
+        //   import * as dotenv from "dotenv";
+        //   import * as Hapi from "hapi";
+        //   import * as path from "path";
+        //   dotenv.config({ path: path.join(__dirname, "../.env") });
+        //   // Just import the module to run the code inside and create global Array shim
+        //   import "./arrayIncludesShim";
+        //   const server = new Hapi.Server();
+        // `
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        // https://github.com/cartant/tslint-etc/issues/34 (declaration)
+        /**
+         * @copyright Copyright someone sometime
+         */
+
+        import nope from "rxjs";
+               ~~~~ [forbidden]
+      `,
+      {},
+      {
+        // TODO:
+        // output: stripIndent`
+        //   // https://github.com/cartant/tslint-etc/issues/34 (declaration)
+        //   /**
+        //    * @copyright Copyright someone sometime
+        //    */
+        // `
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        // https://github.com/cartant/tslint-etc/issues/34 (named)
+        /**
+         * @copyright Copyright someone sometime
+         */
+
+        import { Subject } from "rxjs";
+                 ~~~~~~~ [forbidden]
+      `,
+      {},
+      {
+        // TODO:
+        // output: stripIndent`
+        //   // https://github.com/cartant/tslint-etc/issues/34 (named)
+        //   /**
+        //    * @copyright Copyright someone sometime
+        //    */
+        // `
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        // https://github.com/cartant/tslint-etc/issues/34 (namespace)
+        /**
+         * @copyright Copyright someone sometime
+         */
+
+        import * as Rx from "rxjs";
+                    ~~ [forbidden]
+      `,
+      {},
+      {
+        // TODO:
+        // output: stripIndent`
+        //   // https://github.com/cartant/tslint-etc/issues/34 (namespace)
+        //   /**
+        //    * @copyright Copyright someone sometime
+        //    */
+        // `
+      }
+    ),
   ],
 });
