@@ -8,13 +8,6 @@ import { fromFixture } from "eslint-etc";
 import rule = require("../../source/rules/no-unused-declaration");
 import { ruleTester } from "../utils";
 
-const message = (name: string) => ({
-  messageId: "forbidden",
-  data: {
-    name,
-  },
-});
-
 ruleTester({ types: true }).run("no-unused-declaration", rule, {
   valid: [
     {
