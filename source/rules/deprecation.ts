@@ -4,37 +4,43 @@
  */
 
 import { tsquery } from "@phenomnomnominal/tsquery";
-import { Rule } from "eslint";
+import { TSESTree as es } from "@typescript-eslint/experimental-utils";
 import { getParent, getParserServices } from "eslint-etc";
-import * as es from "estree";
 import * as ts from "typescript";
 import { getDeprecation, isDeclaration } from "../tslint-deprecation";
+import { ruleCreator } from "../utils";
 
 const deprecatedNamesByProgram = new WeakMap<ts.Program, Set<string>>();
 
-const rule: Rule.RuleModule = {
+const defaultOptions: {
+  ignored?: Record<string, string>;
+}[] = [];
+
+const rule = ruleCreator({
+  defaultOptions,
   meta: {
     docs: {
-      category: "General",
+      category: "Best Practices",
       description: "Forbids the use of deprecated APIs.",
-      recommended: false
+      recommended: false,
     },
     fixable: null,
     messages: {
-      forbidden: `"{{name}}" is deprecated: {{comment}}`
+      forbidden: `"{{name}}" is deprecated: {{comment}}`,
     },
     schema: [
       {
         properties: {
-          ignored: { type: "object" }
+          ignored: { type: "object" },
         },
-        type: "object"
-      }
-    ]
+        type: "object",
+      },
+    ],
+    type: "problem",
   },
-  create: context => {
-    const [config = {}] = context.options;
-    const { ignored = {} } = config;
+  name: "deprecation",
+  create: (context, unused: typeof defaultOptions) => {
+    const [{ ignored = {} } = {}] = context.options;
     const ignoredNameRegExps: RegExp[] = [];
     const ignoredPathRegExps: RegExp[] = [];
     Object.entries(ignored).forEach(([key, value]) => {
@@ -81,8 +87,8 @@ const rule: Rule.RuleModule = {
           return;
         }
         if (
-          ignoredNameRegExps.some(regExp => regExp.test(identifier.text)) ||
-          ignoredPathRegExps.some(regExp => regExp.test(getPath(identifier)))
+          ignoredNameRegExps.some((regExp) => regExp.test(identifier.text)) ||
+          ignoredPathRegExps.some((regExp) => regExp.test(getPath(identifier)))
         ) {
           return;
         }
@@ -91,17 +97,17 @@ const rule: Rule.RuleModule = {
           context.report({
             data: { comment: deprecation, name: identifier.text },
             messageId: "forbidden",
-            node
+            node,
           });
         }
-      }
+      },
     };
-  }
-};
+  },
+});
 
 function findDeprecatedNames(program: ts.Program): Set<string> {
   const deprecatedNames = new Set<string>();
-  program.getSourceFiles().forEach(sourceFile => {
+  program.getSourceFiles().forEach((sourceFile) => {
     if (!/@deprecated/.test(sourceFile.text)) {
       return;
     }
@@ -109,9 +115,9 @@ function findDeprecatedNames(program: ts.Program): Set<string> {
       sourceFile,
       `ClassDeclaration, Constructor, EnumDeclaration, EnumMember, FunctionDeclaration, GetAccessor, InterfaceDeclaration, MethodDeclaration, MethodSignature, PropertyDeclaration, PropertySignature, SetAccessor, TypeAliasDeclaration, VariableDeclaration`
     );
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       const tags = ts.getJSDocTags(node);
-      if (!tags.some(tag => tag.tagName.text === "deprecated")) {
+      if (!tags.some((tag) => tag.tagName.text === "deprecated")) {
         return;
       }
       if (ts.isConstructorDeclaration(node)) {

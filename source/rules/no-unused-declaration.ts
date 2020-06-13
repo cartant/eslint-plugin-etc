@@ -4,16 +4,26 @@
  */
 
 import { tsquery } from "@phenomnomnominal/tsquery";
-import { Rule, Scope } from "eslint";
+import {
+  TSESLint as eslint,
+  TSESTree as es,
+} from "@typescript-eslint/experimental-utils";
 import { getParent, getParserServices } from "eslint-etc";
-import * as es from "estree";
 import * as tsutils from "tsutils";
 import * as ts from "typescript";
+import { ruleCreator } from "../utils";
 
-const rule: Rule.RuleModule = {
+const defaultOptions: {
+  declarations?: boolean;
+  ignored?: Record<string, boolean>;
+  imports?: boolean;
+}[] = [];
+
+const rule = ruleCreator({
+  defaultOptions,
   meta: {
     docs: {
-      category: "General",
+      category: "Best Practices",
       description: "Forbids unused declarations.",
       recommended: false,
     },
@@ -31,10 +41,13 @@ const rule: Rule.RuleModule = {
         type: "object",
       },
     ],
+    type: "problem",
   },
-  create: (context) => {
-    const [config = {}] = context.options;
-    const { declarations = true, ignored = {}, imports = true } = config;
+  name: "no-unused-declaration",
+  create: (context, unused: typeof defaultOptions) => {
+    const [
+      { declarations = true, ignored = {}, imports = true } = {},
+    ] = context.options;
     const ignoredRegExps: RegExp[] = [];
     Object.entries(ignored).forEach(([key, value]) => {
       if (value !== false) {
@@ -159,7 +172,7 @@ const rule: Rule.RuleModule = {
       return true;
     };
 
-    const check = (scope: Scope.Scope) => {
+    const check = (scope: eslint.Scope.Scope) => {
       const type: string = scope.type;
       if (type === "enum") {
         return;
@@ -242,6 +255,6 @@ const rule: Rule.RuleModule = {
       TSTypeReference: (node: es.Node) => {},
     };
   },
-};
+});
 
 export = rule;

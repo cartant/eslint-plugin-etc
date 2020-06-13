@@ -3,21 +3,22 @@
  * can be found in the LICENSE file at https://github.com/cartant/eslint-plugin-etc
  */
 
-import { Rule } from "eslint";
+import { TSESTree as es } from "@typescript-eslint/experimental-utils";
 import {
   getLoc,
   getParent,
   getParserServices,
   isCallExpression,
 } from "eslint-etc";
-import * as es from "estree";
 import { couldBeType, isAny } from "tsutils-etc";
 import * as ts from "typescript";
+import { ruleCreator } from "../utils";
 
-const rule: Rule.RuleModule = {
+const rule = ruleCreator({
+  defaultOptions: [],
   meta: {
     docs: {
-      category: "General",
+      category: "Best Practices",
       description: "Forbids throwing - or rejecting with - non-`Error` values.",
       recommended: false,
     },
@@ -25,7 +26,10 @@ const rule: Rule.RuleModule = {
     messages: {
       forbidden: "{{usage}} non-`Error` values is forbidden.",
     },
+    schema: {},
+    type: "problem",
   },
+  name: "throw-error",
   create: (context) => {
     const sourceCode = context.getSourceCode();
     const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
@@ -94,6 +98,6 @@ const rule: Rule.RuleModule = {
       },
     };
   },
-};
+});
 
 export = rule;

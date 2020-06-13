@@ -3,13 +3,14 @@
  * can be found in the LICENSE file at https://github.com/cartant/eslint-plugin-etc
  */
 
-import { Rule } from "eslint";
-import * as es from "estree";
+import { TSESTree as es } from "@typescript-eslint/experimental-utils";
+import { ruleCreator } from "../utils";
 
-const rule: Rule.RuleModule = {
+const rule = ruleCreator({
+  defaultOptions: [],
   meta: {
     docs: {
-      category: "General",
+      category: "Possible Errors",
       description:
         "Forbids dtslint `$ExpectType` and `$ExpectError` expectations if the `$` is missing.",
       recommended: false,
@@ -18,7 +19,10 @@ const rule: Rule.RuleModule = {
     messages: {
       forbidden: "Missing $ in dtslint expectation.",
     },
+    schema: {},
+    type: "problem",
   },
+  name: "no-missing-dollar-expect",
   create: (context) => {
     const sourceCode = context.getSourceCode();
     return {
@@ -39,6 +43,6 @@ const rule: Rule.RuleModule = {
       },
     };
   },
-};
+});
 
 export = rule;

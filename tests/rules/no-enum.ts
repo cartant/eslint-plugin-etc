@@ -9,6 +9,7 @@ import rule = require("../../source/rules/no-enum");
 import { ruleTester } from "../utils";
 
 ruleTester({ types: true }).run("no-enum", rule, {
+  valid: [],
   invalid: [
     fromFixture(
       stripIndent`

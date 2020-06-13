@@ -3,24 +3,28 @@
  * can be found in the LICENSE file at https://github.com/cartant/eslint-plugin-etc
  */
 
-import { Rule } from "eslint";
+import { TSESTree as es } from "@typescript-eslint/experimental-utils";
 import { getLoc, getParserServices } from "eslint-etc";
-import * as es from "estree";
 import * as ts from "typescript";
+import { ruleCreator } from "../utils";
 
-const rule: Rule.RuleModule = {
+const rule = ruleCreator({
+  defaultOptions: [],
   meta: {
     docs: {
-      category: "General",
+      category: "Best Practices",
       description: "Forbids the use of `enum`.",
-      recommended: false
+      recommended: false,
     },
     fixable: null,
     messages: {
-      forbidden: "`enum` is forbidden."
-    }
+      forbidden: "`enum` is forbidden.",
+    },
+    schema: {},
+    type: "problem",
   },
-  create: context => ({
+  name: "no-enum",
+  create: (context) => ({
     TSEnumDeclaration: (node: es.Node) => {
       const { esTreeNodeToTSNodeMap } = getParserServices(context);
       const enumDeclaration = esTreeNodeToTSNodeMap.get(
@@ -28,10 +32,10 @@ const rule: Rule.RuleModule = {
       ) as ts.EnumDeclaration;
       context.report({
         messageId: "forbidden",
-        loc: getLoc(enumDeclaration.name)
+        loc: getLoc(enumDeclaration.name),
       });
-    }
-  })
-};
+    },
+  }),
+});
 
 export = rule;

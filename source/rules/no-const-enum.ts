@@ -3,36 +3,42 @@
  * can be found in the LICENSE file at https://github.com/cartant/eslint-plugin-etc
  */
 
-import { Rule } from "eslint";
+import { TSESTree as es } from "@typescript-eslint/experimental-utils";
 import { getLoc, getParserServices } from "eslint-etc";
-import * as es from "estree";
 import * as tsutils from "tsutils";
 import * as ts from "typescript";
+import { ruleCreator } from "../utils";
 
-const rule: Rule.RuleModule = {
+const defaultOptions: {
+  allowLocal?: boolean;
+}[] = [];
+
+const rule = ruleCreator({
+  defaultOptions,
   meta: {
     docs: {
-      category: "General",
+      category: "Best Practices",
       description: "Forbids the use of `const enum`.",
-      recommended: false
+      recommended: false,
     },
     fixable: null,
     messages: {
-      forbidden: "`const enum` is forbidden."
+      forbidden: "`const enum` is forbidden.",
     },
     schema: [
       {
         properties: {
-          allowLocal: { type: "boolean" }
+          allowLocal: { type: "boolean" },
         },
-        type: "object"
-      }
-    ]
+        type: "object",
+      },
+    ],
+    type: "problem",
   },
-  create: context => ({
+  name: "no-const-enum",
+  create: (context, unused: typeof defaultOptions) => ({
     TSEnumDeclaration: (node: es.Node) => {
-      const [config = {}] = context.options;
-      const { allowLocal = false } = config;
+      const [{ allowLocal = false } = {}] = context.options;
       const { esTreeNodeToTSNodeMap } = getParserServices(context);
       const enumDeclaration = esTreeNodeToTSNodeMap.get(
         node
@@ -56,10 +62,10 @@ const rule: Rule.RuleModule = {
       }
       context.report({
         messageId: "forbidden",
-        loc: getLoc(enumDeclaration.name)
+        loc: getLoc(enumDeclaration.name),
       });
-    }
-  })
-};
+    },
+  }),
+});
 
 export = rule;

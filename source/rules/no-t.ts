@@ -3,39 +3,45 @@
  * can be found in the LICENSE file at https://github.com/cartant/eslint-plugin-etc
  */
 
-import { Rule } from "eslint";
-import * as es from "estree";
+import { TSESTree as es } from "@typescript-eslint/experimental-utils";
+import { ruleCreator } from "../utils";
 
-const rule: Rule.RuleModule = {
+const defaultOptions: {
+  prefix?: string;
+}[] = [];
+
+const rule = ruleCreator({
+  defaultOptions,
   meta: {
     docs: {
-      category: "General",
+      category: "Best Practices",
       description: "Forbids single-character type parameters.",
-      recommended: false
+      recommended: false,
     },
     fixable: null,
     messages: {
       forbidden: `Single-character type parameters are forbidden. Choose a more descriptive name for "{{name}}"`,
-      prefix: `Type parameter "{{name}}" does not have prefix "{{prefix}}"`
+      prefix: `Type parameter "{{name}}" does not have prefix "{{prefix}}"`,
     },
     schema: [
       {
         properties: {
-          prefix: { type: "string" }
+          prefix: { type: "string" },
         },
-        type: "object"
-      }
-    ]
+        type: "object",
+      },
+    ],
+    type: "problem",
   },
-  create: context => {
-    const [config = {}] = context.options;
-    const { prefix } = config;
+  name: "no-t",
+  create: (context, unused: typeof defaultOptions) => {
+    const [{ prefix = "" } = {}] = context.options;
     return {
       "TSTypeParameter > Identifier[name=/^.$/]": (node: es.Identifier) =>
         context.report({
           data: { name: node.name },
           messageId: "forbidden",
-          node
+          node,
         }),
       "TSTypeParameter > Identifier[name=/^.{2,}$/]": (node: es.Identifier) => {
         const { name } = node;
@@ -43,12 +49,12 @@ const rule: Rule.RuleModule = {
           context.report({
             data: { name, prefix },
             messageId: "prefix",
-            node
+            node,
           });
         }
-      }
+      },
     };
-  }
-};
+  },
+});
 
 export = rule;
