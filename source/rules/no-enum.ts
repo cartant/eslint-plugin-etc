@@ -20,7 +20,7 @@ const rule = ruleCreator({
     messages: {
       forbidden: "`enum` is forbidden.",
     },
-    schema: {},
+    schema: null,
     type: "problem",
   },
   name: "no-enum",

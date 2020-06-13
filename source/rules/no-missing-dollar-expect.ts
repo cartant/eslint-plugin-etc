@@ -19,7 +19,7 @@ const rule = ruleCreator({
     messages: {
       forbidden: "Missing $ in dtslint expectation.",
     },
-    schema: {},
+    schema: null,
     type: "problem",
   },
   name: "no-missing-dollar-expect",

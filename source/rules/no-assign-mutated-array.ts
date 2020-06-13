@@ -28,7 +28,7 @@ const rule = ruleCreator({
     messages: {
       forbidden: "Assignment of mutated arrays is forbidden.",
     },
-    schema: {},
+    schema: null,
     type: "problem",
   },
   name: "no-assign-mutated-array",

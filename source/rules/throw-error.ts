@@ -26,7 +26,7 @@ const rule = ruleCreator({
     messages: {
       forbidden: "{{usage}} non-`Error` values is forbidden.",
     },
-    schema: {},
+    schema: null,
     type: "problem",
   },
   name: "throw-error",
