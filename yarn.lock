@@ -605,10 +605,10 @@ escape-string-regexp@1.0.5, escape-string-regexp@^1.0.5:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-eslint-etc@^0.0.19:
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/eslint-etc/-/eslint-etc-0.0.19.tgz#128533b94e6aedbe856c661740df4c4e702c2746"
-  integrity sha512-sm2SkLAOYpwAAcFFvp9NY8lJQ6xoNcikQ+bYBXMVUdIITrWuR3zAnFiSiO3ZLkjpE5kMdIBVpLWa1fwP3QoDxg==
+eslint-etc@^0.0.20:
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/eslint-etc/-/eslint-etc-0.0.20.tgz#6b2c811ad677931e93705fe5e94e0c1cb7f4b82b"
+  integrity sha512-yZJN6ftbltw/oN5U5exRg6f9fYFFlI8znX+P/MrH/xVUOmiD0L3K13otnnlENIT072ky4qoxgj2eDJWiqzuAOw==
   dependencies:
     "@typescript-eslint/experimental-utils" "^3.2.0"
 
