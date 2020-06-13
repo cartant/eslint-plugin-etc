@@ -234,9 +234,12 @@ const rule: Rule.RuleModule = {
     };
 
     return {
+      JSXOpeningElement: (node: es.Node) => {},
       Program: () => check(context.getScope()),
+      TSClassImplements: (node: es.Node) => {},
       TSInterfaceDeclaration: checkTypeDeclaration,
       TSTypeAliasDeclaration: checkTypeDeclaration,
+      TSTypeReference: (node: es.Node) => {},
     };
   },
 };
