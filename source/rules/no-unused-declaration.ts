@@ -112,20 +112,21 @@ const rule = ruleCreator({
 
     const isParameter = (node: es.Node): boolean => {
       const parent = getParent(node);
-      switch (parent.type as string) {
+      switch (parent.type) {
         case "ArrayPattern":
         case "ObjectPattern":
           return isParameter(parent);
         case "ArrowFunctionExpression":
         case "FunctionDeclaration":
+        case "FunctionExpression":
         case "TSDeclareFunction":
-          return (parent as es.FunctionDeclaration).params.includes(
-            node as es.Identifier
-          );
+          return parent.params.includes(node as es.Identifier);
         case "Property":
           return isParameter(getParent(parent));
         case "RestElement":
           return isParameter(parent);
+        case "TSParameterProperty":
+          return true;
         default:
           return false;
       }
