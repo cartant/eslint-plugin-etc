@@ -598,7 +598,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         console.log(f.toString(), g.toString());
 
         const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
-                   ~ [forbidden]
                          ~~~~ [forbidden]
 
         console.log(a);
@@ -918,6 +917,13 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         //    */
         // `
       }
+    ),
+    fromFixture(
+      stripIndent`
+        // unused rest destructuring
+        const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
+                         ~~~~ [forbidden]
+      `
     ),
   ],
 });

@@ -8,7 +8,14 @@ import {
   TSESLint as eslint,
   TSESTree as es,
 } from "@typescript-eslint/experimental-utils";
-import { getParent, getParserServices } from "eslint-etc";
+import {
+  getParent,
+  getParserServices,
+  isIdentifier,
+  isObjectPattern,
+  isRestElement,
+  isVariableDeclarator,
+} from "eslint-etc";
 import * as tsutils from "tsutils";
 import * as ts from "typescript";
 import { ruleCreator } from "../utils";
@@ -143,6 +150,23 @@ const rule = ruleCreator({
       }
     };
 
+    const isRestElementSibling = (variable: eslint.Scope.Variable) => {
+      const [def] = variable.defs;
+      if (!def) {
+        return false;
+      }
+      const { node } = def;
+      if (!isVariableDeclarator(node) || !isObjectPattern(node.id)) {
+        return false;
+      }
+      return node.id.properties.some(
+        (property) =>
+          isRestElement(property) &&
+          isIdentifier(property.argument) &&
+          property.argument.name !== variable.name
+      );
+    };
+
     const shouldCheckReferences = (identifier: es.Identifier) => {
       if (!declarations && !isImported(identifier)) {
         return false;
@@ -184,7 +208,10 @@ const rule = ruleCreator({
           if (identifiers.every(shouldCheckReferences)) {
             const filtered = references.filter((reference) => {
               const { identifier } = reference;
-              return shouldCountReference(identifier);
+              return (
+                isRestElementSibling(variable) ||
+                shouldCountReference(identifier)
+              );
             });
             if (filtered.length > 0) {
               return;
