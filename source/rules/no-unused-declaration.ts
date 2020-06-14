@@ -85,6 +85,9 @@ const rule = ruleCreator({
         if (parent.type === "ExportNamedDeclaration") {
           return true;
         }
+        if (isDeclaration(parent)) {
+          return false;
+        }
         parent = getParent(parent);
       }
       return false;
@@ -130,6 +133,9 @@ const rule = ruleCreator({
 
     const isDeclaration = (node: es.Node): boolean => {
       const parent = getParent(node);
+      if (!parent) {
+        return false;
+      }
       switch (parent.type) {
         case "ArrayPattern":
         case "ObjectPattern":

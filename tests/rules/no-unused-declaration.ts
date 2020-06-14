@@ -942,7 +942,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         // exported class
         export class SomeClass {
           constructor(someParameter: number) {}
-                      ~~~~~~~~~~~~~ [forbidden]
+                      ~~~~~~~~~~~~~~~~~~~~~ [forbidden]
         };
       `
     ),
