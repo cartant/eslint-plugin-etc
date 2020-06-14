@@ -6,11 +6,13 @@
 import { TSESTree as es } from "@typescript-eslint/experimental-utils";
 import {
   getParent,
-  getParserServices,
+  getTypeServices,
+  isArrayExpression,
+  isCallExpression,
   isExpressionStatement,
+  isIdentifier,
+  isMemberExpression,
 } from "eslint-etc";
-import { couldBeType } from "tsutils-etc";
-import * as ts from "typescript";
 import { ruleCreator } from "../utils";
 
 const mutatorRegExp = /^(fill|reverse|sort|splice)$/;
@@ -33,8 +35,7 @@ const rule = ruleCreator({
   },
   name: "no-assign-mutated-array",
   create: (context) => {
-    const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
-    const typeChecker = program.getTypeChecker();
+    const { couldBeType } = getTypeServices(context);
     return {
       [`CallExpression > MemberExpression[property.name=${mutatorRegExp.toString()}]`]: (
         memberExpression: es.MemberExpression
@@ -42,17 +43,9 @@ const rule = ruleCreator({
         const callExpression = getParent(memberExpression) as es.CallExpression;
         const parent = getParent(callExpression);
         if (!isExpressionStatement(parent)) {
-          const propertyAccessExpression = esTreeNodeToTSNodeMap.get(
-            memberExpression
-          ) as ts.PropertyAccessExpression;
-          const type = typeChecker.getTypeAtLocation(
-            propertyAccessExpression.expression
-          );
           if (
-            couldBeType(type, "Array") &&
-            mutatesReferencedArray(
-              esTreeNodeToTSNodeMap.get(callExpression) as ts.CallExpression
-            )
+            couldBeType(memberExpression.object, "Array") &&
+            mutatesReferencedArray(callExpression)
           ) {
             context.report({
               messageId: "forbidden",
@@ -64,18 +57,18 @@ const rule = ruleCreator({
     };
 
     function mutatesReferencedArray(
-      callExpression: ts.CallExpression
+      callExpression: es.CallExpression
     ): boolean {
-      if (ts.isPropertyAccessExpression(callExpression.expression)) {
-        const propertyAccessExpression = callExpression.expression;
-        const { expression, name } = propertyAccessExpression;
-        if (creatorRegExp.test(name.getText())) {
+      if (isMemberExpression(callExpression.callee)) {
+        const memberExpression = callExpression.callee;
+        const { object, property } = memberExpression;
+        if (isIdentifier(property) && creatorRegExp.test(property.name)) {
           return false;
         }
-        if (ts.isCallExpression(expression)) {
-          return mutatesReferencedArray(expression);
+        if (isCallExpression(object)) {
+          return mutatesReferencedArray(object);
         }
-        if (ts.isArrayLiteralExpression(expression)) {
+        if (isArrayExpression(object)) {
           return false;
         }
       }

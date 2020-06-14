@@ -4,14 +4,7 @@
  */
 
 import { TSESTree as es } from "@typescript-eslint/experimental-utils";
-import {
-  getLoc,
-  getParent,
-  getParserServices,
-  isCallExpression,
-} from "eslint-etc";
-import { couldBeType, isAny } from "tsutils-etc";
-import * as ts from "typescript";
+import { getParent, getTypeServices, isCallExpression } from "eslint-etc";
 import { ruleCreator } from "../utils";
 
 const rule = ruleCreator({
@@ -32,19 +25,17 @@ const rule = ruleCreator({
   name: "throw-error",
   create: (context) => {
     const sourceCode = context.getSourceCode();
-    const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
-    const typeChecker = program.getTypeChecker();
+    const { couldBeType, isAny } = getTypeServices(context);
 
     const checkRejection = (node: es.CallExpression) => {
       const {
         arguments: [arg],
-      } = esTreeNodeToTSNodeMap.get(node) as ts.CallExpression;
-      const argType = typeChecker.getTypeAtLocation(arg);
-      if (!isAny(argType) && !couldBeType(argType, "Error")) {
+      } = node;
+      if (!isAny(arg) && !couldBeType(arg, "Error")) {
         context.report({
           data: { usage: "Rejecting with" },
-          loc: getLoc(arg),
           messageId: "forbidden",
+          node: arg,
         });
       }
     };
@@ -53,11 +44,7 @@ const rule = ruleCreator({
       "CallExpression > MemberExpression[property.name='reject']": (
         node: es.MemberExpression
       ) => {
-        const lhsExpression = esTreeNodeToTSNodeMap.get(
-          node.object
-        ) as ts.LeftHandSideExpression;
-        const lhsType = typeChecker.getTypeAtLocation(lhsExpression);
-        if (!couldBeType(lhsType, /^Promise/)) {
+        if (!couldBeType(node.object, /^Promise/)) {
           return;
         }
         checkRejection(getParent(node) as es.CallExpression);
@@ -84,15 +71,11 @@ const rule = ruleCreator({
         });
       },
       ThrowStatement: (node: es.ThrowStatement) => {
-        const { expression } = esTreeNodeToTSNodeMap.get(
-          node
-        ) as ts.ThrowStatement;
-        const type = typeChecker.getTypeAtLocation(expression);
-        if (!isAny(type) && !couldBeType(type, "Error")) {
+        if (!isAny(node.argument) && !couldBeType(node.argument, "Error")) {
           context.report({
             data: { usage: "Throwing" },
-            loc: getLoc(expression),
             messageId: "forbidden",
+            node: node.argument,
           });
         }
       },
