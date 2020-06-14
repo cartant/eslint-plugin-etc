@@ -482,6 +482,15 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         console.log(anotherFunction);
       `,
     },
+    {
+      code: stripIndent`
+        // jsx comment
+        /* @jsx jsx */
+        import { jsx } from "@emotion/core";
+        import { Foo } from "./foo";
+        export const foo = <Foo>foo</Foo>;
+      `,
+    },
   ],
   invalid: [
     fromFixture(

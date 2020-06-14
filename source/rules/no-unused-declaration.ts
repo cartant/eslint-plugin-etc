@@ -72,7 +72,16 @@ const rule = ruleCreator({
       )
     );
 
-    function check(scope: eslint.Scope.Scope) {
+    function check(scope: eslint.Scope.Scope, comments?: es.Comment[]) {
+      if (comments) {
+        comments.some((comment) => {
+          const match = comment.value.match(/@jsx\s+(\w+)/);
+          if (match) {
+            ignoredRegExps.push(new RegExp(`^${match[1]}$`));
+            return true;
+          }
+        });
+      }
       const type: string = scope.type;
       if (type === "enum") {
         return;
@@ -125,7 +134,7 @@ const rule = ruleCreator({
           }
         });
       }
-      scope.childScopes.forEach(check);
+      scope.childScopes.forEach((childScope) => check(childScope));
     }
 
     function checkTypeDeclaration(node: es.Node & { id: es.Identifier }) {
@@ -309,7 +318,7 @@ const rule = ruleCreator({
 
     return {
       JSXOpeningElement: (node: es.Node) => {},
-      "Program:exit": () => check(context.getScope()),
+      Program: (node: es.Program) => check(context.getScope(), node.comments),
       TSClassImplements: (node: es.Node) => {},
       TSInterfaceDeclaration: checkTypeDeclaration,
       TSTypeAliasDeclaration: checkTypeDeclaration,
