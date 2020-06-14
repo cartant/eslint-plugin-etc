@@ -212,12 +212,12 @@ const rule = ruleCreator({
         variables.forEach((variable) => {
           const { identifiers, name, references } = variable;
           if (identifiers.every(shouldCheckReferences)) {
+            if (isRestElementSibling(variable)) {
+              return;
+            }
             const filtered = references.filter((reference) => {
               const { identifier } = reference;
-              return (
-                isRestElementSibling(variable) ||
-                shouldCountReference(identifier)
-              );
+              return shouldCountReference(identifier);
             });
             if (filtered.length > 0) {
               return;
