@@ -79,6 +79,22 @@ const rule = ruleCreator({
       );
     };
 
+    const isDeclared = (node: es.Node) => {
+      let parent = getParent(node);
+      while (parent) {
+        switch (parent.type) {
+          case "ClassDeclaration":
+          case "TSDeclareFunction":
+          case "VariableDeclaration":
+            return parent.declare;
+          default:
+            break;
+        }
+        parent = getParent(parent);
+      }
+      return false;
+    };
+
     const isExported = (node: es.Node) => {
       let parent = getParent(node);
       while (parent) {
@@ -186,7 +202,7 @@ const rule = ruleCreator({
       if (!imports && isImported(identifier)) {
         return false;
       }
-      if (isExported(identifier)) {
+      if (isExported(identifier) || isDeclared(identifier)) {
         return false;
       }
       if (ignoredRegExps.some((regExp) => regExp.test(identifier.name))) {
