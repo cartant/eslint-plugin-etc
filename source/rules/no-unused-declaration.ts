@@ -309,7 +309,7 @@ const rule = ruleCreator({
 
     return {
       JSXOpeningElement: (node: es.Node) => {},
-      Program: () => check(context.getScope()),
+      "Program:exit": () => check(context.getScope()),
       TSClassImplements: (node: es.Node) => {},
       TSInterfaceDeclaration: checkTypeDeclaration,
       TSTypeAliasDeclaration: checkTypeDeclaration,
