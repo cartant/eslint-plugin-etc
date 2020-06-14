@@ -395,6 +395,18 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         export default infoWrapper;
       `,
     },
+    {
+      code: stripIndent`
+        // parameter properties
+        export class SomeClass {
+          constructor(
+            public somePublicProperty: number,
+            protected someProtectedProperty: number,
+            private somePrivateProperty: number
+          ) {}
+        };
+      `,
+    },
   ],
   invalid: [
     fromFixture(
@@ -923,6 +935,15 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         // unused rest destructuring
         const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
                          ~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
+        // exported class
+        export class SomeClass {
+          constructor(someParameter: number) {}
+                      ~~~~~~~~~~~~~ [forbidden]
+        };
       `
     ),
   ],
