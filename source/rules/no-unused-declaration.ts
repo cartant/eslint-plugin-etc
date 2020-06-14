@@ -126,6 +126,11 @@ const rule = ruleCreator({
       return specifier !== undefined;
     };
 
+    const isFunctionExpressionIdentifier = (identifier: es.Identifier) => {
+      const parent = getParent(identifier);
+      return parent.type === "FunctionExpression";
+    };
+
     const isParameter = (node: es.Node): boolean => {
       const parent = getParent(node);
       switch (parent.type) {
@@ -212,6 +217,9 @@ const rule = ruleCreator({
         return false;
       }
       if (isTSParameterProperty(identifier)) {
+        return false;
+      }
+      if (isFunctionExpressionIdentifier(identifier)) {
         return false;
       }
       return true;

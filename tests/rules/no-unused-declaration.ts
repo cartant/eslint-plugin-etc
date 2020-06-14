@@ -400,10 +400,8 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         // parameters
         function someFunction(someParameter: number) {}
         console.log(someFunction);
-
         const someArrowFunction = (someParameter: number) => {};
         console.log(someArrowFunction);
-
         class SomeClass {
           constructor(someParameter: number) {}
           someMethod(someParameter: number) {}
@@ -417,10 +415,8 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         // destructured array parameters
         function someFunction([someParameter]: any[]) {}
         console.log(someFunction);
-
         const someArrowFunction = ([someParameter]: any[]) => {};
         console.log(someArrowFunction);
-
         class SomeClass {
           constructor([someParameter]: any[]) {}
           someMethod([someParameter]: any[]) {}
@@ -434,10 +430,8 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         // destructured object parameters
         function someFunction({ someParameter }: any) {}
         console.log(someFunction);
-
         const someArrowFunction = ({ someParameter }: any) => {};
         console.log(someArrowFunction);
-
         class SomeClass {
           constructor({ someParameter }: any) {}
           someMethod({ someParameter }: any) {}
@@ -464,6 +458,24 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         const someVariable = function someFunction() {};
         console.log(someVariable);
 
+        function anotherFunction() {
+          return function innerFunction() {}
+        }
+        console.log(anotherFunction);
+      `,
+    },
+    {
+      code: stripIndent`
+        // declared
+        declare const someVariable: number;
+        declare function someFunction(someParameter: number): void;
+      `,
+    },
+    {
+      code: stripIndent`
+        // named functions
+        const someVariable = function someFunction() {};
+        console.log(someVariable);
         function anotherFunction() {
           return function innerFunction() {}
         }
