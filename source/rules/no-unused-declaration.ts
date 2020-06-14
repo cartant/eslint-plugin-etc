@@ -173,6 +173,11 @@ const rule = ruleCreator({
       );
     };
 
+    const isTSParameterProperty = (identifier: es.Identifier) => {
+      const parent = getParent(identifier);
+      return parent && parent.type === "TSParameterProperty";
+    };
+
     const shouldCheckReferences = (identifier: es.Identifier) => {
       if (!declarations && !isImported(identifier)) {
         return false;
@@ -187,6 +192,9 @@ const rule = ruleCreator({
         return false;
       }
       if (isParameter(identifier)) {
+        return false;
+      }
+      if (isTSParameterProperty(identifier)) {
         return false;
       }
       return true;
