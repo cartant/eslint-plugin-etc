@@ -414,6 +414,40 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
     },
     {
       code: stripIndent`
+        // destructured array parameters
+        function someFunction([someParameter]: any[]) {}
+        console.log(someFunction);
+
+        const someArrowFunction = ([someParameter]: any[]) => {};
+        console.log(someArrowFunction);
+
+        class SomeClass {
+          constructor([someParameter]: any[]) {}
+          someMethod([someParameter]: any[]) {}
+          set someProperty([someValue]: any[]) {}
+        }
+        console.log(new SomeClass());
+      `,
+    },
+    {
+      code: stripIndent`
+        // destructured object parameters
+        function someFunction({ someParameter }: any) {}
+        console.log(someFunction);
+
+        const someArrowFunction = ({ someParameter }: any) => {};
+        console.log(someArrowFunction);
+
+        class SomeClass {
+          constructor({ someParameter }: any) {}
+          someMethod({ someParameter }: any) {}
+          set someProperty({ someValue }: any) {}
+        }
+        console.log(new SomeClass());
+      `,
+    },
+    {
+      code: stripIndent`
         // parameter properties
         export class SomeClass {
           constructor(
