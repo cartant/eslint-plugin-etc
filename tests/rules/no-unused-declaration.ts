@@ -397,6 +397,23 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
     },
     {
       code: stripIndent`
+        // parameters
+        function someFunction(someParameter: number) {}
+        console.log(someFunction);
+
+        const someArrowFunction = (someParameter: number) => {};
+        console.log(someArrowFunction);
+
+        class SomeClass {
+          constructor(someParameter: number) {}
+          someMethod(someParameter: number) {}
+          set someProperty(someValue: number) {}
+        }
+        console.log(new SomeClass());
+      `,
+    },
+    {
+      code: stripIndent`
         // parameter properties
         export class SomeClass {
           constructor(
@@ -405,6 +422,18 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
             private somePrivateProperty: number
           ) {}
         };
+      `,
+    },
+    {
+      code: stripIndent`
+        // named functions
+        const someVariable = function someFunction() {};
+        console.log(someVariable);
+
+        function anotherFunction() {
+          return function innerFunction() {}
+        }
+        console.log(anotherFunction);
       `,
     },
   ],
@@ -935,15 +964,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         // unused rest destructuring
         const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
                          ~~~~ [forbidden]
-      `
-    ),
-    fromFixture(
-      stripIndent`
-        // exported class
-        export class SomeClass {
-          constructor(someParameter: number) {}
-                      ~~~~~~~~~~~~~~~~~~~~~ [forbidden]
-        };
       `
     ),
   ],
