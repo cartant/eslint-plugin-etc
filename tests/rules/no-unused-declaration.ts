@@ -491,6 +491,16 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         export const foo = <Foo>foo</Foo>;
       `,
     },
+    {
+      code: stripIndent`
+        // caught error
+        try {
+          console.log("hello");
+        } catch (error) {
+          console.log("wtf?");
+        }
+      `,
+    },
   ],
   invalid: [
     fromFixture(
