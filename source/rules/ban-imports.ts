@@ -9,7 +9,7 @@ import { ruleCreator } from "../utils";
 const defaultOptions: Record<string, boolean>[] = [];
 
 const rule = ruleCreator({
-  defaultOptions: [],
+  defaultOptions,
   meta: {
     docs: {
       category: "Best Practices",
