@@ -52,6 +52,7 @@ const rule = ruleCreator({
   },
   name: "no-unused-declaration",
   create: (context, unused: typeof defaultOptions) => {
+    const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
     const [
       { declarations = true, ignored = {}, imports = true } = {},
     ] = context.options;
@@ -61,7 +62,6 @@ const rule = ruleCreator({
         ignoredRegExps.push(new RegExp(key));
       }
     });
-    const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
 
     const jsxFactory =
       program.getCompilerOptions().jsxFactory || "React.createElement";
@@ -175,6 +175,11 @@ const rule = ruleCreator({
       return (
         parent.type === "AssignmentExpression" && identifier === parent.left
       );
+    }
+
+    function isCaughtErrorIdentifier(identifier: es.Identifier) {
+      const parent = getParent(identifier);
+      return parent.type === "CatchClause";
     }
 
     function isDeclarationIdentifier(identifier: es.Node): boolean {
@@ -301,6 +306,9 @@ const rule = ruleCreator({
         return false;
       }
       if (isFunctionExpressionIdentifier(identifier)) {
+        return false;
+      }
+      if (isCaughtErrorIdentifier(identifier)) {
         return false;
       }
       return true;
