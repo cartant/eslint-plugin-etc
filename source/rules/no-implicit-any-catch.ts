@@ -69,6 +69,9 @@ const rule = ruleCreator({
         return;
       }
       const [param] = callback.params;
+      if (!param) {
+        return;
+      }
       if (hasTypeAnnotation(param)) {
         const { typeAnnotation } = param;
         const {

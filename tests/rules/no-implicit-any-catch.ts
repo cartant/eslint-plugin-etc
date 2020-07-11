@@ -12,6 +12,22 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
   valid: [
     {
       code: stripIndent`
+        // arrow; no parameter
+        Promise.reject("Kaboom!").catch(
+          () => console.error("Whoops!")
+        );
+      `,
+    },
+    {
+      code: stripIndent`
+        // non-arrow; no parameter
+        Promise.reject("Kaboom!").catch(
+          function () { console.error("Whoops!"); }
+        );
+      `,
+    },
+    {
+      code: stripIndent`
         // arrow; explicit unknown; default option
         Promise.reject("Kaboom!").catch(
           (error: unknown) => console.error(error)
@@ -61,6 +77,24 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         );
       `,
       options: [{ allowExplicitAny: true }],
+    },
+    {
+      code: stripIndent`
+        // then; arrow; no parameter
+        Promise.reject("Kaboom!").then(
+          () => {},
+          () => console.error("Whoops!")
+        );
+      `,
+    },
+    {
+      code: stripIndent`
+        // then; non-arrow; no parameter
+        Promise.reject("Kaboom!").then(
+          function () {},
+          function () { console.error("Whoops!"); }
+        );
+      `,
     },
     {
       code: stripIndent`
