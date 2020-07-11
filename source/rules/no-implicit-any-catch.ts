@@ -58,7 +58,10 @@ const rule = ruleCreator({
     const [config = {}] = context.options;
     const { allowExplicitAny = false } = config;
 
-    function checkRejectionCallback(callback: es.Node) {
+    function checkRejectionCallback(
+      callExpression: es.CallExpression,
+      callback: es.Node
+    ) {
       if (
         !isArrowFunctionExpression(callback) &&
         !isFunctionExpression(callback)
@@ -73,6 +76,9 @@ const rule = ruleCreator({
         } = typeAnnotation;
         if (type === AST_NODE_TYPES.TSAnyKeyword) {
           if (allowExplicitAny) {
+            return;
+          }
+          if (!isPromiseCall(callExpression)) {
             return;
           }
           function fix(fixer: eslint.RuleFixer) {
@@ -90,6 +96,9 @@ const rule = ruleCreator({
             ],
           });
         } else if (type !== AST_NODE_TYPES.TSUnknownKeyword) {
+          if (!isPromiseCall(callExpression)) {
+            return;
+          }
           function fix(fixer: eslint.RuleFixer) {
             return fixer.replaceText(typeAnnotation, ": unknown");
           }
@@ -105,6 +114,9 @@ const rule = ruleCreator({
           });
         }
       } else {
+        if (!isPromiseCall(callExpression)) {
+          return;
+        }
         function fix(fixer: eslint.RuleFixer) {
           return fixer.insertTextAfter(param, ": unknown");
         }
@@ -134,23 +146,17 @@ const rule = ruleCreator({
       "CallExpression[callee.property.name='catch']": (
         callExpression: es.CallExpression
       ) => {
-        if (!isPromiseCall(callExpression)) {
-          return;
-        }
-        const [arg] = callExpression.arguments;
-        if (arg) {
-          checkRejectionCallback(arg);
+        const [callback] = callExpression.arguments;
+        if (callback) {
+          checkRejectionCallback(callExpression, callback);
         }
       },
       "CallExpression[callee.property.name='then']": (
         callExpression: es.CallExpression
       ) => {
-        if (!isPromiseCall(callExpression)) {
-          return;
-        }
-        const [, arg] = callExpression.arguments;
-        if (arg) {
-          checkRejectionCallback(arg);
+        const [, callback] = callExpression.arguments;
+        if (callback) {
+          checkRejectionCallback(callExpression, callback);
         }
       },
     };
