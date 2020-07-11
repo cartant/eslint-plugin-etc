@@ -43,12 +43,12 @@ The package includes the following rules:
 
 | Rule | Description | Recommended |
 | --- | --- | --- |
-[`ban-imports`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/ban-imports.ts) | Forbids using the configured import locations. | TBD |
-[`deprecation`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/deprecation.ts) | Forbids the use of deprecated APIs. | TBD |
-[`no-assign-mutated-array`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/no-assign-mutated-array.ts) | Forbids the assignment of returned, mutated arrays. | TBD |
-[`no-const-enum`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/no-const-enum.ts) | Forbids the use of `const enum`. Constant enums are [not compatible with isolated modules](https://ncjamieson.com/dont-export-const-enums/). | TBD |
-[`no-enum`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/no-enum.ts) | Forbids the use of `enum`. | TBD |
-[`no-implicit-any-catch`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/no-implicit-any-catch.ts) | Like the `no-implicit-any-catch` rule in `@typescript-eslint/eslint-plugin`, but for `Promise` rejections instead of `catch` clauses. | TBD |
-[`no-t`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/no-t.ts) | Forbids single-character type parameters. | TBD |
-[`no-unused-declaration`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/no-unused-declaration.ts) | Forbids unused declarations. | TBD |
-[`throw-error`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/throw-error.ts) | Forbids throwing - or rejecting with - non-`Error` values. | TBD |
+| [`ban-imports`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/ban-imports.ts) | Forbids using the configured import locations. | TBD |
+| [`deprecation`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/deprecation.ts) | Forbids the use of deprecated APIs. | TBD |
+| [`no-assign-mutated-array`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/no-assign-mutated-array.ts) | Forbids the assignment of returned, mutated arrays. | TBD |
+| [`no-const-enum`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/no-const-enum.ts) | Forbids the use of `const enum`. Constant enums are [not compatible with isolated modules](https://ncjamieson.com/dont-export-const-enums/). | TBD |
+| [`no-enum`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/no-enum.ts) | Forbids the use of `enum`. | TBD |
+| [`no-implicit-any-catch`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/no-implicit-any-catch.ts) | Like the [`no-implicit-any-catch` rule](https://github.com/typescript-eslint/typescript-eslint/pull/2202) in `@typescript-eslint/eslint-plugin`, but for `Promise` rejections instead of `catch` clauses. | TBD |
+| [`no-t`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/no-t.ts) | Forbids single-character type parameters. | TBD |
+| [`no-unused-declaration`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/no-unused-declaration.ts) | Forbids unused declarations. | TBD |
+| [`throw-error`](https://github.com/cartant/eslint-plugin-etc/blob/main/source/rules/throw-error.ts) | Forbids throwing - or rejecting with - non-`Error` values. | TBD |
