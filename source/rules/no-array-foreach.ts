@@ -12,7 +12,7 @@ const rule = ruleCreator({
   meta: {
     docs: {
       category: "Best Practices",
-      description: "Forbids the calling `forEach` on arrays.",
+      description: "Forbids calling `forEach` on arrays.",
       recommended: false,
     },
     fixable: null,
