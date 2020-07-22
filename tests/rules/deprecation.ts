@@ -298,7 +298,6 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         let a: DeprecatedInterface;
                ~~~~~~~~~~~~~~~~~~~ [forbidden]
       `,
-      {},
       {
         options: [
           {
@@ -316,7 +315,6 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         let a: DeprecatedInterface;
                ~~~~~~~~~~~~~~~~~~~ [forbidden]
       `,
-      {},
       {
         options: [
           {

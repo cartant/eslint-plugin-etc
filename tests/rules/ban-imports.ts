@@ -33,7 +33,6 @@ ruleTester({ types: false }).run("ban-imports", rule, {
         import { a } from "a";
         ~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
       `,
-      {},
       { options }
     ),
     fromFixture(
@@ -41,7 +40,6 @@ ruleTester({ types: false }).run("ban-imports", rule, {
         import { c } from "./c";
         ~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
       `,
-      {},
       { options }
     ),
   ],

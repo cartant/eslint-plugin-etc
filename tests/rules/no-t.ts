@@ -30,7 +30,6 @@ ruleTester({ types: true }).run("no-t", rule, {
         type Thing<Value> = { value: Value };
                    ~~~~~ [prefix]
       `,
-      {},
       { options: [{ prefix: "T" }] }
     ),
   ],

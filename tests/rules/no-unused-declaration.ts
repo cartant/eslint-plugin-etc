@@ -519,7 +519,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         const { z } = { z: "z" };
                 ~ [forbidden]
       `,
-      {},
       {
         options: [
           {
@@ -559,7 +558,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         const [y] = ["y"];
         const { z } = { z: "z" };
       `,
-      {},
       {
         options: [
           {
@@ -588,7 +586,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         b = a;
         c = a;
       `,
-      {},
       {
         output: stripIndent`
           // reassigned
@@ -613,7 +610,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
           console.log(a, b);
         }
       `,
-      {},
       {
         // TODO:
         // output: stripIndent`
@@ -652,7 +648,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
                          ~~~~~ [forbidden]
         console.log(b, banana, t, u);
       `,
-      {},
       {
         // TODO:
         // output: stripIndent`
@@ -675,7 +670,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         class Person {}
               ~~~~~~ [forbidden]
       `,
-      {},
       {
         output: stripIndent`
           // unused classes
@@ -708,7 +702,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
 
         console.log(a);
       `,
-      {},
       {
         output: stripIndent`
           // unused destructuring
@@ -738,7 +731,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
              ~~~ [forbidden]
       `,
-      {},
       {
         output: stripIndent`
           // unused enums
@@ -754,7 +746,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         const g = () => {};
               ~ [forbidden]
       `,
-      {},
       {
         output: stripIndent`
           // unused functions
@@ -792,7 +783,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         console.log(b, basil);
         console.log("the end");
       `,
-      {},
       {
         // TODO:
         // output: stripIndent`
@@ -813,7 +803,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         type SomeType = {};
              ~~~~~~~~ [forbidden]
       `,
-      {},
       {
         output: stripIndent`
           // unused types
@@ -832,7 +821,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         var c = "c";
             ~ [forbidden]
       `,
-      {},
       {
         output: stripIndent`
           // unused variables
@@ -871,7 +859,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         const server = new Hapi.Server();
               ~~~~~~ [forbidden]
       `,
-      {},
       {
         // TODO:
         // output: stripIndent`
@@ -910,7 +897,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         const server = new Hapi.Server();
               ~~~~~~ [forbidden]
       `,
-      {},
       {
         // TODO:
         // output: stripIndent`
@@ -946,7 +932,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         const server = new Hapi.Server();
               ~~~~~~ [forbidden]
       `,
-      {},
       {
         // TODO:
         // output: stripIndent`
@@ -971,7 +956,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         import nope from "rxjs";
                ~~~~ [forbidden]
       `,
-      {},
       {
         // TODO:
         // output: stripIndent`
@@ -992,7 +976,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         import { Subject } from "rxjs";
                  ~~~~~~~ [forbidden]
       `,
-      {},
       {
         // TODO:
         // output: stripIndent`
@@ -1013,7 +996,6 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         import * as Rx from "rxjs";
                     ~~ [forbidden]
       `,
-      {},
       {
         // TODO:
         // output: stripIndent`

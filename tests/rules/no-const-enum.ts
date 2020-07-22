@@ -40,7 +40,6 @@ ruleTester({ types: true }).run("no-const-enum", rule, {
         export const enum Numbers { one = 1 };
                           ~~~~~~~ [forbidden]
       `,
-      {},
       {
         options: [
           {
