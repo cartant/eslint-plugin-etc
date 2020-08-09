@@ -15,8 +15,8 @@ import {
 } from "eslint-etc";
 import { ruleCreator } from "../utils";
 
-const mutatorRegExp = /^(fill|reverse|sort|splice)$/;
-const creatorRegExp = /^(concat|entries|filter|keys|map|slice|values)$/;
+const mutatorRegExp = /^(fill|reverse|sort)$/;
+const creatorRegExp = /^(concat|entries|filter|keys|map|slice|splice|values)$/;
 
 const rule = ruleCreator({
   defaultOptions: [],

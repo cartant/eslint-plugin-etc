@@ -17,7 +17,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         a.fill(0);
         a.reverse();
         a.sort((x, y) => x - y);
-        a.splice(0, 1);
       `,
     },
     {
@@ -29,7 +28,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         const d = a.map(x => x).fill(0);
         const e = a.map(x => x).reverse();
         const f = a.map(x => x).sort((x, y) => x - y);
-        const g = a.map(x => x).splice(0, 1);
       `,
     },
     {
@@ -42,7 +40,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         b = a.map(x => x).fill(0);
         b = a.map(x => x).reverse();
         b = a.map(x => x).sort((x, y) => x - y);
-        b = a.map(x => x).splice(0, 1);
       `,
     },
     {
@@ -52,7 +49,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         const b = a.slice().fill(0);
         const c = a.slice().reverse();
         const d = a.slice().sort((x, y) => x - y);
-        const e = a.slice().splice(0, 1);
       `,
     },
     {
@@ -63,7 +59,15 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         b = a.slice().fill(0);
         b = a.slice().reverse();
         b = a.slice().sort((x, y) => x - y);
-        b = a.slice().splice(0, 1);
+      `,
+    },
+    {
+      code: stripIndent`
+        // spliced & mutated variable initialization
+        const a = [0, 1, 2, 3];
+        const b = a.splice(0, 1).fill(0);
+        const c = a.splice(0, 1).reverse();
+        const d = a.splice(0, 1).sort((x, y) => x - y);
       `,
     },
     {
@@ -75,7 +79,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         b = a.slice().fill(0).fill(0);
         b = a.slice().reverse().reverse();
         b = a.slice().sort((x, y) => x - y).sort((x, y) => x - y);
-        b = a.slice().splice(0, 1).splice(0, 1);
       `,
     },
     {
@@ -87,12 +90,10 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         b = [...a].fill(0);
         b = [...a].reverse();
         b = [...a].sort((x, y) => x - y);
-        b = [...a].splice(0, 1);
 
         b = [...a].fill(0).fill(0);
         b = [...a].reverse().reverse();
         b = [...a].sort((x, y) => x - y).sort((x, y) => x - y);
-        b = [...a].splice(0, 1).splice(0, 1);
       `,
     },
     {
@@ -103,7 +104,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
           a: a.map(x => x).fill(0),
           b: a.map(x => x).reverse(),
           c: a.map(x => x).sort((x, y) => x - y),
-          d: a.map(x => x).splice(0, 1)
         };
       `,
     },
@@ -115,7 +115,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
           a.map(x => x).fill(0),
           a.map(x => x).reverse(),
           a.map(x => x).sort((x, y) => x - y),
-          a.map(x => x).splice(0, 1)
         ];
       `,
     },
@@ -127,7 +126,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         n(a.map(x => x).fill(0));
         n(a.map(x => x).reverse());
         n(a.map(x => x).sort((x, y) => x - y));
-        n(a.map(x => x).splice(0, 1));
       `,
     },
     {
@@ -144,9 +142,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         t = new Thing(
           a.map(x => x).sort((x, y) => x - y)
         );
-        t = new Thing(
-          a.map(x => x).splice(0, 1)
-        );
       `,
     },
   ],
@@ -161,8 +156,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
                     ~~~~~~~ [forbidden]
         const d = a.sort((x, y) => x - y);
                     ~~~~ [forbidden]
-        const e = a.splice(0, 1);
-                    ~~~~~~ [forbidden]
       `
     ),
     fromFixture(
@@ -176,8 +169,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
               ~~~~~~~ [forbidden]
         b = a.sort((x, y) => x - y);
               ~~~~ [forbidden]
-        b = a.splice(0, 1);
-              ~~~~~~ [forbidden]
       `
     ),
     fromFixture(
@@ -191,8 +182,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
                ~~~~~~~ [forbidden]
           c: a.sort((x, y) => x - y),
                ~~~~ [forbidden]
-          d: a.splice(0, 1)
-               ~~~~~~ [forbidden]
         };
       `
     ),
@@ -207,8 +196,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
             ~~~~~~~ [forbidden]
           a.sort((x, y) => x - y),
             ~~~~ [forbidden]
-          a.splice(0, 1)
-            ~~~~~~ [forbidden]
         ];
       `
     ),
@@ -223,8 +210,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
             ~~~~~~~ [forbidden]
         n(a.sort((x, y) => x - y));
             ~~~~ [forbidden]
-        n(a.splice(0, 1));
-            ~~~~~~ [forbidden]
       `
     ),
     fromFixture(
@@ -243,10 +228,6 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         t = new Thing(
           a.sort((x, y) => x - y)
             ~~~~ [forbidden]
-        );
-        t = new Thing(
-          a.splice(0, 1)
-            ~~~~~~ [forbidden]
         );
       `
     ),
