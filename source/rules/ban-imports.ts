@@ -6,7 +6,9 @@
 import { TSESTree as es } from "@typescript-eslint/experimental-utils";
 import { ruleCreator } from "../utils";
 
-const defaultOptions: Record<string, boolean>[] = [];
+const defaultOptions: Record<string, boolean | string>[] = [];
+
+const defaultMessage = "This import location is forbidden.";
 
 const rule = ruleCreator({
   defaultOptions,
@@ -18,7 +20,7 @@ const rule = ruleCreator({
     },
     fixable: null,
     messages: {
-      forbidden: "This import location is forbidden.",
+      forbidden: "{{message}}",
     },
     schema: [
       {
@@ -30,20 +32,29 @@ const rule = ruleCreator({
   name: "ban-imports",
   create: (context, unused: typeof defaultOptions) => {
     const [config = {}] = context.options;
-    const forbiddenRegExps: RegExp[] = [];
+    const forbiddenOptions: { regex: RegExp; message?: string }[] = [];
     Object.entries(config).forEach(([key, value]) => {
-      if (value !== false) {
-        forbiddenRegExps.push(new RegExp(key));
+      if (value !== false && value !== "") {
+        const ruleDefinition = {
+          regex: new RegExp(key),
+          ...(typeof value === "string" ? { message: value } : null),
+        };
+        forbiddenOptions.push(ruleDefinition);
       }
     });
+
     return {
       ImportDeclaration: (node: es.ImportDeclaration) => {
         const { source } = node;
-        if (
-          forbiddenRegExps.some((regExp) => regExp.test(source.value as string))
-        ) {
+        const violation = forbiddenOptions.find(({ regex }) =>
+          regex.test(source.value as string)
+        );
+        if (violation) {
           context.report({
             messageId: "forbidden",
+            data: {
+              message: violation.message || defaultMessage,
+            },
             node,
           });
         }
