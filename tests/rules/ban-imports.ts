@@ -59,13 +59,13 @@ ruleTester({ types: false }).run("ban-imports", rule, {
       code: stripIndent`
         import { m } from "m";
       `,
-      options,
       errors: [
         {
-          messageId: "forbidden",
           data: { message: "'m' has been deprecated; use 'baz'" },
+          messageId: "forbidden",
         },
       ],
+      options,
     },
   ],
 });
