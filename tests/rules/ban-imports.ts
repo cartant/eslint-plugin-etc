@@ -13,6 +13,8 @@ const options = [
     "^a$": true,
     "^b$": false,
     "(^|/)c$": true,
+    "^m$": "'m' has been deprecated; use 'baz'",
+    "^n$": "",
   },
 ];
 
@@ -24,6 +26,10 @@ ruleTester({ types: false }).run("ban-imports", rule, {
     },
     {
       code: `import { d } from "./d";`,
+      options,
+    },
+    {
+      code: `import { n } from "n";`,
       options,
     },
   ],
@@ -42,5 +48,24 @@ ruleTester({ types: false }).run("ban-imports", rule, {
       `,
       { options }
     ),
+    fromFixture(
+      stripIndent`
+        import { m } from "m";
+        ~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+      `,
+      { options }
+    ),
+    {
+      code: stripIndent`
+        import { m } from "m";
+      `,
+      options,
+      errors: [
+        {
+          messageId: "forbidden",
+          data: { message: "'m' has been deprecated; use 'baz'" },
+        },
+      ],
+    },
   ],
 });
