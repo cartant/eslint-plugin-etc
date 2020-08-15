@@ -135,19 +135,19 @@ const rule = ruleCreator({
     }
 
     return {
-      ArrowFunctionExpression: (node) => checkSignature(node),
-      FunctionDeclaration: (node) => checkSignature(node),
-      FunctionExpression: (node) => checkSignature(node),
-      MethodDefinition: (node) => checkSignature(node),
+      ArrowFunctionExpression: checkSignature,
+      FunctionDeclaration: checkSignature,
+      FunctionExpression: checkSignature,
+      MethodDefinition: checkSignature,
       "Program:exit": () => (usage = undefined),
-      TSCallSignatureDeclaration: (node) => checkSignature(node),
-      TSConstructorType: (node) => checkSignature(node),
-      TSConstructSignatureDeclaration: (node) => checkSignature(node),
-      TSDeclareFunction: (node) => checkSignature(node),
-      TSFunctionType: (node) => checkSignature(node),
-      TSIndexSignature: (node) => checkSignature(node),
-      TSMethodSignature: (node) => checkSignature(node),
-      TSPropertySignature: (node) => checkSignature(node),
+      TSCallSignatureDeclaration: checkSignature,
+      TSConstructorType: checkSignature,
+      TSConstructSignatureDeclaration: checkSignature,
+      TSDeclareFunction: checkSignature,
+      TSFunctionType: checkSignature,
+      TSIndexSignature: checkSignature,
+      TSMethodSignature: checkSignature,
+      TSPropertySignature: checkSignature,
     };
   },
 });
