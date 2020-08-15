@@ -513,11 +513,11 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         import L, { e } from "./letters";
 
         const x = "x";
-              ~ [forbidden]
+              ~ [forbidden { "name": "x" }]
         const [y] = ["y"];
-               ~ [forbidden]
+               ~ [forbidden { "name": "y" }]
         const { z } = { z: "z" };
-                ~ [forbidden]
+                ~ [forbidden { "name": "z" }]
       `,
       {
         options: [
@@ -544,16 +544,16 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       stripIndent`
         // only imports
         import { a } from "./letters";
-                 ~ [forbidden]
+                 ~ [forbidden { "name": "a" }]
         import { a as alias } from "./letters";
-                      ~~~~~ [forbidden]
+                      ~~~~~ [forbidden { "name": "alias" }]
         import * as l from "./letters";
-                    ~ [forbidden]
+                    ~ [forbidden { "name": "l" }]
         import letters from "./letters";
-               ~~~~~~~ [forbidden]
+               ~~~~~~~ [forbidden { "name": "letters" }]
         import L, { e } from "./letters";
-               ~ [forbidden]
-                    ~ [forbidden]
+               ~ [forbidden { "name": "L" }]
+                    ~ [forbidden { "name": "e" }]
         const x = "x";
         const [y] = ["y"];
         const { z } = { z: "z" };
@@ -579,9 +579,9 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         // reassigned
         const a = "a";
         let b = "b";
-            ~ [forbidden]
+            ~ [forbidden { "name": "b" }]
         var c = "c";
-            ~ [forbidden]
+            ~ [forbidden { "name": "c" }]
 
         b = a;
         c = a;
@@ -602,9 +602,9 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       stripIndent`
         // shadowed
         import { b } from "./letters";
-                 ~ [forbidden]
+                 ~ [forbidden { "name": "b" }]
         const a = "a";
-              ~ [forbidden]
+              ~ [forbidden { "name": "a" }]
 
         export function f(a: string, b: string): void {
           console.log(a, b);
@@ -626,26 +626,26 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       stripIndent`
         // some used imports
         import { a, b, c } from "./letters";
-                 ~ [forbidden]
-                       ~ [forbidden]
+                 ~ [forbidden { "name": "a" }]
+                       ~ [forbidden { "name": "c" }]
         import {
           a as apple,
-               ~~~~~ [forbidden]
+               ~~~~~ [forbidden { "name": "apple" }]
           b as banana,
           c as cherry
-               ~~~~~~ [forbidden]
+               ~~~~~~ [forbidden { "name": "cherry" }]
         } from "./letters";
 
         import t, { d } from "./letters";
-                    ~ [forbidden]
+                    ~ [forbidden { "name": "d" }]
         import u, { e as egg } from "./letters";
-                         ~~~ [forbidden]
+                         ~~~ [forbidden { "name": "egg" }]
         import v, { f } from "./letters";
-               ~ [forbidden]
-                    ~ [forbidden]
+               ~ [forbidden { "name": "v" }]
+                    ~ [forbidden { "name": "f" }]
         import w, { g as grape } from "./letters";
-               ~ [forbidden]
-                         ~~~~~ [forbidden]
+               ~ [forbidden { "name": "w" }]
+                         ~~~~~ [forbidden { "name": "grape" }]
         console.log(b, banana, t, u);
       `,
       {
@@ -668,7 +668,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       stripIndent`
         // unused classes
         class Person {}
-              ~~~~~~ [forbidden]
+              ~~~~~~ [forbidden { "name": "Person" }]
       `,
       {
         output: stripIndent`
@@ -686,11 +686,11 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         console.log(instance, array);
 
         const { property } = instance;
-                ~~~~~~~~ [forbidden]
+                ~~~~~~~~ [forbidden { "name": "property" }]
         const { property: renamed } = instance;
-                          ~~~~~~~ [forbidden]
+                          ~~~~~~~ [forbidden { "name": "renamed" }]
         const [element] = array;
-               ~~~~~~~ [forbidden]
+               ~~~~~~~ [forbidden { "name": "element" }]
 
         function f({ name }: { name?: string }): void {}
         function g({ name: renamed }: { name?: string }): void {}
@@ -698,7 +698,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         console.log(f.toString(), g.toString());
 
         const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
-                         ~~~~ [forbidden]
+                         ~~~~ [forbidden { "name": "rest" }]
 
         console.log(a);
       `,
@@ -729,7 +729,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       stripIndent`
         // unused enums
         enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
-             ~~~ [forbidden]
+             ~~~ [forbidden { "name": "WTF" }]
       `,
       {
         output: stripIndent`
@@ -742,9 +742,9 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       stripIndent`
         // unused functions
         function f(): void {}
-                 ~ [forbidden]
+                 ~ [forbidden { "name": "f" }]
         const g = () => {};
-              ~ [forbidden]
+              ~ [forbidden { "name": "g" }]
       `,
       {
         output: stripIndent`
@@ -758,27 +758,27 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       stripIndent`
         // unused imports
         import { a } from "./letters";
-                 ~ [forbidden]
+                 ~ [forbidden { "name": "a" }]
         import { b } from "./letters";
         import { c, d } from "./letters";
-                 ~ [forbidden]
-                    ~ [forbidden]
+                 ~ [forbidden { "name": "c" }]
+                    ~ [forbidden { "name": "d" }]
         import { a as anise } from "./letters";
-                      ~~~~~ [forbidden]
+                      ~~~~~ [forbidden { "name": "anise" }]
         import { b as basil } from "./letters";
         import {
           c as carrot,
-               ~~~~~~ [forbidden]
+               ~~~~~~ [forbidden { "name": "carrot" }]
           d as dill
-               ~~~~ [forbidden]
+               ~~~~ [forbidden { "name": "dill" }]
         } from "./letters";
         import * as l from "./letters";
-                    ~ [forbidden]
+                    ~ [forbidden { "name": "l" }]
         import letters from "./letters";
-               ~~~~~~~ [forbidden]
+               ~~~~~~~ [forbidden { "name": "letters" }]
         import L, { e } from "./letters";
-               ~ [forbidden]
-                    ~ [forbidden]
+               ~ [forbidden { "name": "L" }]
+                    ~ [forbidden { "name": "e" }]
 
         console.log(b, basil);
         console.log("the end");
@@ -799,9 +799,9 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       stripIndent`
         // unused types
         interface SomeInterface {}
-                  ~~~~~~~~~~~~~ [forbidden]
+                  ~~~~~~~~~~~~~ [forbidden { "name": "SomeInterface" }]
         type SomeType = {};
-             ~~~~~~~~ [forbidden]
+             ~~~~~~~~ [forbidden { "name": "SomeType" }]
       `,
       {
         output: stripIndent`
@@ -815,11 +815,11 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       stripIndent`
         // unused variables
         const a = "a";
-              ~ [forbidden]
+              ~ [forbidden { "name": "a" }]
         let b = "b";
-            ~ [forbidden]
+            ~ [forbidden { "name": "b" }]
         var c = "c";
-            ~ [forbidden]
+            ~ [forbidden { "name": "c" }]
       `,
       {
         output: stripIndent`
@@ -835,7 +835,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
     //   stripIndent`
     //     // no JSX
     //     import * as React from "react";
-    //                 ~~~~~ [forbidden]
+    //                 ~~~~~ [forbidden { "name": "TK" }]
     //   `
     // ),
     fromFixture(
@@ -846,18 +846,18 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         import * as path from "path";
         dotenv.config({ path: path.join(__dirname, "../.env") });
         import { ResetTemplateCache } from "./getTemplate";
-                 ~~~~~~~~~~~~~~~~~~ [forbidden]
+                 ~~~~~~~~~~~~~~~~~~ [forbidden { "name": "ResetTemplateCache" }]
         import {
         RequestMethod,
-        ~~~~~~~~~~~~~ [forbidden]
+        ~~~~~~~~~~~~~ [forbidden { "name": "RequestMethod" }]
         sendAsanaRequest,
-        ~~~~~~~~~~~~~~~~ [forbidden]
+        ~~~~~~~~~~~~~~~~ [forbidden { "name": "sendAsanaRequest" }]
         } from "./sendAsanaRequest";
         import "./arrayIncludesShim";
         import { startAsanaTimer } from "./startAsanaTimer";
-                 ~~~~~~~~~~~~~~~ [forbidden]
+                 ~~~~~~~~~~~~~~~ [forbidden { "name": "startAsanaTimer" }]
         const server = new Hapi.Server();
-              ~~~~~~ [forbidden]
+              ~~~~~~ [forbidden { "name": "server" }]
       `,
       {
         // TODO:
@@ -881,21 +881,21 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         dotenv.config({ path: path.join(__dirname, "../.env") });
         import {
         ResetTemplateCache,
-        ~~~~~~~~~~~~~~~~~~ [forbidden]
+        ~~~~~~~~~~~~~~~~~~ [forbidden { "name": "ResetTemplateCache" }]
         } from "./getTemplate";
         import {
         hasActiveRequest,
-        ~~~~~~~~~~~~~~~~ [forbidden]
+        ~~~~~~~~~~~~~~~~ [forbidden { "name": "hasActiveRequest" }]
         RequestMethod,
-        ~~~~~~~~~~~~~ [forbidden]
+        ~~~~~~~~~~~~~ [forbidden { "name": "RequestMethod" }]
         sendAsanaRequest,
-        ~~~~~~~~~~~~~~~~ [forbidden]
+        ~~~~~~~~~~~~~~~~ [forbidden { "name": "sendAsanaRequest" }]
         } from "./sendAsanaRequest";
         import "./arrayIncludesShim";
         import { startAsanaTimer } from "./startAsanaTimer";
-                 ~~~~~~~~~~~~~~~ [forbidden]
+                 ~~~~~~~~~~~~~~~ [forbidden { "name": "startAsanaTimer" }]
         const server = new Hapi.Server();
-              ~~~~~~ [forbidden]
+              ~~~~~~ [forbidden { "name": "server" }]
       `,
       {
         // TODO:
@@ -918,19 +918,19 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         import * as path from "path";
         dotenv.config({ path: path.join(__dirname, "../.env") });
         import { ResetTemplateCache } from "./getTemplate";
-                 ~~~~~~~~~~~~~~~~~~ [forbidden]
+                 ~~~~~~~~~~~~~~~~~~ [forbidden { "name": "ResetTemplateCache" }]
         import {
         RequestMethod,
-        ~~~~~~~~~~~~~ [forbidden]
+        ~~~~~~~~~~~~~ [forbidden { "name": "RequestMethod" }]
         sendAsanaRequest,
-        ~~~~~~~~~~~~~~~~ [forbidden]
+        ~~~~~~~~~~~~~~~~ [forbidden { "name": "sendAsanaRequest" }]
         } from "./sendAsanaRequest";
         // Just import the module to run the code inside and create global Array shim
         import "./arrayIncludesShim";
         import { startAsanaTimer } from "./startAsanaTimer";
-                 ~~~~~~~~~~~~~~~ [forbidden]
+                 ~~~~~~~~~~~~~~~ [forbidden { "name": "startAsanaTimer" }]
         const server = new Hapi.Server();
-              ~~~~~~ [forbidden]
+              ~~~~~~ [forbidden { "name": "server" }]
       `,
       {
         // TODO:
@@ -954,7 +954,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
          */
 
         import nope from "rxjs";
-               ~~~~ [forbidden]
+               ~~~~ [forbidden { "name": "nope" }]
       `,
       {
         // TODO:
@@ -974,7 +974,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
          */
 
         import { Subject } from "rxjs";
-                 ~~~~~~~ [forbidden]
+                 ~~~~~~~ [forbidden { "name": "Subject" }]
       `,
       {
         // TODO:
@@ -994,7 +994,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
          */
 
         import * as Rx from "rxjs";
-                    ~~ [forbidden]
+                    ~~ [forbidden { "name": "Rx" }]
       `,
       {
         // TODO:
@@ -1010,7 +1010,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
       stripIndent`
         // unused rest destructuring
         const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
-                         ~~~~ [forbidden]
+                         ~~~~ [forbidden { "name": "rest" }]
       `
     ),
   ],

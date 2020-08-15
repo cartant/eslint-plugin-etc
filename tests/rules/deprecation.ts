@@ -155,7 +155,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Deprecated interface
         import { DeprecatedInterface } from "./modules/deprecation";
         let a: DeprecatedInterface;
-               ~~~~~~~~~~~~~~~~~~~ [forbidden]
+               ~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedInterface" }]
       `
     ),
     fromFixture(
@@ -163,9 +163,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Multiple uses
         import { DeprecatedInterface } from "./modules/deprecation";
         let a: DeprecatedInterface;
-               ~~~~~~~~~~~~~~~~~~~ [forbidden]
+               ~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedInterface" }]
         let b: DeprecatedInterface;
-               ~~~~~~~~~~~~~~~~~~~ [forbidden]
+               ~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedInterface" }]
       `
     ),
     fromFixture(
@@ -173,7 +173,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Deprecated type
         import { DeprecatedType } from "./modules/deprecation";
         let a: DeprecatedType;
-               ~~~~~~~~~~~~~~ [forbidden]
+               ~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedType" }]
       `
     ),
     fromFixture(
@@ -181,7 +181,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Deprecated class
         import { DeprecatedClass } from "./modules/deprecation";
         let a: DeprecatedClass;
-               ~~~~~~~~~~~~~~~ [forbidden]
+               ~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedClass" }]
       `
     ),
     fromFixture(
@@ -189,7 +189,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Deprecated class with new
         import { DeprecatedClass } from "./modules/deprecation";
         let a = new DeprecatedClass();
-                    ~~~~~~~~~~~~~~~ [forbidden]
+                    ~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedClass" }]
       `
     ),
     fromFixture(
@@ -197,7 +197,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Deprecated enum
         import { DeprecatedEnum } from "./modules/deprecation";
         let a: DeprecatedEnum;
-               ~~~~~~~~~~~~~~ [forbidden]
+               ~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedEnum" }]
       `
     ),
     fromFixture(
@@ -205,7 +205,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Deprecated variable
         import { deprecatedVariable } from "./modules/deprecation";
         let a = deprecatedVariable;
-                ~~~~~~~~~~~~~~~~~~ [forbidden]
+                ~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedVariable" }]
       `
     ),
     fromFixture(
@@ -213,7 +213,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Deprecated function
         import { deprecatedFunction } from "./modules/deprecation";
         deprecatedFunction();
-        ~~~~~~~~~~~~~~~~~~ [forbidden]
+        ~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedFunction" }]
       `
     ),
     fromFixture(
@@ -222,9 +222,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         import { SomeDeprecatedInterface } from "./modules/deprecation";
         let a: SomeDeprecatedInterface;
         console.log(a.deprecatedProperty);
-                      ~~~~~~~~~~~~~~~~~~ [forbidden]
+                      ~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedProperty" }]
         a.deprecatedMethod();
-          ~~~~~~~~~~~~~~~~ [forbidden]
+          ~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedMethod" }]
       `
     ),
     fromFixture(
@@ -233,9 +233,9 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         import { SomeDeprecatedType } from "./modules/deprecation";
         let a: SomeDeprecatedType;
         console.log(a.deprecatedProperty);
-                      ~~~~~~~~~~~~~~~~~~ [forbidden]
+                      ~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedProperty" }]
         a.deprecatedMethod();
-          ~~~~~~~~~~~~~~~~ [forbidden]
+          ~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedMethod" }]
       `
     ),
     fromFixture(
@@ -243,16 +243,16 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Some deprecated class
         import { SomeDeprecatedClass } from "./modules/deprecation";
         SomeDeprecatedClass.deprecatedStaticMethod();
-                            ~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+                            ~~~~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedStaticMethod" }]
         let a: SomeDeprecatedClass;
         console.log(a.deprecatedProperty);
-                      ~~~~~~~~~~~~~~~~~~ [forbidden]
+                      ~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedProperty" }]
         console.log(a.deprecatedGetter);
-                      ~~~~~~~~~~~~~~~~ [forbidden]
+                      ~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedGetter" }]
         a.deprecatedSetter = "42";
-          ~~~~~~~~~~~~~~~~ [forbidden]
+          ~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedSetter" }]
         a.deprecatedMethod();
-          ~~~~~~~~~~~~~~~~ [forbidden]
+          ~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedMethod" }]
       `
     ),
     fromFixture(
@@ -261,7 +261,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         import { SomeDeprecatedEnum } from "./modules/deprecation";
         let a: SomeDeprecatedEnum;
         a = SomeDeprecatedEnum.DeprecatedMember;
-                               ~~~~~~~~~~~~~~~~ [forbidden]
+                               ~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedMember" }]
       `
     ),
     fromFixture(
@@ -269,10 +269,10 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Some signatures deprecated class
         import { DeprecatedSignatureClass } from "./modules/deprecation";
         DeprecatedSignatureClass.deprecatedSignatureStaticMethod("42");
-                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedSignatureStaticMethod" }]
         let a: DeprecatedSignatureClass;
         a.deprecatedSignatureMethod("42");
-          ~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+          ~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedSignatureMethod" }]
       `
     ),
     fromFixture(
@@ -280,7 +280,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Some signatures deprecated function
         import { deprecatedSignatureFunction } from "./modules/deprecation";
         deprecatedSignatureFunction("42");
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedSignatureFunction" }]
       `
     ),
     fromFixture(
@@ -288,7 +288,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Deprecated constructor
         import { DeprecatedConstructorSignatureClass } from "./modules/deprecation";
         let a = new DeprecatedConstructorSignatureClass("42");
-                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedConstructorSignatureClass" }]
       `
     ),
     fromFixture(
@@ -296,7 +296,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Not ignored name
         import { DeprecatedInterface } from "./modules/deprecation";
         let a: DeprecatedInterface;
-               ~~~~~~~~~~~~~~~~~~~ [forbidden]
+               ~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedInterface" }]
       `,
       {
         options: [
@@ -313,7 +313,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
         // Not ignored path
         import { DeprecatedInterface } from "./modules/deprecation";
         let a: DeprecatedInterface;
-               ~~~~~~~~~~~~~~~~~~~ [forbidden]
+               ~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedInterface" }]
       `,
       {
         options: [

@@ -65,10 +65,10 @@ ruleTester({ types: true }).run("throw-error", rule, {
       stripIndent`
         // throwing non-errors
         export const a = () => { throw "kaboom"; };
-                                       ~~~~~~~~ [forbidden]
+                                       ~~~~~~~~ [forbidden { "usage": "Throwing" }]
         try {
           throw "kaboom";
-                ~~~~~~~~ [forbidden]
+                ~~~~~~~~ [forbidden { "usage": "Throwing" }]
         } catch (error: any) {
           throw error;
         }
@@ -82,13 +82,13 @@ ruleTester({ types: true }).run("throw-error", rule, {
       stripIndent`
         // rejecting non-errors
         export const a = Promise.reject("kaboom");
-                                        ~~~~~~~~ [forbidden]
+                                        ~~~~~~~~ [forbidden { "usage": "Rejecting with" }]
         export const b = new Promise((resolve, reject) => reject("kaboom"));
-                                                                 ~~~~~~~~ [forbidden]
+                                                                 ~~~~~~~~ [forbidden { "usage": "Rejecting with" }]
         export const c = new Promise(function (resolve, reject) { reject("kaboom"); });
-                                                                         ~~~~~~~~ [forbidden]
+                                                                         ~~~~~~~~ [forbidden { "usage": "Rejecting with" }]
         export const d = new Promise(function func(resolve, reject) { reject("kaboom"); });
-                                                                             ~~~~~~~~ [forbidden]
+                                                                             ~~~~~~~~ [forbidden { "usage": "Rejecting with" }]
       `
     ),
   ],

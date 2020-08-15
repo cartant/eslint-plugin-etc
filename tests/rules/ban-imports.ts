@@ -8,6 +8,7 @@ import { fromFixture } from "eslint-etc";
 import rule = require("../../source/rules/ban-imports");
 import { ruleTester } from "../utils";
 
+const defaultMessage = "This import location is forbidden.";
 const options = [
   {
     "^a$": true,
@@ -37,35 +38,23 @@ ruleTester({ types: false }).run("ban-imports", rule, {
     fromFixture(
       stripIndent`
         import { a } from "a";
-        ~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+        ~~~~~~~~~~~~~~~~~~~~~~ [forbidden { "message": "${defaultMessage}" }]
       `,
       { options }
     ),
     fromFixture(
       stripIndent`
         import { c } from "./c";
-        ~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+        ~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden { "message": "${defaultMessage}" }]
       `,
       { options }
     ),
     fromFixture(
       stripIndent`
         import { m } from "m";
-        ~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+        ~~~~~~~~~~~~~~~~~~~~~~ [forbidden { "message": "'m' has been deprecated; use 'baz'" }]
       `,
       { options }
     ),
-    {
-      code: stripIndent`
-        import { m } from "m";
-      `,
-      errors: [
-        {
-          data: { message: "'m' has been deprecated; use 'baz'" },
-          messageId: "forbidden",
-        },
-      ],
-      options,
-    },
   ],
 });

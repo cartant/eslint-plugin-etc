@@ -22,13 +22,13 @@ ruleTester({ types: true }).run("no-t", rule, {
     fromFixture(
       stripIndent`
         type Thing<T> = { value: T };
-                   ~ [forbidden]
+                   ~ [forbidden { "name": "T" }]
       `
     ),
     fromFixture(
       stripIndent`
         type Thing<Value> = { value: Value };
-                   ~~~~~ [prefix]
+                   ~~~~~ [prefix { "name": "Value", "prefix": "T" }]
       `,
       { options: [{ prefix: "T" }] }
     ),

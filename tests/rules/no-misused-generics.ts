@@ -43,27 +43,27 @@ ruleTester({ types: true }).run("no-misused-generics", rule, {
   invalid: [
     fromFixture(stripIndent`
       declare function get<T>(): T;
-                           ~ [cannotInfer]
+                           ~ [cannotInfer { "name": "T" }]
       get<string>();
     `),
     fromFixture(stripIndent`
       declare function get<T extends object>(): T;
-                           ~~~~~~~~~~~~~~~~ [cannotInfer]
+                           ~~~~~~~~~~~~~~~~ [cannotInfer { "name": "T" }]
       declare function get<T, U = T>(param: U): U;
-                           ~ [cannotInfer]
+                           ~ [cannotInfer { "name": "T" }]
       declare function get<T, U extends T = T>(param: T): U;
-                              ~~~~~~~~~~~~~~~ [cannotInfer]
+                              ~~~~~~~~~~~~~~~ [cannotInfer { "name": "U" }]
       declare function get<T extends string, U>(param: Record<T, U>): boolean;
-                           ~~~~~~~~~~~~~~~~ [canReplace]
-                                             ~ [canReplace]
+                           ~~~~~~~~~~~~~~~~ [canReplace { "name": "T", "replacement": "string" }]
+                                             ~ [canReplace { "name": "U", "replacement": "any" }]
       declare function get<T>(param: <T, U>(param: T) => U): T;
-                           ~ [cannotInfer]
-                                      ~ [canReplace]
-                                         ~ [cannotInfer]
+                           ~ [cannotInfer { "name": "T" }]
+                                      ~ [canReplace { "name": "T", "replacement": "any" }]
+                                         ~ [cannotInfer { "name": "U" }]
     `),
     fromFixture(stripIndent`
       function fn<T>(param: string) {
-                  ~ [cannotInfer]
+                  ~ [cannotInfer { "name": "T" }]
         let v: T = null!;
         return v;
       }
@@ -71,28 +71,28 @@ ruleTester({ types: true }).run("no-misused-generics", rule, {
     fromFixture(stripIndent`
       declare class C<V> {
         method<T, U>(param: T): U;
-               ~ [canReplace]
-                  ~ [cannotInfer]
+               ~ [canReplace { "name": "T", "replacement": "any" }]
+                  ~ [cannotInfer { "name": "U" }]
         prop: <T>() => T;
-               ~ [cannotInfer]
+               ~ [cannotInfer { "name": "T" }]
       }
     `),
     fromFixture(stripIndent`
       <T,>(param): T => null!;
-       ~ [cannotInfer]
+       ~ [cannotInfer { "name": "T" }]
     `),
     fromFixture(stripIndent`
       declare function take<T>(param: T): void; // T not used as constraint -> could just be any
-                            ~ [canReplace]
+                            ~ [canReplace { "name": "T", "replacement": "any" }]
       declare function take<T extends object>(param: T): void; // could just use object
-                            ~~~~~~~~~~~~~~~~ [canReplace]
+                            ~~~~~~~~~~~~~~~~ [canReplace { "name": "T", "replacement": "object" }]
       declare function take<T, U = T>(param1: T, param2: U): void; // no constraint
-                            ~ [canReplace]
-                               ~~~~~ [canReplace]
+                            ~ [canReplace { "name": "T", "replacement": "any" }]
+                               ~~~~~ [canReplace { "name": "U", "replacement": "any" }]
       declare function take<T, U extends T>(param: T): U; // U is only used in the return type
-                               ~~~~~~~~~~~ [cannotInfer]
+                               ~~~~~~~~~~~ [cannotInfer { "name": "U" }]
       declare function take<T, U extends T>(param: U): U; // T cannot be inferred
-                            ~ [cannotInfer]
+                            ~ [cannotInfer { "name": "T" }]
     `),
     fromFixture(stripIndent`
       declare class Foo {
@@ -100,7 +100,7 @@ ruleTester({ types: true }).run("no-misused-generics", rule, {
         getProp<T>(this: Record<'prop', T>): T;
         compare<T>(this: Record<'prop', T>, other: Record<'prop', T>): number;
         foo<T>(this: T): void;
-            ~ [canReplace]
+            ~ [canReplace { "name": "T", "replacement": "any" }]
       }
     `),
   ],
