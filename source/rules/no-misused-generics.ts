@@ -15,7 +15,8 @@ const rule = ruleCreator({
   meta: {
     docs: {
       category: "Best Practices",
-      description: "Forbids ... TK.",
+      description:
+        "Forbids type parameters without inference sites and type parameters that don't add type safety to declarations.",
       recommended: false,
     },
     fixable: null,
