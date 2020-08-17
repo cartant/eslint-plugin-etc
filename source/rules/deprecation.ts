@@ -24,7 +24,7 @@ const rule = ruleCreator({
       description: "Forbids the use of deprecated APIs.",
       recommended: false,
     },
-    fixable: null,
+    fixable: undefined,
     messages: {
       forbidden: `"{{name}}" is deprecated: {{comment}}`,
     },

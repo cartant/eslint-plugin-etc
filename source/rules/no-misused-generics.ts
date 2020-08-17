@@ -19,14 +19,14 @@ const rule = ruleCreator({
         "Forbids type parameters without inference sites and type parameters that don't add type safety to declarations.",
       recommended: false,
     },
-    fixable: null,
+    fixable: undefined,
     messages: {
       canReplace:
         "Type parameter '{{name}}' is not used to enforce a constraint between types and can be replaced with '{{replacement}}'.",
       cannotInfer:
         "Type parameter '{{name}}' cannot be inferred from any parameter.",
     },
-    schema: null,
+    schema: [],
     type: "problem",
   },
   name: "no-misused-generics",

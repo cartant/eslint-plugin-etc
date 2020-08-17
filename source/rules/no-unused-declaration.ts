@@ -34,7 +34,7 @@ const rule = ruleCreator({
       description: "Forbids unused declarations.",
       recommended: false,
     },
-    fixable: null,
+    fixable: undefined,
     messages: {
       forbidden: `"{{name}}" is not used; unused declarations are forbidden.`,
     },

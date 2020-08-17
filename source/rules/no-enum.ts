@@ -16,11 +16,11 @@ const rule = ruleCreator({
       description: "Forbids the use of `enum`.",
       recommended: false,
     },
-    fixable: null,
+    fixable: undefined,
     messages: {
       forbidden: "`enum` is forbidden.",
     },
-    schema: null,
+    schema: [],
     type: "problem",
   },
   name: "no-enum",

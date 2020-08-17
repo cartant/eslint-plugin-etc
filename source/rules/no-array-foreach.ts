@@ -15,11 +15,11 @@ const rule = ruleCreator({
       description: "Forbids calling `forEach` on arrays.",
       recommended: false,
     },
-    fixable: null,
+    fixable: undefined,
     messages: {
       forbidden: "Calling `forEach` on arrays is forbidden.",
     },
-    schema: null,
+    schema: [],
     type: "problem",
   },
   name: "no-array-foreach",

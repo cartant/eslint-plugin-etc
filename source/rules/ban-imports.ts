@@ -17,7 +17,7 @@ const rule = ruleCreator({
       description: "Forbids using the configured import locations.",
       recommended: false,
     },
-    fixable: null,
+    fixable: undefined,
     messages: {
       forbidden: "{{message}}",
     },

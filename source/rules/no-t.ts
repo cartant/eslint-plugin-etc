@@ -18,7 +18,7 @@ const rule = ruleCreator({
       description: "Forbids single-character type parameters.",
       recommended: false,
     },
-    fixable: null,
+    fixable: undefined,
     messages: {
       forbidden: `Single-character type parameters are forbidden. Choose a more descriptive name for "{{name}}"`,
       prefix: `Type parameter "{{name}}" does not have prefix "{{prefix}}"`,

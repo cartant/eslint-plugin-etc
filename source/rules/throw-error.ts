@@ -15,11 +15,11 @@ const rule = ruleCreator({
       description: "Forbids throwing - or rejecting with - non-`Error` values.",
       recommended: false,
     },
-    fixable: null,
+    fixable: undefined,
     messages: {
       forbidden: "{{usage}} non-`Error` values is forbidden.",
     },
-    schema: null,
+    schema: [],
     type: "problem",
   },
   name: "throw-error",

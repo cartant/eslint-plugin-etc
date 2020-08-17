@@ -1,0 +1,3 @@
+# no-array-foreach
+
+TK

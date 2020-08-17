@@ -21,7 +21,7 @@ const rule = ruleCreator({
       description: "Forbids the use of `const enum`.",
       recommended: false,
     },
-    fixable: null,
+    fixable: undefined,
     messages: {
       forbidden: "`const enum` is forbidden.",
     },

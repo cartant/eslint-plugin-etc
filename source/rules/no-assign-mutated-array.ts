@@ -26,11 +26,11 @@ const rule = ruleCreator({
       description: "Forbids the assignment of returned, mutated arrays.",
       recommended: false,
     },
-    fixable: null,
+    fixable: undefined,
     messages: {
       forbidden: "Assignment of mutated arrays is forbidden.",
     },
-    schema: null,
+    schema: [],
     type: "problem",
   },
   name: "no-assign-mutated-array",
