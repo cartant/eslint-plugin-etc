@@ -33,7 +33,7 @@ ruleTester({ types: true }).run("no-misused-generics", rule, {
         // type parameters in implementations are always necessary, because they enforce type safety in the function body
         function doStuff<K, V>(map: Map<K, V>, key: K) {
           let v = map.get(key);
-          v = 1; // this error disappears if V is replaced with any
+          v = 1; // this error disappears if V is replaced with any/unknown
           map.set(key, v);
           return v; // signature has implicit return type V, but we cannot know that without type information
         }
@@ -55,10 +55,10 @@ ruleTester({ types: true }).run("no-misused-generics", rule, {
                               ~~~~~~~~~~~~~~~ [cannotInfer { "name": "U" }]
       declare function get<T extends string, U>(param: Record<T, U>): boolean;
                            ~~~~~~~~~~~~~~~~ [canReplace { "name": "T", "replacement": "string" }]
-                                             ~ [canReplace { "name": "U", "replacement": "any" }]
+                                             ~ [canReplace { "name": "U", "replacement": "unknown" }]
       declare function get<T>(param: <T, U>(param: T) => U): T;
                            ~ [cannotInfer { "name": "T" }]
-                                      ~ [canReplace { "name": "T", "replacement": "any" }]
+                                      ~ [canReplace { "name": "T", "replacement": "unknown" }]
                                          ~ [cannotInfer { "name": "U" }]
     `),
     fromFixture(stripIndent`
@@ -71,7 +71,7 @@ ruleTester({ types: true }).run("no-misused-generics", rule, {
     fromFixture(stripIndent`
       declare class C<V> {
         method<T, U>(param: T): U;
-               ~ [canReplace { "name": "T", "replacement": "any" }]
+               ~ [canReplace { "name": "T", "replacement": "unknown" }]
                   ~ [cannotInfer { "name": "U" }]
         prop: <T>() => T;
                ~ [cannotInfer { "name": "T" }]
@@ -82,13 +82,13 @@ ruleTester({ types: true }).run("no-misused-generics", rule, {
        ~ [cannotInfer { "name": "T" }]
     `),
     fromFixture(stripIndent`
-      declare function take<T>(param: T): void; // T not used as constraint -> could just be any
-                            ~ [canReplace { "name": "T", "replacement": "any" }]
+      declare function take<T>(param: T): void; // T not used as constraint -> could just be any/unknown
+                            ~ [canReplace { "name": "T", "replacement": "unknown" }]
       declare function take<T extends object>(param: T): void; // could just use object
                             ~~~~~~~~~~~~~~~~ [canReplace { "name": "T", "replacement": "object" }]
       declare function take<T, U = T>(param1: T, param2: U): void; // no constraint
-                            ~ [canReplace { "name": "T", "replacement": "any" }]
-                               ~~~~~ [canReplace { "name": "U", "replacement": "any" }]
+                            ~ [canReplace { "name": "T", "replacement": "unknown" }]
+                               ~~~~~ [canReplace { "name": "U", "replacement": "unknown" }]
       declare function take<T, U extends T>(param: T): U; // U is only used in the return type
                                ~~~~~~~~~~~ [cannotInfer { "name": "U" }]
       declare function take<T, U extends T>(param: U): U; // T cannot be inferred
@@ -100,7 +100,7 @@ ruleTester({ types: true }).run("no-misused-generics", rule, {
         getProp<T>(this: Record<'prop', T>): T;
         compare<T>(this: Record<'prop', T>, other: Record<'prop', T>): number;
         foo<T>(this: T): void;
-            ~ [canReplace { "name": "T", "replacement": "any" }]
+            ~ [canReplace { "name": "T", "replacement": "unknown" }]
       }
     `),
   ],

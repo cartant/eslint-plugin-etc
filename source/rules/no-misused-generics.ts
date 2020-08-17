@@ -86,7 +86,7 @@ const rule = ruleCreator({
               name: typeParameter.name.text,
               replacement: typeParameter.constraint
                 ? typeParameter.constraint.getText(signature.getSourceFile())
-                : "any",
+                : "unknown",
             },
             loc: getLoc(typeParameter),
             messageId: "canReplace",
