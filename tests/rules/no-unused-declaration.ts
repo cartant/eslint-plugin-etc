@@ -501,6 +501,31 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         }
       `,
     },
+    {
+      code: stripIndent`
+        // extended interface
+        interface Foo {
+          x: string;
+        }
+
+        export interface Bar extends Foo {
+          y: string;
+        }
+      `,
+    },
+    {
+      code: stripIndent`
+        // unused interface with declarations disabled
+        interface Foo {
+          x: string;
+        }
+      `,
+      options: [
+        {
+          declarations: false,
+        },
+      ],
+    },
   ],
   invalid: [
     fromFixture(

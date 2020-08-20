@@ -148,11 +148,11 @@ const rule = ruleCreator({
       if (tsutils.hasModifier(modifiers, ts.SyntaxKind.ExportKeyword)) {
         return;
       }
-      const typeReferences = tsquery(
+      const nodes = tsquery(
         parent,
-        `TypeReference[typeName.text="${name.text}"]`
+        `TypeReference[typeName.text="${name.text}"], HeritageClause Identifier[name="${name.text}"]`
       );
-      if (typeReferences.length === 0) {
+      if (nodes.length === 0) {
         context.report({
           data: { name: name.text },
           messageId: "forbidden",
