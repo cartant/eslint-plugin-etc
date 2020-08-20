@@ -138,6 +138,9 @@ const rule = ruleCreator({
     }
 
     function checkTypeDeclaration(node: es.Node & { id: es.Identifier }) {
+      if (!declarations) {
+        return;
+      }
       const typeDeclaration = esTreeNodeToTSNodeMap.get(node) as
         | ts.InterfaceDeclaration
         | ts.TypeAliasDeclaration;
