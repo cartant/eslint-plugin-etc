@@ -72,6 +72,8 @@ const rule = ruleCreator({
       )
     );
 
+    const moduleDeclarations: es.Node[] = [];
+
     function check(scope: eslint.Scope.Scope, comments?: es.Comment[]) {
       if (comments) {
         comments.some((comment) => {
@@ -138,6 +140,9 @@ const rule = ruleCreator({
     }
 
     function checkTypeDeclaration(node: es.Node & { id: es.Identifier }) {
+      if (moduleDeclarations.length > 0) {
+        return false;
+      }
       if (!declarations) {
         return;
       }
@@ -290,6 +295,9 @@ const rule = ruleCreator({
     }
 
     function shouldCheckReferences(identifier: es.Identifier) {
+      if (moduleDeclarations.length > 0) {
+        return false;
+      }
       if (!declarations && !isImportedIdentifier(identifier)) {
         return false;
       }
@@ -328,12 +336,11 @@ const rule = ruleCreator({
     }
 
     return {
-      JSXOpeningElement: (node: es.Node) => {},
       Program: (node: es.Program) => check(context.getScope(), node.comments),
-      TSClassImplements: (node: es.Node) => {},
       TSInterfaceDeclaration: checkTypeDeclaration,
+      TSModuleDeclaration: (node: es.Node) => moduleDeclarations.push(node),
+      "TSModuleDeclaration:exit": () => moduleDeclarations.pop(),
       TSTypeAliasDeclaration: checkTypeDeclaration,
-      TSTypeReference: (node: es.Node) => {},
     };
   },
 });
