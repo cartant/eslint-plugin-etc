@@ -561,6 +561,17 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         }
       `,
     },
+    {
+      code: stripIndent`
+        // namespace import type reference
+        import * as foo from 'foo';
+        export async function getToken(
+          fooAuth: foo.auth.Auth,
+        ) {
+          return fooAuth.createCustomToken('user');
+        }
+      `,
+    },
   ],
   invalid: [
     fromFixture(
