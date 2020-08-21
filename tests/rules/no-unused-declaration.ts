@@ -504,6 +504,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
     {
       code: stripIndent`
         // extended interface
+        // https://github.com/cartant/eslint-plugin-etc/issues/16
         interface Foo {
           x: string;
         }
@@ -516,6 +517,7 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
     {
       code: stripIndent`
         // unused interface with declarations disabled
+        // https://github.com/cartant/eslint-plugin-etc/issues/16
         interface Foo {
           x: string;
         }
