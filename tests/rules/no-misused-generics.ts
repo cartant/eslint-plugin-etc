@@ -39,6 +39,27 @@ ruleTester({ types: true }).run("no-misused-generics", rule, {
         }
       `,
     },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/eslint-plugin-etc/issues/15
+        /**
+         * Call two functions with the same args, e.g.
+         *
+         * onClick={both(action('click'), setState)}
+         */
+        export function both<
+          Args extends unknown[],
+          CB1 extends (...args: Args) => void,
+          CB2 extends (...args: Args) => void
+        >(fn1: CB1, fn2: CB2): (...args: Args) => void {
+          // See https://stackoverflow.com/a/62093430/388951
+          return function (...args: Args) {
+            fn1(...args);
+            fn2(...args);
+          };
+        }
+      `,
+    },
   ],
   invalid: [
     fromFixture(stripIndent`
