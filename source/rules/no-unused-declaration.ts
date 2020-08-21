@@ -112,7 +112,7 @@ const rule = ruleCreator({
                 `JsxSelfClosingElement[tagName.text="${name}"]`,
                 `JsxSelfClosingElement[tagName.expression.text="${name}"]`,
                 `TypeReference[typeName.text="${name}"]`,
-                `TypeReference[typeName.left.text="${name}"]`,
+                `TypeReference QualifiedName[left.text="${name}"]`,
               ].join(",")
             );
             if (nodes.length > 0) {
@@ -155,7 +155,10 @@ const rule = ruleCreator({
       }
       const nodes = tsquery(
         parent,
-        `TypeReference[typeName.text="${name.text}"], HeritageClause Identifier[name="${name.text}"]`
+        [
+          `TypeReference[typeName.text="${name.text}"]`,
+          `HeritageClause Identifier[name="${name.text}"]`,
+        ].join(",")
       );
       if (nodes.length === 0) {
         context.report({
