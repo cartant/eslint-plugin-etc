@@ -528,6 +528,27 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         },
       ],
     },
+    {
+      code: stripIndent`
+        // global interface merging
+        // https://github.com/cartant/eslint-plugin-etc/issues/18
+        declare global {
+          interface Window {
+            myGlobalVar?: string;
+          }
+        }
+      `,
+    },
+    {
+      code: stripIndent`
+        // module interface merging
+        declare module "rxjs/internal/Subject" {
+          interface Subject<T> {
+            next(value: T | null): void;
+          }
+        }
+      `,
+    },
   ],
   invalid: [
     fromFixture(
