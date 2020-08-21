@@ -549,6 +549,18 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
         }
       `,
     },
+    {
+      code: stripIndent`
+        // default import type reference
+        // https://github.com/cartant/eslint-plugin-etc/issues/17
+        import admin from 'firebase-admin';
+        export async function getToken(
+          firebaseAuth: admin.auth.Auth,
+        ) {
+          return firebaseAuth.createCustomToken('user');
+        }
+      `,
+    },
   ],
   invalid: [
     fromFixture(
