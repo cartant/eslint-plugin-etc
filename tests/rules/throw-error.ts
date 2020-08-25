@@ -12,11 +12,27 @@ ruleTester({ types: true }).run("throw-error", rule, {
   valid: [
     {
       code: stripIndent`
-        // throwing errows
+        // throwing errors
         export const a = () => { throw new Error("kaboom"); };
 
         try {
           throw new Error("kaboom");
+        } catch (error: any) {
+          throw error;
+        }
+
+        function b(error: any): never {
+          throw error;
+        }
+      `,
+    },
+    {
+      code: stripIndent`
+        // throwing DOMExceptions
+        export const a = () => { throw new DOMException("kaboom"); };
+
+        try {
+          throw new DOMException("kaboom");
         } catch (error: any) {
           throw error;
         }
@@ -35,6 +51,14 @@ ruleTester({ types: true }).run("throw-error", rule, {
         export const d = new Promise((resolve) => resolve(42));
         export const e = new Promise(function (resolve) { resolve(56); });
         export const f = new Promise(function func(resolve) { resolve(56); });
+      `,
+    },
+    {
+      code: stripIndent`
+        // rejecting DOMExceptions
+        export const a = Promise.reject(new DOMException("kaboom"));
+        export const b = new Promise((resolve, reject) => reject(new DOMException("kaboom")));
+        export const c = new Promise(function (resolve, reject) { reject(new DOMException("kaboom")); });
       `,
     },
     {

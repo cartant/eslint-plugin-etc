@@ -71,7 +71,10 @@ const rule = ruleCreator({
         });
       },
       ThrowStatement: (node: es.ThrowStatement) => {
-        if (!isAny(node.argument) && !couldBeType(node.argument, "Error")) {
+        if (
+          !isAny(node.argument) &&
+          !couldBeType(node.argument, /^(Error|DOMException)$/)
+        ) {
           context.report({
             data: { usage: "Throwing" },
             messageId: "forbidden",
