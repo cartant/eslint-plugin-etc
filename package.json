@@ -50,7 +50,6 @@
   "name": "eslint-plugin-etc",
   "optionalDependencies": {},
   "peerDependencies": {
-    "@typescript-eslint/parser": "^3.0.0",
     "eslint": "^5.0.0 || ^6.0.0 || ^ 7.0.0",
     "typescript": "^3.0.0 || ^4.0.0"
   },
