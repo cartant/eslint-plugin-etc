@@ -574,515 +574,494 @@ ruleTester({ types: true }).run("no-unused-declaration", rule, {
     },
   ],
   invalid: [
-    fromFixture(
-      stripIndent`
-        // only declarations
-        import { a } from "./letters";
-        import { a as alias } from "./letters";
-        import * as l from "./letters";
-        import letters from "./letters";
-        import L, { e } from "./letters";
-
-        const x = "x";
-              ~ [forbidden { "name": "x" }]
-        const [y] = ["y"];
-               ~ [forbidden { "name": "y" }]
-        const { z } = { z: "z" };
-                ~ [forbidden { "name": "z" }]
-      `,
-      {
-        options: [
-          {
-            declarations: true,
-            imports: false,
-          },
-        ],
-        output: stripIndent`
-          // only declarations
-          import { a } from "./letters";
-          import { a as alias } from "./letters";
-          import * as l from "./letters";
-          import letters from "./letters";
-          import L, { e } from "./letters";
-
-          const x = "x";
-          const [y] = ["y"];
-          const { z } = { z: "z" };
-        `,
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // only imports
-        import { a } from "./letters";
-                 ~ [forbidden { "name": "a" }]
-        import { a as alias } from "./letters";
-                      ~~~~~ [forbidden { "name": "alias" }]
-        import * as l from "./letters";
-                    ~ [forbidden { "name": "l" }]
-        import letters from "./letters";
-               ~~~~~~~ [forbidden { "name": "letters" }]
-        import L, { e } from "./letters";
-               ~ [forbidden { "name": "L" }]
-                    ~ [forbidden { "name": "e" }]
-        const x = "x";
-        const [y] = ["y"];
-        const { z } = { z: "z" };
-      `,
-      {
-        options: [
-          {
-            declarations: false,
-            imports: true,
-          },
-        ],
-        // TODO:
-        // output: stripIndent`
-        //   // only imports
-        //   const x = "x";
-        //   const [y] = ["y"];
-        //   const { z } = { z: "z" };
-        // `
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // reassigned
-        const a = "a";
-        let b = "b";
-            ~ [forbidden { "name": "b" }]
-        var c = "c";
-            ~ [forbidden { "name": "c" }]
-
-        b = a;
-        c = a;
-      `,
-      {
-        output: stripIndent`
-          // reassigned
-          const a = "a";
-          let b = "b";
-          var c = "c";
-
-          b = a;
-          c = a;
-        `,
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // shadowed
-        import { b } from "./letters";
-                 ~ [forbidden { "name": "b" }]
-        const a = "a";
-              ~ [forbidden { "name": "a" }]
-
-        export function f(a: string, b: string): void {
-          console.log(a, b);
-        }
-      `,
-      {
-        // TODO:
-        // output: stripIndent`
-        //   // shadowed
-        //   const a = "a";
-        //
-        //   export function f(a: string, b: string): void {
-        //     console.log(a, b);
-        //   }
-        // `
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // some used imports
-        import { a, b, c } from "./letters";
-                 ~ [forbidden { "name": "a" }]
-                       ~ [forbidden { "name": "c" }]
-        import {
-          a as apple,
-               ~~~~~ [forbidden { "name": "apple" }]
-          b as banana,
-          c as cherry
-               ~~~~~~ [forbidden { "name": "cherry" }]
-        } from "./letters";
-
-        import t, { d } from "./letters";
-                    ~ [forbidden { "name": "d" }]
-        import u, { e as egg } from "./letters";
-                         ~~~ [forbidden { "name": "egg" }]
-        import v, { f } from "./letters";
-               ~ [forbidden { "name": "v" }]
-                    ~ [forbidden { "name": "f" }]
-        import w, { g as grape } from "./letters";
-               ~ [forbidden { "name": "w" }]
-                         ~~~~~ [forbidden { "name": "grape" }]
-        console.log(b, banana, t, u);
-      `,
-      {
-        // TODO:
-        // output: stripIndent`
-        //   // some used imports
-        //   import { b } from "./letters";
-        //   import {
-        //     b as banana
-        //   } from "./letters";
-        //
-        //   import t from "./letters";
-        //   import u from "./letters";
-        //
-        //   console.log(b, banana, t, u);
-        // `
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // unused classes
-        class Person {}
-              ~~~~~~ [forbidden { "name": "Person" }]
-      `,
-      {
-        output: stripIndent`
-          // unused classes
-          class Person {}
-        `,
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // unused destructuring
-        const instance = { property: 42 };
-        const array = [54];
-
-        console.log(instance, array);
-
-        const { property } = instance;
-                ~~~~~~~~ [forbidden { "name": "property" }]
-        const { property: renamed } = instance;
-                          ~~~~~~~ [forbidden { "name": "renamed" }]
-        const [element] = array;
-               ~~~~~~~ [forbidden { "name": "element" }]
-
-        function f({ name }: { name?: string }): void {}
-        function g({ name: renamed }: { name?: string }): void {}
-
-        console.log(f.toString(), g.toString());
-
-        const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
-                         ~~~~ [forbidden { "name": "rest" }]
-
-        console.log(a);
-      `,
-      {
-        output: stripIndent`
-          // unused destructuring
-          const instance = { property: 42 };
-          const array = [54];
-
-          console.log(instance, array);
-
-          const { property } = instance;
-          const { property: renamed } = instance;
-          const [element] = array;
-
-          function f({ name }: { name?: string }): void {}
-          function g({ name: renamed }: { name?: string }): void {}
-
-          console.log(f.toString(), g.toString());
-
-          const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
-
-          console.log(a);
-        `,
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // unused enums
-        enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
-             ~~~ [forbidden { "name": "WTF" }]
-      `,
-      {
-        output: stripIndent`
-          // unused enums
-          enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
-        `,
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // unused functions
-        function f(): void {}
-                 ~ [forbidden { "name": "f" }]
-        const g = () => {};
-              ~ [forbidden { "name": "g" }]
-      `,
-      {
-        output: stripIndent`
-          // unused functions
-          function f(): void {}
-          const g = () => {};
-        `,
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // unused imports
-        import { a } from "./letters";
-                 ~ [forbidden { "name": "a" }]
-        import { b } from "./letters";
-        import { c, d } from "./letters";
-                 ~ [forbidden { "name": "c" }]
-                    ~ [forbidden { "name": "d" }]
-        import { a as anise } from "./letters";
-                      ~~~~~ [forbidden { "name": "anise" }]
-        import { b as basil } from "./letters";
-        import {
-          c as carrot,
-               ~~~~~~ [forbidden { "name": "carrot" }]
-          d as dill
-               ~~~~ [forbidden { "name": "dill" }]
-        } from "./letters";
-        import * as l from "./letters";
-                    ~ [forbidden { "name": "l" }]
-        import letters from "./letters";
-               ~~~~~~~ [forbidden { "name": "letters" }]
-        import L, { e } from "./letters";
-               ~ [forbidden { "name": "L" }]
-                    ~ [forbidden { "name": "e" }]
-
-        console.log(b, basil);
-        console.log("the end");
-      `,
-      {
-        // TODO:
-        // output: stripIndent`
-        //   // unused imports
-        //   import { b } from "./letters";
-        //   import { b as basil } from "./letters";
-        //
-        //   console.log(b, basil);
-        //   console.log("the end");
-        // `
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // unused types
-        interface SomeInterface {}
-                  ~~~~~~~~~~~~~ [forbidden { "name": "SomeInterface" }]
-        type SomeType = {};
-             ~~~~~~~~ [forbidden { "name": "SomeType" }]
-      `,
-      {
-        output: stripIndent`
-          // unused types
-          interface SomeInterface {}
-          type SomeType = {};
-        `,
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // unused variables
-        const a = "a";
-              ~ [forbidden { "name": "a" }]
-        let b = "b";
-            ~ [forbidden { "name": "b" }]
-        var c = "c";
-            ~ [forbidden { "name": "c" }]
-      `,
-      {
-        output: stripIndent`
-          // unused variables
-          const a = "a";
-          let b = "b";
-          var c = "c";
-        `,
-      }
-    ),
-    // TODO:
+    // TODO: https://github.com/cartant/eslint-plugin-etc/issues/19
     // fromFixture(
     //   stripIndent`
-    //     // no JSX
-    //     import * as React from "react";
-    //                 ~~~~~ [forbidden { "name": "TK" }]
+    //     // only declarations
+    //     import { a } from "./letters";
+    //     import { a as alias } from "./letters";
+    //     import * as l from "./letters";
+    //     import letters from "./letters";
+    //     import L, { e } from "./letters";
+    //     const x = "x";
+    //           ~ [forbidden { "name": "x" }]
+    //     const [y] = ["y"];
+    //            ~ [forbidden { "name": "y" }]
+    //     const { z } = { z: "z" };
+    //             ~ [forbidden { "name": "z" }]
+    //   `,
+    //   {
+    //     options: [
+    //       {
+    //         declarations: true,
+    //         imports: false,
+    //       },
+    //     ],
+    //     output: stripIndent`
+    //       // only declarations
+    //       import { a } from "./letters";
+    //       import { a as alias } from "./letters";
+    //       import * as l from "./letters";
+    //       import letters from "./letters";
+    //       import L, { e } from "./letters";
+    //       const x = "x";
+    //       const [y] = ["y"];
+    //       const { z } = { z: "z" };
+    //     `,
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // only imports
+    //     import { a } from "./letters";
+    //              ~ [forbidden { "name": "a" }]
+    //     import { a as alias } from "./letters";
+    //                   ~~~~~ [forbidden { "name": "alias" }]
+    //     import * as l from "./letters";
+    //                 ~ [forbidden { "name": "l" }]
+    //     import letters from "./letters";
+    //            ~~~~~~~ [forbidden { "name": "letters" }]
+    //     import L, { e } from "./letters";
+    //            ~ [forbidden { "name": "L" }]
+    //                 ~ [forbidden { "name": "e" }]
+    //     const x = "x";
+    //     const [y] = ["y"];
+    //     const { z } = { z: "z" };
+    //   `,
+    //   {
+    //     options: [
+    //       {
+    //         declarations: false,
+    //         imports: true,
+    //       },
+    //     ],
+    //     // TODO:
+    //     // output: stripIndent`
+    //     //   // only imports
+    //     //   const x = "x";
+    //     //   const [y] = ["y"];
+    //     //   const { z } = { z: "z" };
+    //     // `
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // reassigned
+    //     const a = "a";
+    //     let b = "b";
+    //         ~ [forbidden { "name": "b" }]
+    //     var c = "c";
+    //         ~ [forbidden { "name": "c" }]
+    //     b = a;
+    //     c = a;
+    //   `,
+    //   {
+    //     output: stripIndent`
+    //       // reassigned
+    //       const a = "a";
+    //       let b = "b";
+    //       var c = "c";
+    //       b = a;
+    //       c = a;
+    //     `,
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // shadowed
+    //     import { b } from "./letters";
+    //              ~ [forbidden { "name": "b" }]
+    //     const a = "a";
+    //           ~ [forbidden { "name": "a" }]
+    //     export function f(a: string, b: string): void {
+    //       console.log(a, b);
+    //     }
+    //   `,
+    //   {
+    //     // TODO:
+    //     // output: stripIndent`
+    //     //   // shadowed
+    //     //   const a = "a";
+    //     //
+    //     //   export function f(a: string, b: string): void {
+    //     //     console.log(a, b);
+    //     //   }
+    //     // `
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // some used imports
+    //     import { a, b, c } from "./letters";
+    //              ~ [forbidden { "name": "a" }]
+    //                    ~ [forbidden { "name": "c" }]
+    //     import {
+    //       a as apple,
+    //            ~~~~~ [forbidden { "name": "apple" }]
+    //       b as banana,
+    //       c as cherry
+    //            ~~~~~~ [forbidden { "name": "cherry" }]
+    //     } from "./letters";
+    //     import t, { d } from "./letters";
+    //                 ~ [forbidden { "name": "d" }]
+    //     import u, { e as egg } from "./letters";
+    //                      ~~~ [forbidden { "name": "egg" }]
+    //     import v, { f } from "./letters";
+    //            ~ [forbidden { "name": "v" }]
+    //                 ~ [forbidden { "name": "f" }]
+    //     import w, { g as grape } from "./letters";
+    //            ~ [forbidden { "name": "w" }]
+    //                      ~~~~~ [forbidden { "name": "grape" }]
+    //     console.log(b, banana, t, u);
+    //   `,
+    //   {
+    //     // TODO:
+    //     // output: stripIndent`
+    //     //   // some used imports
+    //     //   import { b } from "./letters";
+    //     //   import {
+    //     //     b as banana
+    //     //   } from "./letters";
+    //     //
+    //     //   import t from "./letters";
+    //     //   import u from "./letters";
+    //     //
+    //     //   console.log(b, banana, t, u);
+    //     // `
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // unused classes
+    //     class Person {}
+    //           ~~~~~~ [forbidden { "name": "Person" }]
+    //   `,
+    //   {
+    //     output: stripIndent`
+    //       // unused classes
+    //       class Person {}
+    //     `,
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // unused destructuring
+    //     const instance = { property: 42 };
+    //     const array = [54];
+    //     console.log(instance, array);
+    //     const { property } = instance;
+    //             ~~~~~~~~ [forbidden { "name": "property" }]
+    //     const { property: renamed } = instance;
+    //                       ~~~~~~~ [forbidden { "name": "renamed" }]
+    //     const [element] = array;
+    //            ~~~~~~~ [forbidden { "name": "element" }]
+    //     function f({ name }: { name?: string }): void {}
+    //     function g({ name: renamed }: { name?: string }): void {}
+    //     console.log(f.toString(), g.toString());
+    //     const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
+    //                      ~~~~ [forbidden { "name": "rest" }]
+    //     console.log(a);
+    //   `,
+    //   {
+    //     output: stripIndent`
+    //       // unused destructuring
+    //       const instance = { property: 42 };
+    //       const array = [54];
+    //       console.log(instance, array);
+    //       const { property } = instance;
+    //       const { property: renamed } = instance;
+    //       const [element] = array;
+    //       function f({ name }: { name?: string }): void {}
+    //       function g({ name: renamed }: { name?: string }): void {}
+    //       console.log(f.toString(), g.toString());
+    //       const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
+    //       console.log(a);
+    //     `,
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // unused enums
+    //     enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
+    //          ~~~ [forbidden { "name": "WTF" }]
+    //   `,
+    //   {
+    //     output: stripIndent`
+    //       // unused enums
+    //       enum WTF { TRUE, FALSE, FILE_NOT_FOUND }
+    //     `,
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // unused functions
+    //     function f(): void {}
+    //              ~ [forbidden { "name": "f" }]
+    //     const g = () => {};
+    //           ~ [forbidden { "name": "g" }]
+    //   `,
+    //   {
+    //     output: stripIndent`
+    //       // unused functions
+    //       function f(): void {}
+    //       const g = () => {};
+    //     `,
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // unused imports
+    //     import { a } from "./letters";
+    //              ~ [forbidden { "name": "a" }]
+    //     import { b } from "./letters";
+    //     import { c, d } from "./letters";
+    //              ~ [forbidden { "name": "c" }]
+    //                 ~ [forbidden { "name": "d" }]
+    //     import { a as anise } from "./letters";
+    //                   ~~~~~ [forbidden { "name": "anise" }]
+    //     import { b as basil } from "./letters";
+    //     import {
+    //       c as carrot,
+    //            ~~~~~~ [forbidden { "name": "carrot" }]
+    //       d as dill
+    //            ~~~~ [forbidden { "name": "dill" }]
+    //     } from "./letters";
+    //     import * as l from "./letters";
+    //                 ~ [forbidden { "name": "l" }]
+    //     import letters from "./letters";
+    //            ~~~~~~~ [forbidden { "name": "letters" }]
+    //     import L, { e } from "./letters";
+    //            ~ [forbidden { "name": "L" }]
+    //                 ~ [forbidden { "name": "e" }]
+    //     console.log(b, basil);
+    //     console.log("the end");
+    //   `,
+    //   {
+    //     // TODO:
+    //     // output: stripIndent`
+    //     //   // unused imports
+    //     //   import { b } from "./letters";
+    //     //   import { b as basil } from "./letters";
+    //     //
+    //     //   console.log(b, basil);
+    //     //   console.log("the end");
+    //     // `
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // unused types
+    //     interface SomeInterface {}
+    //               ~~~~~~~~~~~~~ [forbidden { "name": "SomeInterface" }]
+    //     type SomeType = {};
+    //          ~~~~~~~~ [forbidden { "name": "SomeType" }]
+    //   `,
+    //   {
+    //     output: stripIndent`
+    //       // unused types
+    //       interface SomeInterface {}
+    //       type SomeType = {};
+    //     `,
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // unused variables
+    //     const a = "a";
+    //           ~ [forbidden { "name": "a" }]
+    //     let b = "b";
+    //         ~ [forbidden { "name": "b" }]
+    //     var c = "c";
+    //         ~ [forbidden { "name": "c" }]
+    //   `,
+    //   {
+    //     output: stripIndent`
+    //       // unused variables
+    //       const a = "a";
+    //       let b = "b";
+    //       var c = "c";
+    //     `,
+    //   }
+    // ),
+    // // TODO:
+    // // fromFixture(
+    // //   stripIndent`
+    // //     // no JSX
+    // //     import * as React from "react";
+    // //                 ~~~~~ [forbidden { "name": "TK" }]
+    // //   `
+    // // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // https://github.com/cartant/tslint-etc/issues/15 (1)
+    //     import * as dotenv from "dotenv";
+    //     import * as Hapi from "hapi";
+    //     import * as path from "path";
+    //     dotenv.config({ path: path.join(__dirname, "../.env") });
+    //     import { ResetTemplateCache } from "./getTemplate";
+    //              ~~~~~~~~~~~~~~~~~~ [forbidden { "name": "ResetTemplateCache" }]
+    //     import {
+    //     RequestMethod,
+    //     ~~~~~~~~~~~~~ [forbidden { "name": "RequestMethod" }]
+    //     sendAsanaRequest,
+    //     ~~~~~~~~~~~~~~~~ [forbidden { "name": "sendAsanaRequest" }]
+    //     } from "./sendAsanaRequest";
+    //     import "./arrayIncludesShim";
+    //     import { startAsanaTimer } from "./startAsanaTimer";
+    //              ~~~~~~~~~~~~~~~ [forbidden { "name": "startAsanaTimer" }]
+    //     const server = new Hapi.Server();
+    //           ~~~~~~ [forbidden { "name": "server" }]
+    //   `,
+    //   {
+    //     // TODO:
+    //     // output: stripIndent`
+    //     //   // https://github.com/cartant/tslint-etc/issues/15 (1)
+    //     //   import * as dotenv from "dotenv";
+    //     //   import * as Hapi from "hapi";
+    //     //   import * as path from "path";
+    //     //   dotenv.config({ path: path.join(__dirname, "../.env") });
+    //     //   import "./arrayIncludesShim";
+    //     //   const server = new Hapi.Server();
+    //     // `
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // https://github.com/cartant/tslint-etc/issues/15 (2)
+    //     import * as dotenv from "dotenv";
+    //     import * as Hapi from "hapi";
+    //     import * as path from "path";
+    //     dotenv.config({ path: path.join(__dirname, "../.env") });
+    //     import {
+    //     ResetTemplateCache,
+    //     ~~~~~~~~~~~~~~~~~~ [forbidden { "name": "ResetTemplateCache" }]
+    //     } from "./getTemplate";
+    //     import {
+    //     hasActiveRequest,
+    //     ~~~~~~~~~~~~~~~~ [forbidden { "name": "hasActiveRequest" }]
+    //     RequestMethod,
+    //     ~~~~~~~~~~~~~ [forbidden { "name": "RequestMethod" }]
+    //     sendAsanaRequest,
+    //     ~~~~~~~~~~~~~~~~ [forbidden { "name": "sendAsanaRequest" }]
+    //     } from "./sendAsanaRequest";
+    //     import "./arrayIncludesShim";
+    //     import { startAsanaTimer } from "./startAsanaTimer";
+    //              ~~~~~~~~~~~~~~~ [forbidden { "name": "startAsanaTimer" }]
+    //     const server = new Hapi.Server();
+    //           ~~~~~~ [forbidden { "name": "server" }]
+    //   `,
+    //   {
+    //     // TODO:
+    //     // output: stripIndent`
+    //     //   // https://github.com/cartant/tslint-etc/issues/15 (2)
+    //     //   import * as dotenv from "dotenv";
+    //     //   import * as Hapi from "hapi";
+    //     //   import * as path from "path";
+    //     //   dotenv.config({ path: path.join(__dirname, "../.env") });
+    //     //   import "./arrayIncludesShim";
+    //     //   const server = new Hapi.Server();
+    //     // `
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // https://github.com/cartant/tslint-etc/issues/15 (3)
+    //     import * as dotenv from "dotenv";
+    //     import * as Hapi from "hapi";
+    //     import * as path from "path";
+    //     dotenv.config({ path: path.join(__dirname, "../.env") });
+    //     import { ResetTemplateCache } from "./getTemplate";
+    //              ~~~~~~~~~~~~~~~~~~ [forbidden { "name": "ResetTemplateCache" }]
+    //     import {
+    //     RequestMethod,
+    //     ~~~~~~~~~~~~~ [forbidden { "name": "RequestMethod" }]
+    //     sendAsanaRequest,
+    //     ~~~~~~~~~~~~~~~~ [forbidden { "name": "sendAsanaRequest" }]
+    //     } from "./sendAsanaRequest";
+    //     // Just import the module to run the code inside and create global Array shim
+    //     import "./arrayIncludesShim";
+    //     import { startAsanaTimer } from "./startAsanaTimer";
+    //              ~~~~~~~~~~~~~~~ [forbidden { "name": "startAsanaTimer" }]
+    //     const server = new Hapi.Server();
+    //           ~~~~~~ [forbidden { "name": "server" }]
+    //   `,
+    //   {
+    //     // TODO:
+    //     // output: stripIndent`
+    //     //   // https://github.com/cartant/tslint-etc/issues/15 (3)
+    //     //   import * as dotenv from "dotenv";
+    //     //   import * as Hapi from "hapi";
+    //     //   import * as path from "path";
+    //     //   dotenv.config({ path: path.join(__dirname, "../.env") });
+    //     //   // Just import the module to run the code inside and create global Array shim
+    //     //   import "./arrayIncludesShim";
+    //     //   const server = new Hapi.Server();
+    //     // `
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // https://github.com/cartant/tslint-etc/issues/34 (declaration)
+    //     /**
+    //      * @copyright Copyright someone sometime
+    //      */
+    //     import nope from "rxjs";
+    //            ~~~~ [forbidden { "name": "nope" }]
+    //   `,
+    //   {
+    //     // TODO:
+    //     // output: stripIndent`
+    //     //   // https://github.com/cartant/tslint-etc/issues/34 (declaration)
+    //     //   /**
+    //     //    * @copyright Copyright someone sometime
+    //     //    */
+    //     // `
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // https://github.com/cartant/tslint-etc/issues/34 (named)
+    //     /**
+    //      * @copyright Copyright someone sometime
+    //      */
+    //     import { Subject } from "rxjs";
+    //              ~~~~~~~ [forbidden { "name": "Subject" }]
+    //   `,
+    //   {
+    //     // TODO:
+    //     // output: stripIndent`
+    //     //   // https://github.com/cartant/tslint-etc/issues/34 (named)
+    //     //   /**
+    //     //    * @copyright Copyright someone sometime
+    //     //    */
+    //     // `
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // https://github.com/cartant/tslint-etc/issues/34 (namespace)
+    //     /**
+    //      * @copyright Copyright someone sometime
+    //      */
+    //     import * as Rx from "rxjs";
+    //                 ~~ [forbidden { "name": "Rx" }]
+    //   `,
+    //   {
+    //     // TODO:
+    //     // output: stripIndent`
+    //     //   // https://github.com/cartant/tslint-etc/issues/34 (namespace)
+    //     //   /**
+    //     //    * @copyright Copyright someone sometime
+    //     //    */
+    //     // `
+    //   }
+    // ),
+    // fromFixture(
+    //   stripIndent`
+    //     // unused rest destructuring
+    //     const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
+    //                      ~~~~ [forbidden { "name": "rest" }]
     //   `
     // ),
-    fromFixture(
-      stripIndent`
-        // https://github.com/cartant/tslint-etc/issues/15 (1)
-        import * as dotenv from "dotenv";
-        import * as Hapi from "hapi";
-        import * as path from "path";
-        dotenv.config({ path: path.join(__dirname, "../.env") });
-        import { ResetTemplateCache } from "./getTemplate";
-                 ~~~~~~~~~~~~~~~~~~ [forbidden { "name": "ResetTemplateCache" }]
-        import {
-        RequestMethod,
-        ~~~~~~~~~~~~~ [forbidden { "name": "RequestMethod" }]
-        sendAsanaRequest,
-        ~~~~~~~~~~~~~~~~ [forbidden { "name": "sendAsanaRequest" }]
-        } from "./sendAsanaRequest";
-        import "./arrayIncludesShim";
-        import { startAsanaTimer } from "./startAsanaTimer";
-                 ~~~~~~~~~~~~~~~ [forbidden { "name": "startAsanaTimer" }]
-        const server = new Hapi.Server();
-              ~~~~~~ [forbidden { "name": "server" }]
-      `,
-      {
-        // TODO:
-        // output: stripIndent`
-        //   // https://github.com/cartant/tslint-etc/issues/15 (1)
-        //   import * as dotenv from "dotenv";
-        //   import * as Hapi from "hapi";
-        //   import * as path from "path";
-        //   dotenv.config({ path: path.join(__dirname, "../.env") });
-        //   import "./arrayIncludesShim";
-        //   const server = new Hapi.Server();
-        // `
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // https://github.com/cartant/tslint-etc/issues/15 (2)
-        import * as dotenv from "dotenv";
-        import * as Hapi from "hapi";
-        import * as path from "path";
-        dotenv.config({ path: path.join(__dirname, "../.env") });
-        import {
-        ResetTemplateCache,
-        ~~~~~~~~~~~~~~~~~~ [forbidden { "name": "ResetTemplateCache" }]
-        } from "./getTemplate";
-        import {
-        hasActiveRequest,
-        ~~~~~~~~~~~~~~~~ [forbidden { "name": "hasActiveRequest" }]
-        RequestMethod,
-        ~~~~~~~~~~~~~ [forbidden { "name": "RequestMethod" }]
-        sendAsanaRequest,
-        ~~~~~~~~~~~~~~~~ [forbidden { "name": "sendAsanaRequest" }]
-        } from "./sendAsanaRequest";
-        import "./arrayIncludesShim";
-        import { startAsanaTimer } from "./startAsanaTimer";
-                 ~~~~~~~~~~~~~~~ [forbidden { "name": "startAsanaTimer" }]
-        const server = new Hapi.Server();
-              ~~~~~~ [forbidden { "name": "server" }]
-      `,
-      {
-        // TODO:
-        // output: stripIndent`
-        //   // https://github.com/cartant/tslint-etc/issues/15 (2)
-        //   import * as dotenv from "dotenv";
-        //   import * as Hapi from "hapi";
-        //   import * as path from "path";
-        //   dotenv.config({ path: path.join(__dirname, "../.env") });
-        //   import "./arrayIncludesShim";
-        //   const server = new Hapi.Server();
-        // `
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // https://github.com/cartant/tslint-etc/issues/15 (3)
-        import * as dotenv from "dotenv";
-        import * as Hapi from "hapi";
-        import * as path from "path";
-        dotenv.config({ path: path.join(__dirname, "../.env") });
-        import { ResetTemplateCache } from "./getTemplate";
-                 ~~~~~~~~~~~~~~~~~~ [forbidden { "name": "ResetTemplateCache" }]
-        import {
-        RequestMethod,
-        ~~~~~~~~~~~~~ [forbidden { "name": "RequestMethod" }]
-        sendAsanaRequest,
-        ~~~~~~~~~~~~~~~~ [forbidden { "name": "sendAsanaRequest" }]
-        } from "./sendAsanaRequest";
-        // Just import the module to run the code inside and create global Array shim
-        import "./arrayIncludesShim";
-        import { startAsanaTimer } from "./startAsanaTimer";
-                 ~~~~~~~~~~~~~~~ [forbidden { "name": "startAsanaTimer" }]
-        const server = new Hapi.Server();
-              ~~~~~~ [forbidden { "name": "server" }]
-      `,
-      {
-        // TODO:
-        // output: stripIndent`
-        //   // https://github.com/cartant/tslint-etc/issues/15 (3)
-        //   import * as dotenv from "dotenv";
-        //   import * as Hapi from "hapi";
-        //   import * as path from "path";
-        //   dotenv.config({ path: path.join(__dirname, "../.env") });
-        //   // Just import the module to run the code inside and create global Array shim
-        //   import "./arrayIncludesShim";
-        //   const server = new Hapi.Server();
-        // `
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // https://github.com/cartant/tslint-etc/issues/34 (declaration)
-        /**
-         * @copyright Copyright someone sometime
-         */
-
-        import nope from "rxjs";
-               ~~~~ [forbidden { "name": "nope" }]
-      `,
-      {
-        // TODO:
-        // output: stripIndent`
-        //   // https://github.com/cartant/tslint-etc/issues/34 (declaration)
-        //   /**
-        //    * @copyright Copyright someone sometime
-        //    */
-        // `
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // https://github.com/cartant/tslint-etc/issues/34 (named)
-        /**
-         * @copyright Copyright someone sometime
-         */
-
-        import { Subject } from "rxjs";
-                 ~~~~~~~ [forbidden { "name": "Subject" }]
-      `,
-      {
-        // TODO:
-        // output: stripIndent`
-        //   // https://github.com/cartant/tslint-etc/issues/34 (named)
-        //   /**
-        //    * @copyright Copyright someone sometime
-        //    */
-        // `
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // https://github.com/cartant/tslint-etc/issues/34 (namespace)
-        /**
-         * @copyright Copyright someone sometime
-         */
-
-        import * as Rx from "rxjs";
-                    ~~ [forbidden { "name": "Rx" }]
-      `,
-      {
-        // TODO:
-        // output: stripIndent`
-        //   // https://github.com/cartant/tslint-etc/issues/34 (namespace)
-        //   /**
-        //    * @copyright Copyright someone sometime
-        //    */
-        // `
-      }
-    ),
-    fromFixture(
-      stripIndent`
-        // unused rest destructuring
-        const { a, b, ...rest } = { a: 1, b: 2, c: 3 };
-                         ~~~~ [forbidden { "name": "rest" }]
-      `
-    ),
   ],
 });

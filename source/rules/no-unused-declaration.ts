@@ -90,7 +90,13 @@ const rule = ruleCreator({
       }
       if (!["class", "global"].includes(type)) {
         const { variables } = scope;
+        if (/(^ts|Type$)/.test(scope.type)) {
+          return;
+        }
         variables.forEach((variable) => {
+          if (variable.isTypeVariable) {
+            return;
+          }
           const { identifiers, name, references } = variable;
           if (identifiers.every(shouldCheckReferences)) {
             if (isRestElementSibling(variable)) {
