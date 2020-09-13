@@ -187,7 +187,9 @@ const rule = ruleCreator({
       }
     }
 
-    function isAssigneeIdentifier(identifier: es.Identifier) {
+    function isAssigneeIdentifier(
+      identifier: es.Identifier | es.JSXIdentifier
+    ) {
       const parent = getParent(identifier);
       return (
         parent.type === "AssignmentExpression" && identifier === parent.left
@@ -334,7 +336,9 @@ const rule = ruleCreator({
       return true;
     }
 
-    function shouldCountReference(identifier: es.Identifier) {
+    function shouldCountReference(
+      identifier: es.Identifier | es.JSXIdentifier
+    ) {
       if (isDeclarationIdentifier(identifier)) {
         return false;
       }
