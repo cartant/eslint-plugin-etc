@@ -1,5 +1,13 @@
 # eslint-plugin-etc
 
+[![GitHub License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/cartant/eslint-plugin-etc/blob/master/LICENSE)
+[![NPM version](https://img.shields.io/npm/v/eslint-plugin-etc.svg)](https://www.npmjs.com/package/eslint-plugin-etc)
+[![Downloads](http://img.shields.io/npm/dm/eslint-plugin-etc.svg)](https://npmjs.org/package/eslint-plugin-etc)
+[![Build status](https://img.shields.io/circleci/build/github/cartant/eslint-plugin-etc?token=8ebc6af0847545d4c2346f5ffaedee508b55ce38)](https://app.circleci.com/pipelines/github/cartant)
+[![dependency status](https://img.shields.io/david/cartant/eslint-plugin-etc.svg)](https://david-dm.org/cartant/eslint-plugin-etc)
+[![devDependency Status](https://img.shields.io/david/dev/cartant/eslint-plugin-etc.svg)](https://david-dm.org/cartant/eslint-plugin-etc#info=devDependencies)
+[![peerDependency Status](https://img.shields.io/david/peer/cartant/eslint-plugin-etc.svg)](https://david-dm.org/cartant/eslint-plugin-etc#info=peerDependencies)
+
 This repo is a WIP.
 
 Eventually, it will contain ESLint versions of the rules in the [`tslint-etc`](https://github.com/cartant/tslint-etc) package.
