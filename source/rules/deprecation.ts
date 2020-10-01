@@ -65,7 +65,7 @@ const rule = ruleCreator({
     if (deprecatedNamesByProgram.has(program)) {
       deprecatedNames = deprecatedNamesByProgram.get(program);
     } else {
-      deprecatedNames = findDeprecatedNames(program);
+      deprecatedNames = findTaggedNames("deprecated", program);
       deprecatedNamesByProgram.set(program, deprecatedNames);
     }
     return {
@@ -105,10 +105,10 @@ const rule = ruleCreator({
   },
 });
 
-function findDeprecatedNames(program: ts.Program): Set<string> {
-  const deprecatedNames = new Set<string>();
+function findTaggedNames(tagName: string, program: ts.Program): Set<string> {
+  const taggedNames = new Set<string>();
   program.getSourceFiles().forEach((sourceFile) => {
-    if (!/@deprecated/.test(sourceFile.text)) {
+    if (sourceFile.text.indexOf(`@${tagName}`) === -1) {
       return;
     }
     const nodes = tsquery(
@@ -117,20 +117,20 @@ function findDeprecatedNames(program: ts.Program): Set<string> {
     );
     nodes.forEach((node) => {
       const tags = ts.getJSDocTags(node);
-      if (!tags.some((tag) => tag.tagName.text === "deprecated")) {
+      if (!tags.some((tag) => tag.tagName.text === tagName)) {
         return;
       }
       if (ts.isConstructorDeclaration(node)) {
         const { parent } = node;
         const { name } = parent;
-        deprecatedNames.add(name.text);
+        taggedNames.add(name.text);
       } else {
         const { name } = node as ts.Node & { name: ts.Identifier };
-        deprecatedNames.add(name.text);
+        taggedNames.add(name.text);
       }
     });
   });
-  return deprecatedNames;
+  return taggedNames;
 }
 
 export = rule;
