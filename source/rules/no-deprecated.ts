@@ -38,7 +38,7 @@ const rule = ruleCreator({
     ],
     type: "problem",
   },
-  name: "deprecation",
+  name: "deprecated",
   create: (context, unused: typeof defaultOptions) => {
     const [{ ignored = {} } = {}] = context.options;
     const ignoredNameRegExps: RegExp[] = [];
@@ -92,10 +92,10 @@ const rule = ruleCreator({
         ) {
           return;
         }
-        const deprecation = getTag("deprecated", identifier, typeChecker);
-        if (deprecation !== undefined) {
+        const comment = getTag("deprecated", identifier, typeChecker);
+        if (comment !== undefined) {
           context.report({
-            data: { comment: deprecation, name: identifier.text },
+            data: { comment, name: identifier.text },
             messageId: "forbidden",
             node,
           });

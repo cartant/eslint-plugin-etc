@@ -5,64 +5,64 @@
 
 import { stripIndent } from "common-tags";
 import { fromFixture } from "eslint-etc";
-import rule = require("../../source/rules/deprecation");
+import rule = require("../../source/rules/no-deprecated");
 import { ruleTester } from "../utils";
 
-ruleTester({ comments: true, types: true }).run("deprecation", rule, {
+ruleTester({ comments: true, types: true }).run("no-deprecated", rule, {
   valid: [
     {
       code: stripIndent`
         // Not deprecated interface
-        import { NotDeprecatedInterface } from "./modules/deprecation";
+        import { NotDeprecatedInterface } from "./modules/deprecated";
         let a: NotDeprecatedInterface;
       `,
     },
     {
       code: stripIndent`
         // Not deprecated type
-        import { NotDeprecatedType } from "./modules/deprecation";
+        import { NotDeprecatedType } from "./modules/deprecated";
         let a: NotDeprecatedType;
       `,
     },
     {
       code: stripIndent`
         // Not deprecated class
-        import { NotDeprecatedClass } from "./modules/deprecation";
+        import { NotDeprecatedClass } from "./modules/deprecated";
         let a: NotDeprecatedClass;
       `,
     },
     {
       code: stripIndent`
         // Not deprecated class
-        import { NotDeprecatedClass } from "./modules/deprecation";
+        import { NotDeprecatedClass } from "./modules/deprecated";
         let a = new NotDeprecatedClass();
       `,
     },
     {
       code: stripIndent`
         // Not deprecated enum
-        import { NotDeprecatedEnum } from "./modules/deprecation";
+        import { NotDeprecatedEnum } from "./modules/deprecated";
         let a: NotDeprecatedEnum;
       `,
     },
     {
       code: stripIndent`
         // Not deprecated variable
-        import { notDeprecatedVariable } from "./modules/deprecation";
+        import { notDeprecatedVariable } from "./modules/deprecated";
         let a = notDeprecatedVariable;
       `,
     },
     {
       code: stripIndent`
         // Not deprecated function
-        import { notDeprecatedFunction } from "./modules/deprecation";
+        import { notDeprecatedFunction } from "./modules/deprecated";
         notDeprecatedFunction();
       `,
     },
     {
       code: stripIndent`
         // Some not deprecated interface
-        import { SomeDeprecatedInterface } from "./modules/deprecation";
+        import { SomeDeprecatedInterface } from "./modules/deprecated";
         let a: SomeDeprecatedInterface;
         console.log(a.notDeprecatedProperty);
         a.notDeprecatedMethod();
@@ -71,7 +71,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     {
       code: stripIndent`
         // Some not deprecated type
-        import { SomeDeprecatedType } from "./modules/deprecation";
+        import { SomeDeprecatedType } from "./modules/deprecated";
         let a: SomeDeprecatedType;
         console.log(a.notDeprecatedProperty);
         a.notDeprecatedMethod();
@@ -80,7 +80,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     {
       code: stripIndent`
         // Some not deprecated class
-        import { SomeDeprecatedClass } from "./modules/deprecation";
+        import { SomeDeprecatedClass } from "./modules/deprecated";
         SomeDeprecatedClass.notDeprecatedStaticMethod();
         let a: SomeDeprecatedClass;
         console.log(a.notDeprecatedProperty);
@@ -92,7 +92,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     {
       code: stripIndent`
         // Some not deprecated enum
-        import { SomeDeprecatedEnum } from "./modules/deprecation";
+        import { SomeDeprecatedEnum } from "./modules/deprecated";
         let a: SomeDeprecatedEnum;
         a = SomeDeprecatedEnum.NotDeprecatedMember;
       `,
@@ -100,7 +100,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     {
       code: stripIndent`
         // Some signatures not deprecated class
-        import { DeprecatedSignatureClass } from "./modules/deprecation";
+        import { DeprecatedSignatureClass } from "./modules/deprecated";
         DeprecatedSignatureClass.deprecatedSignatureStaticMethod(42);
         let a: DeprecatedSignatureClass;
         a.deprecatedSignatureMethod(42);
@@ -109,21 +109,21 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     {
       code: stripIndent`
         // Some signatures not deprecated function
-        import { deprecatedSignatureFunction } from "./modules/deprecation";
+        import { deprecatedSignatureFunction } from "./modules/deprecated";
         deprecatedSignatureFunction(42);
       `,
     },
     {
       code: stripIndent`
         // Not deprecated constructor
-        import { DeprecatedConstructorSignatureClass } from "./modules/deprecation";
+        import { DeprecatedConstructorSignatureClass } from "./modules/deprecated";
         let a = new DeprecatedConstructorSignatureClass(42);
       `,
     },
     {
       code: stripIndent`
         // Ignored name
-        import { DeprecatedInterface } from "./modules/deprecation";
+        import { DeprecatedInterface } from "./modules/deprecated";
         let a: DeprecatedInterface;
       `,
       options: [
@@ -137,13 +137,13 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     {
       code: stripIndent`
         // Ignored path
-        import { DeprecatedInterface } from "./modules/deprecation";
+        import { DeprecatedInterface } from "./modules/deprecated";
         let a: DeprecatedInterface;
       `,
       options: [
         {
           ignored: {
-            "modules/deprecation": "path",
+            "modules/deprecated": "path",
           },
         },
       ],
@@ -153,7 +153,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Deprecated interface
-        import { DeprecatedInterface } from "./modules/deprecation";
+        import { DeprecatedInterface } from "./modules/deprecated";
         let a: DeprecatedInterface;
                ~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedInterface" }]
       `
@@ -161,7 +161,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Multiple uses
-        import { DeprecatedInterface } from "./modules/deprecation";
+        import { DeprecatedInterface } from "./modules/deprecated";
         let a: DeprecatedInterface;
                ~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedInterface" }]
         let b: DeprecatedInterface;
@@ -171,7 +171,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Deprecated type
-        import { DeprecatedType } from "./modules/deprecation";
+        import { DeprecatedType } from "./modules/deprecated";
         let a: DeprecatedType;
                ~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedType" }]
       `
@@ -179,7 +179,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Deprecated class
-        import { DeprecatedClass } from "./modules/deprecation";
+        import { DeprecatedClass } from "./modules/deprecated";
         let a: DeprecatedClass;
                ~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedClass" }]
       `
@@ -187,7 +187,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Deprecated class with new
-        import { DeprecatedClass } from "./modules/deprecation";
+        import { DeprecatedClass } from "./modules/deprecated";
         let a = new DeprecatedClass();
                     ~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedClass" }]
       `
@@ -195,7 +195,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Deprecated enum
-        import { DeprecatedEnum } from "./modules/deprecation";
+        import { DeprecatedEnum } from "./modules/deprecated";
         let a: DeprecatedEnum;
                ~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedEnum" }]
       `
@@ -203,7 +203,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Deprecated variable
-        import { deprecatedVariable } from "./modules/deprecation";
+        import { deprecatedVariable } from "./modules/deprecated";
         let a = deprecatedVariable;
                 ~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedVariable" }]
       `
@@ -211,7 +211,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Deprecated function
-        import { deprecatedFunction } from "./modules/deprecation";
+        import { deprecatedFunction } from "./modules/deprecated";
         deprecatedFunction();
         ~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedFunction" }]
       `
@@ -219,7 +219,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Some deprecated interface
-        import { SomeDeprecatedInterface } from "./modules/deprecation";
+        import { SomeDeprecatedInterface } from "./modules/deprecated";
         let a: SomeDeprecatedInterface;
         console.log(a.deprecatedProperty);
                       ~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedProperty" }]
@@ -230,7 +230,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Some deprecated type
-        import { SomeDeprecatedType } from "./modules/deprecation";
+        import { SomeDeprecatedType } from "./modules/deprecated";
         let a: SomeDeprecatedType;
         console.log(a.deprecatedProperty);
                       ~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedProperty" }]
@@ -241,7 +241,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Some deprecated class
-        import { SomeDeprecatedClass } from "./modules/deprecation";
+        import { SomeDeprecatedClass } from "./modules/deprecated";
         SomeDeprecatedClass.deprecatedStaticMethod();
                             ~~~~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedStaticMethod" }]
         let a: SomeDeprecatedClass;
@@ -258,7 +258,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Some deprecated enum
-        import { SomeDeprecatedEnum } from "./modules/deprecation";
+        import { SomeDeprecatedEnum } from "./modules/deprecated";
         let a: SomeDeprecatedEnum;
         a = SomeDeprecatedEnum.DeprecatedMember;
                                ~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedMember" }]
@@ -267,7 +267,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Some signatures deprecated class
-        import { DeprecatedSignatureClass } from "./modules/deprecation";
+        import { DeprecatedSignatureClass } from "./modules/deprecated";
         DeprecatedSignatureClass.deprecatedSignatureStaticMethod("42");
                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedSignatureStaticMethod" }]
         let a: DeprecatedSignatureClass;
@@ -278,7 +278,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Some signatures deprecated function
-        import { deprecatedSignatureFunction } from "./modules/deprecation";
+        import { deprecatedSignatureFunction } from "./modules/deprecated";
         deprecatedSignatureFunction("42");
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "deprecatedSignatureFunction" }]
       `
@@ -286,7 +286,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Deprecated constructor
-        import { DeprecatedConstructorSignatureClass } from "./modules/deprecation";
+        import { DeprecatedConstructorSignatureClass } from "./modules/deprecated";
         let a = new DeprecatedConstructorSignatureClass("42");
                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedConstructorSignatureClass" }]
       `
@@ -294,7 +294,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Not ignored name
-        import { DeprecatedInterface } from "./modules/deprecation";
+        import { DeprecatedInterface } from "./modules/deprecated";
         let a: DeprecatedInterface;
                ~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedInterface" }]
       `,
@@ -311,7 +311,7 @@ ruleTester({ comments: true, types: true }).run("deprecation", rule, {
     fromFixture(
       stripIndent`
         // Not ignored path
-        import { DeprecatedInterface } from "./modules/deprecation";
+        import { DeprecatedInterface } from "./modules/deprecated";
         let a: DeprecatedInterface;
                ~~~~~~~~~~~~~~~~~~~ [forbidden { "comment": "Don't use this", "name": "DeprecatedInterface" }]
       `,
