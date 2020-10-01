@@ -10,7 +10,9 @@ import { findTaggedNames } from "../tag";
 import { getTag, isDeclaration } from "../tslint-tag";
 import { ruleCreator } from "../utils";
 
-const deprecatedNamesByProgram = new WeakMap<ts.Program, Set<string>>();
+// https://api-extractor.com/pages/tsdoc/tag_internal/
+
+const internalNamesByProgram = new WeakMap<ts.Program, Set<string>>();
 
 const defaultOptions: {
   ignored?: Record<string, string>;
@@ -21,12 +23,12 @@ const rule = ruleCreator({
   meta: {
     docs: {
       category: "Best Practices",
-      description: "Forbids the use of deprecated APIs.",
+      description: "Forbids the use of internal APIs.",
       recommended: false,
     },
     fixable: undefined,
     messages: {
-      forbidden: `"{{name}}" is deprecated: {{comment}}`,
+      forbidden: `"{{name}}" is internal.`,
     },
     schema: [
       {
@@ -38,7 +40,7 @@ const rule = ruleCreator({
     ],
     type: "problem",
   },
-  name: "no-deprecated",
+  name: "no-internal",
   create: (context, unused: typeof defaultOptions) => {
     const [{ ignored = {} } = {}] = context.options;
     const ignoredNameRegExps: RegExp[] = [];
@@ -61,12 +63,12 @@ const rule = ruleCreator({
       const type = typeChecker.getTypeAtLocation(identifier);
       return typeChecker.getFullyQualifiedName(type.symbol);
     };
-    let deprecatedNames: Set<string>;
-    if (deprecatedNamesByProgram.has(program)) {
-      deprecatedNames = deprecatedNamesByProgram.get(program);
+    let internalNames: Set<string>;
+    if (internalNamesByProgram.has(program)) {
+      internalNames = internalNamesByProgram.get(program);
     } else {
-      deprecatedNames = findTaggedNames("deprecated", program);
-      deprecatedNamesByProgram.set(program, deprecatedNames);
+      internalNames = findTaggedNames("internal", program);
+      internalNamesByProgram.set(program, internalNames);
     }
     return {
       Identifier: (node: es.Identifier) => {
@@ -80,7 +82,7 @@ const rule = ruleCreator({
             break;
         }
         const identifier = esTreeNodeToTSNodeMap.get(node) as ts.Identifier;
-        if (!deprecatedNames.has(identifier.text)) {
+        if (!internalNames.has(identifier.text)) {
           return;
         }
         if (isDeclaration(identifier)) {
@@ -92,7 +94,7 @@ const rule = ruleCreator({
         ) {
           return;
         }
-        const comment = getTag("deprecated", identifier, typeChecker);
+        const comment = getTag("internal", identifier, typeChecker);
         if (comment !== undefined) {
           context.report({
             data: { comment, name: identifier.text },
