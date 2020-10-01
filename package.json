@@ -7,7 +7,6 @@
     "@phenomnomnominal/tsquery": "^4.0.0",
     "@typescript-eslint/experimental-utils": "^4.0.0",
     "eslint-etc": "^4.0.0",
-    "eslint-rule-composer": "^0.3.0",
     "requireindex": "~1.2.0",
     "tslib": "^2.0.0",
     "tsutils": "^3.0.0"
