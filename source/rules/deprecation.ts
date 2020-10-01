@@ -15,7 +15,7 @@ const rule = ruleCreator({
   meta: {
     ...(baseRule.meta as any),
     deprecated: true,
-    replacedBy: ["no-deprecated"],
+    replacedBy: ["etc/no-deprecated"],
   },
   name: "deprecation",
   create: (context) => baseRule.create(context as any),

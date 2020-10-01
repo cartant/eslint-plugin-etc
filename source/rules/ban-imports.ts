@@ -12,6 +12,7 @@ const defaultOptions: Record<string, boolean | string>[] = [];
 const rule = ruleCreator({
   defaultOptions,
   meta: {
+    deprecated: true,
     docs: {
       category: "Best Practices",
       description: "Forbids using the configured import locations.",
@@ -26,6 +27,7 @@ const rule = ruleCreator({
         type: "object",
       },
     ],
+    replacedBy: ["no-restricted-imports"],
     type: "problem",
   },
   name: "ban-imports",
