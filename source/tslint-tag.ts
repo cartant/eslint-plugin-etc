@@ -47,8 +47,9 @@ export function isDeclaration(identifier: ts.Identifier): boolean {
     case ts.SyntaxKind.PropertyAssignment:
       return (
         (parent as ts.PropertyAssignment).name === identifier &&
-        !tsutils.isReassignmentTarget(identifier.parent
-          .parent as ts.ObjectLiteralExpression)
+        !tsutils.isReassignmentTarget(
+          identifier.parent.parent as ts.ObjectLiteralExpression
+        )
       );
     case ts.SyntaxKind.BindingElement:
       // return true for `b` in `const {a: b} = obj"`
@@ -76,13 +77,15 @@ function getCallExpresion(
     : undefined;
 }
 
-export function getDeprecation(
+export function getTag(
+  tagName: string,
   node: ts.Identifier,
   tc: ts.TypeChecker
 ): string | undefined {
   const callExpression = getCallExpresion(node);
   if (callExpression !== undefined) {
-    const result = getSignatureDeprecation(
+    const result = getSignatureTag(
+      tagName,
       tc.getResolvedSignature(callExpression)
     );
     if (result !== undefined) {
@@ -118,41 +121,45 @@ export function getDeprecation(
   ) {
     return undefined;
   }
-  return getSymbolDeprecation(symbol);
+  return getSymbolTag(tagName, symbol);
 }
 
-function findDeprecationTag(tags: ts.JSDocTagInfo[]): string | undefined {
+function findTag(tagName: string, tags: ts.JSDocTagInfo[]): string | undefined {
   for (const tag of tags) {
-    if (tag.name === "deprecated") {
+    if (tag.name === tagName) {
       return tag.text === undefined ? "" : tag.text;
     }
   }
   return undefined;
 }
 
-function getSymbolDeprecation(symbol: ts.Symbol): string | undefined {
+function getSymbolTag(tagName: string, symbol: ts.Symbol): string | undefined {
   if (symbol.getJsDocTags !== undefined) {
-    return findDeprecationTag(symbol.getJsDocTags());
+    return findTag(tagName, symbol.getJsDocTags());
   }
   // for compatibility with typescript@<2.3.0
-  return getDeprecationFromDeclarations(symbol.declarations);
+  return getDeprecationFromDeclarations(tagName, symbol.declarations);
 }
 
-function getSignatureDeprecation(signature?: ts.Signature): string | undefined {
+function getSignatureTag(
+  tagName: string,
+  signature?: ts.Signature
+): string | undefined {
   if (signature === undefined) {
     return undefined;
   }
   if (signature.getJsDocTags !== undefined) {
-    return findDeprecationTag(signature.getJsDocTags());
+    return findTag(tagName, signature.getJsDocTags());
   }
 
   // for compatibility with typescript@<2.3.0
   return signature.declaration === undefined
     ? undefined
-    : getDeprecationFromDeclaration(signature.declaration);
+    : getDeprecationFromDeclaration(tagName, signature.declaration);
 }
 
 function getDeprecationFromDeclarations(
+  tagName: string,
   declarations?: ts.Declaration[]
 ): string | undefined {
   if (declarations === undefined) {
@@ -169,7 +176,7 @@ function getDeprecationFromDeclarations(
     if (tsutils.isVariableDeclarationList(declaration)) {
       declaration = declaration.parent;
     }
-    const result = getDeprecationFromDeclaration(declaration);
+    const result = getDeprecationFromDeclaration(tagName, declaration);
     if (result !== undefined) {
       return result;
     }
@@ -178,6 +185,7 @@ function getDeprecationFromDeclarations(
 }
 
 function getDeprecationFromDeclaration(
+  tagName: string,
   declaration: ts.Node
 ): string | undefined {
   for (const comment of tsutils.getJsDoc(declaration)) {
@@ -185,7 +193,7 @@ function getDeprecationFromDeclaration(
       continue;
     }
     for (const tag of comment.tags) {
-      if (tag.tagName.text === "deprecated") {
+      if (tag.tagName.text === tagName) {
         return tag.comment === undefined ? "" : tag.comment;
       }
     }

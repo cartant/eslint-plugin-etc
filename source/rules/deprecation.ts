@@ -7,7 +7,7 @@ import { tsquery } from "@phenomnomnominal/tsquery";
 import { TSESTree as es } from "@typescript-eslint/experimental-utils";
 import { getParent, getParserServices } from "eslint-etc";
 import * as ts from "typescript";
-import { getDeprecation, isDeclaration } from "../tslint-deprecation";
+import { getTag, isDeclaration } from "../tslint-tag";
 import { ruleCreator } from "../utils";
 
 const deprecatedNamesByProgram = new WeakMap<ts.Program, Set<string>>();
@@ -92,7 +92,7 @@ const rule = ruleCreator({
         ) {
           return;
         }
-        const deprecation = getDeprecation(identifier, typeChecker);
+        const deprecation = getTag("deprecated", identifier, typeChecker);
         if (deprecation !== undefined) {
           context.report({
             data: { comment: deprecation, name: identifier.text },
