@@ -38,7 +38,7 @@ const rule = ruleCreator({
     ],
     type: "problem",
   },
-  name: "deprecated",
+  name: "no-deprecated",
   create: (context, unused: typeof defaultOptions) => {
     const [{ ignored = {} } = {}] = context.options;
     const ignoredNameRegExps: RegExp[] = [];
