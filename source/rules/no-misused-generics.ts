@@ -3,6 +3,7 @@
  * can be found in the LICENSE file at https://github.com/cartant/eslint-plugin-etc
  * Portions of this file are copyright 2017 Klaus Meinhardt - see THIRD_PARTY_NOTICES.
  */
+/* eslint @typescript-eslint/no-non-null-assertion: "off" */
 
 import { TSESTree as es } from "@typescript-eslint/experimental-utils";
 import { getLoc, getParserServices } from "eslint-etc";
