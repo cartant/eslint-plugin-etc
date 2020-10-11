@@ -10,11 +10,21 @@ import { ruleTester } from "../utils";
 
 ruleTester({ types: true }).run("no-foreach", rule, {
   valid: [
-    stripIndent`
-      // observable
-      import { of } from "rxjs";
-      of(42).forEach(value => console.log(value));
-    `,
+    {
+      code: stripIndent`
+        // observable
+        import { of } from "rxjs";
+        of(42).forEach(value => console.log(value));
+      `,
+    },
+    {
+      code: stripIndent`
+        // map variable with options
+        const map = new Map<string, string>();
+        map.forEach((value) => console.log(value));
+      `,
+      options: [{ types: ["Array"] }],
+    },
   ],
   invalid: [
     fromFixture(
@@ -82,6 +92,18 @@ ruleTester({ types: true }).run("no-foreach", rule, {
         list.forEach((node) => console.log(node));
              ~~~~~~~ [forbidden]
       `
+    ),
+    fromFixture(
+      stripIndent`
+      // array variable with options
+      const values = [42];
+      values.forEach(value => console.log(value));
+             ~~~~~~~ [forbidden]
+
+      `,
+      {
+        options: [{ types: ["Array"] }],
+      }
     ),
   ],
 });
