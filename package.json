@@ -70,5 +70,5 @@
     "test": "mocha -r ts-node/register -t 5000 tests/**/*.ts",
     "test:debug": "mocha -r ts-node/register -t 5000 tests/rules/no-t.ts"
   },
-  "version": "0.0.3-beta.48"
+  "version": "0.0.3-beta.49"
 }
