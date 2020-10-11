@@ -1,4 +1,4 @@
-# Use `for` loops instead of `forEach` calls (`no-array-foreach`)
+# Use `for` loops instead of `forEach` calls (`no-foreach`)
 
 TK
 

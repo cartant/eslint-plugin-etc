@@ -5,47 +5,28 @@
 
 import { stripIndent } from "common-tags";
 import { fromFixture } from "eslint-etc";
-import rule = require("../../source/rules/no-array-foreach");
+import rule = require("../../source/rules/no-foreach");
 import { ruleTester } from "../utils";
 
-ruleTester({ types: true }).run("no-array-foreach", rule, {
+ruleTester({ types: true }).run("no-foreach", rule, {
   valid: [
     stripIndent`
-      // non-array
+      // observable
       import { of } from "rxjs";
       of(42).forEach(value => console.log(value));
-    `,
-    stripIndent`
-      // map variable
-      const map = new Map<string, string>();
-      map.forEach((value) => console.log(value));
-    `,
-    stripIndent`
-      // set variable
-      const set = new Set<string>();
-      set.forEach((value) => console.log(value));
-    `,
-    stripIndent`
-      // node list variable
-      class Node {}
-      class NodeList {
-        forEach(callback: (node: Node, index: number, list: NodeList) => void) {}
-      }
-      const list = new NodeList();
-      list.forEach((node) => console.log(node));
     `,
   ],
   invalid: [
     fromFixture(
       stripIndent`
-        // literal
+        // array literal
         [42].forEach(value => console.log(value));
              ~~~~~~~ [forbidden]
       `
     ),
     fromFixture(
       stripIndent`
-        // variable
+        // array variable
         const values = [42];
         values.forEach(value => console.log(value));
                ~~~~~~~ [forbidden]
@@ -53,7 +34,7 @@ ruleTester({ types: true }).run("no-array-foreach", rule, {
     ),
     fromFixture(
       stripIndent`
-        // return value
+        // array return value
         function values() { return [42]; }
         values().forEach(value => console.log(value));
                  ~~~~~~~ [forbidden]
@@ -61,7 +42,7 @@ ruleTester({ types: true }).run("no-array-foreach", rule, {
     ),
     fromFixture(
       stripIndent`
-        // property
+        // array property
         const instance = { values: [42] };
         instance.values.forEach(value => console.log(value));
                         ~~~~~~~ [forbidden]
@@ -72,6 +53,34 @@ ruleTester({ types: true }).run("no-array-foreach", rule, {
         // from
         Array.from([42]).forEach(value => console.log(value));
                          ~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
+        // map variable
+        const map = new Map<string, string>();
+        map.forEach((value) => console.log(value));
+            ~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
+        // set variable
+        const set = new Set<string>();
+        set.forEach((value) => console.log(value));
+            ~~~~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
+        // node list variable
+        class Node {}
+        class NodeList {
+          forEach(callback: (node: Node, index: number, list: NodeList) => void) {}
+        }
+        const list = new NodeList();
+        list.forEach((node) => console.log(node));
+             ~~~~~~~ [forbidden]
       `
     ),
   ],
