@@ -2,6 +2,10 @@
 
 TK
 
+## Options
+
+TK
+
 ## Related to
 
 - [`no-internal`](./no-internal.md)

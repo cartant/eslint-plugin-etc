@@ -2,6 +2,14 @@
 
 TK
 
+## Rule details
+
+TK
+
+## Options
+
+TK
+
 ## Further reading
 
 - [Catching Unknowns](https://ncjamieson.com/catching-unknowns/)

@@ -20,6 +20,10 @@ for (const answer of answers) {
 }
 ```
 
+## Options
+
+TK
+
 ```ts
 import { of } from "rxjs";
 of(42, 54).forEach(value => console.log(value));
