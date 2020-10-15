@@ -26,12 +26,9 @@ const rule = ruleCreator({
   name: "no-array-foreach",
   create: (context) =>
     baseRule.create(
-      Object.setPrototypeOf(
-        {
-          options: [{ types: ["Array"] }],
-        },
-        context
-      )
+      Object.create(context, {
+        options: { value: [{ types: ["Array"] }] },
+      })
     ),
 });
 
