@@ -8,9 +8,9 @@
 [![devDependency Status](https://img.shields.io/david/dev/cartant/eslint-plugin-etc.svg)](https://david-dm.org/cartant/eslint-plugin-etc#info=devDependencies)
 [![peerDependency Status](https://img.shields.io/david/peer/cartant/eslint-plugin-etc.svg)](https://david-dm.org/cartant/eslint-plugin-etc#info=peerDependencies)
 
-This repo is a WIP.
+This package contains a bunch of general-purpose, TypeScipt-related ESLint rules. Essentially, it's a re-implementation of the rules that were in the [`tslint-etc`](https://github.com/cartant/tslint-etc) package.
 
-Eventually, it will contain ESLint versions of the rules in the [`tslint-etc`](https://github.com/cartant/tslint-etc) package.
+Some of the rules are somewhat opinionated and are not included in the `recommended` configuration. Developers can decide for themselves whether they want to enabled opinionated rules.
 
 # Install
 
