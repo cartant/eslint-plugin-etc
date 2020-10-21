@@ -3,4 +3,5 @@
  * can be found in the LICENSE file at https://github.com/cartant/eslint-plugin-etc
  */
 
+module.exports.configs = require("requireindex")(`${__dirname}/configs`);
 module.exports.rules = require("requireindex")(`${__dirname}/rules`);
