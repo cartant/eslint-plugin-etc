@@ -10,7 +10,7 @@
 
 This package contains a bunch of general-purpose, TypeScipt-related ESLint rules. Essentially, it's a re-implementation of the rules that were in the [`tslint-etc`](https://github.com/cartant/tslint-etc) package.
 
-Some of the rules are somewhat opinionated and are not included in the `recommended` configuration. Developers can decide for themselves whether they want to enabled opinionated rules.
+Some of the rules are rather opinionated and are not included in the `recommended` configuration. Developers can decide for themselves whether they want to enable opinionated rules.
 
 # Install
 
