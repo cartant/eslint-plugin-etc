@@ -66,12 +66,12 @@ The package includes the following rules:
 
 | Rule | Description | Recommended |
 | --- | --- | --- |
-| [`no-assign-mutated-array`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-assign-mutated-array.ts) | Forbids the assignment of returned, mutated arrays. | Yes |
-| [`no-const-enum`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-const-enum.ts) | Forbids the use of `const enum`. Constant enums are [not compatible with isolated modules](https://ncjamieson.com/dont-export-const-enums/). | No |
-| [`no-deprecated`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-deprecated.ts) | Forbids the use of deprecated APIs. | Yes |
-| [`no-enum`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-enum.ts) | Forbids the use of `enum`. | No |
-| [`no-implicit-any-catch`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-implicit-any-catch.ts) | Like the [`no-implicit-any-catch` rule](https://github.com/typescript-eslint/typescript-eslint/pull/2202) in `@typescript-eslint/eslint-plugin`, but for `Promise` rejections instead of `catch` clauses. | Yes |
-| [`no-internal`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-internal.ts) | Forbids the use of internal APIs. | Yes |
-| [`no-misused-generics`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-misused-generics.ts) | Forbids type parameters without inference sites and type parameters that don't add type safety to declarations. This is an ESLint port of [Wotan's `no-misused-generics` rule](https://github.com/fimbullinter/wotan/blob/11368a193ba90a9e79b9f6ab530be1b434b122de/packages/mimir/docs/no-misused-generics.md). See also ["The Golden Rule of Generics"](https://effectivetypescript.com/2020/08/12/generics-golden-rule/). | Yes |
-| [`no-t`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-t.ts) | Forbids single-character type parameters. | No |
-| [`throw-error`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/throw-error.ts) | Forbids throwing - or rejecting with - non-`Error` values. | No |
+| [`no-assign-mutated-array`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-assign-mutated-array.md) | Forbids the assignment of returned, mutated arrays. | Yes |
+| [`no-const-enum`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-const-enum.md) | Forbids the use of `const enum`. Constant enums are [not compatible with isolated modules](https://ncjamieson.com/dont-export-const-enums/). | No |
+| [`no-deprecated`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-deprecated.md) | Forbids the use of deprecated APIs. | Yes |
+| [`no-enum`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-enum.md) | Forbids the use of `enum`. | No |
+| [`no-implicit-any-catch`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-implicit-any-catch.md) | Like the [`no-implicit-any-catch` rule](https://github.com/typescript-eslint/typescript-eslint/blob/e01204931e460f5e6731abc443c88d666ca0b07a/packages/eslint-plugin/docs/rules/no-implicit-any-catch.md) in `@typescript-eslint/eslint-plugin`, but for `Promise` rejections instead of `catch` clauses. | Yes |
+| [`no-internal`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-internal.md) | Forbids the use of internal APIs. | Yes |
+| [`no-misused-generics`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-misused-generics.md) | Forbids type parameters without inference sites and type parameters that don't add type safety to declarations. This is an ESLint port of [Wotan's `no-misused-generics` rule](https://github.com/fimbullinter/wotan/blob/11368a193ba90a9e79b9f6ab530be1b434b122de/packages/mimir/docs/no-misused-generics.md). See also ["The Golden Rule of Generics"](https://effectivetypescript.com/2020/08/12/generics-golden-rule/). | Yes |
+| [`no-t`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-t.md) | Forbids single-character type parameters. | No |
+| [`throw-error`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/throw-error.md) | Forbids throwing - or rejecting with - non-`Error` values. | No |
