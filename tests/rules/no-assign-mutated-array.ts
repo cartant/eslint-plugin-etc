@@ -160,6 +160,18 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
     ),
     fromFixture(
       stripIndent`
+        // mutated then chained variable initialization
+        const a = [0, 1, 2, 3];
+        const b = a.fill(0).map(x => x);
+                    ~~~~ [forbidden]
+        const c = a.reverse().map(x => x);
+                    ~~~~~~~ [forbidden]
+        const d = a.sort((x, y) => x - y).map(x => x);
+                    ~~~~ [forbidden]
+      `
+    ),
+    fromFixture(
+      stripIndent`
         // mutated variable assignment
         const a = [0, 1, 2, 3];
         let b;
