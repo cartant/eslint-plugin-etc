@@ -1,6 +1,6 @@
 # Avoid throwing non-Error values (`throw-error`)
 
-This rule forbids the throwing or rejecting values that are neither `Error` nor `DOMException` instances.
+This rule forbids throwing or rejecting values that are neither `Error` nor `DOMException` instances.
 
 ## Rule details
 
