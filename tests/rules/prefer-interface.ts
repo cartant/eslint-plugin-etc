@@ -23,7 +23,12 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
       stripIndent`
         type T = { length: number; };
              ~ [forbidden]
-      `
+      `,
+      {
+        output: stripIndent`
+          interface T { length: number; }
+        `,
+      }
     ),
     fromFixture(
       stripIndent`
@@ -32,7 +37,15 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
           length: number;
           width: number;
         };
-      `
+      `,
+      {
+        output: stripIndent`
+          interface T {
+            length: number;
+            width: number;
+          }
+        `,
+      }
     ),
   ],
 });
