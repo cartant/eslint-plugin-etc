@@ -16,9 +16,12 @@
 <a name="1.0.0"></a>
 ## [1.0.0](https://github.com/cartant/eslint-plugin-etc/compare/v0.0.3-beta.48...v1.0.0) (2020-10-22)
 
-## Changes
+## Breaking Changes
 
 * Remove deprecated rules.
+
+## Changes
+
 * Add rule docs.
 
 <a name="0.0.3-beta.48"></a>
