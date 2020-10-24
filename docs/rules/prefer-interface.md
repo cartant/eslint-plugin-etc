@@ -15,6 +15,10 @@ type Person = {
 };
 ```
 
+```ts
+type Comparator<T> = (left: T, right: T) => number;
+```
+
 Examples of **correct** code for this rule:
 
 ```ts
@@ -22,6 +26,10 @@ interface Person {
   age: number;
   name: string;
 }
+```
+
+```ts
+interface Comparator<T> { (left: T, right: T): number; }
 ```
 
 ```ts
