@@ -48,5 +48,31 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
         `,
       }
     ),
+    fromFixture(
+      stripIndent`
+        type T = (value: string) => string;
+             ~ [forbidden]
+      `,
+      {
+        output: stripIndent`
+          interface T {
+            (value: string): string;
+          }
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        type T = (value: unknown) => value is string;
+             ~ [forbidden]
+      `,
+      {
+        output: stripIndent`
+          interface T {
+            (value: unknown): value is string;
+          }
+        `,
+      }
+    ),
   ],
 });
