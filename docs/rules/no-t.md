@@ -42,7 +42,7 @@ This rule accepts a single option which is an object with a `prefix` property th
 {
   "etc/no-t": [
     "error",
-    { prefix: "T" }
+    { "prefix": "T" }
   ]
 }
 ```

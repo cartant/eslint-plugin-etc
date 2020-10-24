@@ -33,7 +33,7 @@ This rule accepts a single option which is an object with a `types` property tha
 {
   "etc/no-foreach": [
     "error",
-    { types: ["Array", "Map", "NodeList", "Set"] }
+    { "types": ["Array", "Map", "NodeList", "Set"] }
   ]
 }
 ```
