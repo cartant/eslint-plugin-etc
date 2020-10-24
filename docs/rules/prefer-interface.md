@@ -41,3 +41,4 @@ This rule has no options.
 ## Further reading
 
 - The [Twitter thread](https://twitter.com/robpalmer2/status/1319188885197422594) from which the above quote was taken.
+- [Prefer Interfaces](https://ncjamieson.com/prefer-interfaces)
