@@ -29,7 +29,36 @@ const rule = ruleCreator({
   name: "prefer-interface",
   create: (context) => {
     return {
-      "TSTypeAliasDeclaration > TSTypeLiteral": (node: es.Node) => {
+      "TSTypeAliasDeclaration > TSFunctionType": (node: es.TSFunctionType) => {
+        const parent = getParent(node) as es.TSTypeAliasDeclaration;
+        function fix(fixer: eslint.RuleFixer) {
+          const params = node.params
+            .map((param) => context.getSourceCode().getText(param))
+            .join(",");
+          const returnType = node.returnType
+            ? context
+                .getSourceCode()
+                .getText(node.returnType)
+                .replace(/^\s*=>\s*/, "")
+            : "void";
+          return fixer.replaceText(
+            parent,
+            `interface ${parent.id.name} { (${params}): ${returnType}; }`
+          );
+        }
+        context.report({
+          fix,
+          messageId: "forbidden",
+          node: parent.id,
+          suggest: [
+            {
+              fix,
+              messageId: "suggest",
+            },
+          ],
+        });
+      },
+      "TSTypeAliasDeclaration > TSTypeLiteral": (node: es.TSTypeLiteral) => {
         const parent = getParent(node) as es.TSTypeAliasDeclaration;
         function fix(fixer: eslint.RuleFixer) {
           const literal = context.getSourceCode().getText(node);

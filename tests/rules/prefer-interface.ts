@@ -55,9 +55,7 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
       `,
       {
         output: stripIndent`
-          interface T {
-            (value: string): string;
-          }
+          interface T { (value: string): string; }
         `,
       }
     ),
@@ -68,9 +66,7 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
       `,
       {
         output: stripIndent`
-          interface T {
-            (value: unknown): value is string;
-          }
+          interface T { (value: unknown): value is string; }
         `,
       }
     ),
