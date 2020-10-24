@@ -24,7 +24,7 @@ const rule = ruleCreator({
       suggest: "Use an interface instead of a type alias.",
     },
     schema: [],
-    type: "problem",
+    type: "suggestion",
   },
   name: "prefer-interface",
   create: (context) => {
