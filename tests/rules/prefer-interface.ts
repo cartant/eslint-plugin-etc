@@ -17,6 +17,7 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
     `type T = { length: number; } | { width: number; };`,
     `type T = { length: number; } & { width: number; };`,
     `type T = Set<string>;`,
+    `type DeepReadonly<T> = { readonly [P in keyof T]: DeepReadonly<T[P]> }`,
   ],
   invalid: [
     fromFixture(
