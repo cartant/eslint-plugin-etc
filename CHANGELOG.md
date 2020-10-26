@@ -1,3 +1,10 @@
+<a name="1.1.0"></a>
+## [1.1.0](https://github.com/cartant/eslint-plugin-etc/compare/v1.0.2...v1.1.0) (2020-10-26)
+
+## Features
+
+* Add the `prefer-interface` rule.  ([ccf6a02](https://github.com/cartant/eslint-plugin-etc/commit/ccf6a02))
+
 <a name="1.0.2"></a>
 ## [1.0.2](https://github.com/cartant/eslint-plugin-etc/compare/v1.0.1...v1.0.2) (2020-10-23)
 
