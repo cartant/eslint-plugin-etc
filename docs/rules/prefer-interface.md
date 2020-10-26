@@ -59,6 +59,10 @@ This rule accepts a single option which is an object with an `allowLocal` proper
 }
 ```
 
+## Related to
+
+- [`no-type-alias`](https://github.com/typescript-eslint/typescript-eslint/blob/880ac753b90d63034f0a33f8f512d9fabc17c8f9/packages/eslint-plugin/docs/rules/no-type-alias.md)
+
 ## Further reading
 
 - The [Twitter thread](https://twitter.com/robpalmer2/status/1319188885197422594) from which the above quote was taken.
