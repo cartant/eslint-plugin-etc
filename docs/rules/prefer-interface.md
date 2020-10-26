@@ -44,7 +44,16 @@ type DeepReadonly<T> = {
 
 ## Options
 
-This rule has no options.
+This rule accepts a single option which is an object with an `allowLocal` property that determines whether local - i.e. non-exported - type aliases that could be declared as interfaces are allowed. By default, they are not.
+
+```json
+{
+  "etc/prefer-interface": [
+    "error",
+    { "allowLocal": true }
+  ]
+}
+```
 
 ## Further reading
 

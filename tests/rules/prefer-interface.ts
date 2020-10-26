@@ -18,6 +18,14 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
     `type T = { length: number; } & { width: number; };`,
     `type T = Set<string>;`,
     `type DeepReadonly<T> = { readonly [P in keyof T]: DeepReadonly<T[P]> }`,
+    {
+      code: `type T = { length: number; };`,
+      options: [{ allowLocal: true }],
+    },
+    {
+      code: `type T = (value: string) => string;`,
+      options: [{ allowLocal: true }],
+    },
   ],
   invalid: [
     fromFixture(
@@ -28,6 +36,18 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
       {
         output: stripIndent`
           interface T { length: number; }
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        export type T = { length: number; };
+                    ~ [forbidden]
+      `,
+      {
+        options: [{ allowLocal: true }],
+        output: stripIndent`
+          export interface T { length: number; }
         `,
       }
     ),
@@ -56,6 +76,18 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
       {
         output: stripIndent`
           interface T { (value: string): string; }
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        export type T = (value: string) => string;
+                    ~ [forbidden]
+      `,
+      {
+        options: [{ allowLocal: true }],
+        output: stripIndent`
+          export interface T { (value: string): string; }
         `,
       }
     ),

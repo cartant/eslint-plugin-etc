@@ -10,8 +10,18 @@ import {
 import { getParent } from "eslint-etc";
 import { ruleCreator } from "../utils";
 
+function isExportNamedDeclaration(
+  node: es.Node
+): node is es.ExportNamedDeclaration {
+  return node.type === "ExportNamedDeclaration";
+}
+
+const defaultOptions: {
+  allowLocal?: boolean;
+}[] = [];
+
 const rule = ruleCreator({
-  defaultOptions: [],
+  defaultOptions: defaultOptions,
   meta: {
     docs: {
       category: "Best Practices",
@@ -23,33 +33,48 @@ const rule = ruleCreator({
       forbidden: "Type can be declared using an interface.",
       suggest: "Use an interface instead of a type alias.",
     },
-    schema: [],
+    schema: [
+      {
+        properties: {
+          allowLocal: { type: "boolean" },
+        },
+        type: "object",
+      },
+    ],
     type: "suggestion",
   },
   name: "prefer-interface",
-  create: (context) => {
+  create: (context, unused: typeof defaultOptions) => {
+    const [{ allowLocal = false } = {}] = context.options;
     return {
-      "TSTypeAliasDeclaration > TSFunctionType": (node: es.TSFunctionType) => {
-        const parent = getParent(node) as es.TSTypeAliasDeclaration;
+      "TSTypeAliasDeclaration > TSFunctionType": (
+        functionTypeNode: es.TSFunctionType
+      ) => {
+        const typeAliasNode = getParent(
+          functionTypeNode
+        ) as es.TSTypeAliasDeclaration;
+        if (allowLocal && !isExportNamedDeclaration(getParent(typeAliasNode))) {
+          return;
+        }
         function fix(fixer: eslint.RuleFixer) {
-          const params = node.params
+          const params = functionTypeNode.params
             .map((param) => context.getSourceCode().getText(param))
             .join(",");
-          const returnType = node.returnType
+          const returnType = functionTypeNode.returnType
             ? context
                 .getSourceCode()
-                .getText(node.returnType)
+                .getText(functionTypeNode.returnType)
                 .replace(/^\s*=>\s*/, "")
             : "void";
           return fixer.replaceText(
-            parent,
-            `interface ${parent.id.name} { (${params}): ${returnType}; }`
+            typeAliasNode,
+            `interface ${typeAliasNode.id.name} { (${params}): ${returnType}; }`
           );
         }
         context.report({
           fix,
           messageId: "forbidden",
-          node: parent.id,
+          node: typeAliasNode.id,
           suggest: [
             {
               fix,
@@ -58,19 +83,26 @@ const rule = ruleCreator({
           ],
         });
       },
-      "TSTypeAliasDeclaration > TSTypeLiteral": (node: es.TSTypeLiteral) => {
-        const parent = getParent(node) as es.TSTypeAliasDeclaration;
+      "TSTypeAliasDeclaration > TSTypeLiteral": (
+        typeLiteralNode: es.TSTypeLiteral
+      ) => {
+        const typeAliasNode = getParent(
+          typeLiteralNode
+        ) as es.TSTypeAliasDeclaration;
+        if (allowLocal && !isExportNamedDeclaration(getParent(typeAliasNode))) {
+          return;
+        }
         function fix(fixer: eslint.RuleFixer) {
-          const literal = context.getSourceCode().getText(node);
+          const literal = context.getSourceCode().getText(typeLiteralNode);
           return fixer.replaceText(
-            parent,
-            `interface ${parent.id.name} ${literal}`
+            typeAliasNode,
+            `interface ${typeAliasNode.id.name} ${literal}`
           );
         }
         context.report({
           fix,
           messageId: "forbidden",
-          node: parent.id,
+          node: typeAliasNode.id,
           suggest: [
             {
               fix,
