@@ -102,5 +102,33 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
         `,
       }
     ),
+    fromFixture(
+      stripIndent`
+        type T<V> = { value: V; };
+             ~~~~ [forbidden]
+      `,
+      {
+        output: stripIndent`
+          interface T<V> { value: V; }
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        type Pair<L, R> = {
+             ~~~~~~~~~~ [forbidden]
+          left: L;
+          right: R;
+        };
+      `,
+      {
+        output: stripIndent`
+          interface Pair<L, R> {
+            left: L;
+            right: R;
+          }
+        `,
+      }
+    ),
   ],
 });
