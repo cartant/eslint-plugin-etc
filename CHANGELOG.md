@@ -1,3 +1,10 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.0...v1.1.1) (2020-10-27)
+
+## Changes
+
+* Specify Node 10 as the minimum `engines` in `package.json` and downlevel to ES2018.
+
 <a name="1.1.0"></a>
 ## [1.1.0](https://github.com/cartant/eslint-plugin-etc/compare/v1.0.2...v1.1.0) (2020-10-26)
 
