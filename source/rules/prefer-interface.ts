@@ -93,10 +93,13 @@ const rule = ruleCreator({
           return;
         }
         function fix(fixer: eslint.RuleFixer) {
+          const typeParameters = typeAliasNode.typeParameters
+            ? context.getSourceCode().getText(typeAliasNode.typeParameters)
+            : "";
           const literal = context.getSourceCode().getText(typeLiteralNode);
           return fixer.replaceText(
             typeAliasNode,
-            `interface ${typeAliasNode.id.name} ${literal}`
+            `interface ${typeAliasNode.id.name}${typeParameters} ${literal}`
           );
         }
         context.report({
