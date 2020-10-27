@@ -132,13 +132,23 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
     ),
     fromFixture(
       stripIndent`
-        export type Identity<T> = (value: T) => T;
-                    ~~~~~~~~ [forbidden]
+        type Identity<T> = (value: T) => T;
+             ~~~~~~~~ [forbidden]
       `,
       {
-        options: [{ allowLocal: true }],
         output: stripIndent`
-          export interface Identity<T> { (value: T): T; }
+          interface Identity<T> { (value: T): T; }
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        type Func<Foo> = <Bar>(foo: Foo) => Bar;
+             ~~~~ [forbidden]
+      `,
+      {
+        output: stripIndent`
+          interface Func<Foo> { <Bar>(foo: Foo): Bar; }
         `,
       }
     ),

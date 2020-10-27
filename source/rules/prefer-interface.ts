@@ -57,8 +57,11 @@ const rule = ruleCreator({
           return;
         }
         function fix(fixer: eslint.RuleFixer) {
-          const typeParameters = typeAliasNode.typeParameters
+          const interfaceTypeParameters = typeAliasNode.typeParameters
             ? context.getSourceCode().getText(typeAliasNode.typeParameters)
+            : "";
+          const functionTypeParameters = functionTypeNode.typeParameters
+            ? context.getSourceCode().getText(functionTypeNode.typeParameters)
             : "";
           const params = functionTypeNode.params
             .map((param) => context.getSourceCode().getText(param))
@@ -71,7 +74,7 @@ const rule = ruleCreator({
             : "void";
           return fixer.replaceText(
             typeAliasNode,
-            `interface ${typeAliasNode.id.name}${typeParameters} { (${params}): ${returnType}; }`
+            `interface ${typeAliasNode.id.name}${interfaceTypeParameters} { ${functionTypeParameters}(${params}): ${returnType}; }`
           );
         }
         context.report({
