@@ -10,6 +10,5 @@ export = {
     "etc/no-deprecated": "warn",
     "etc/no-implicit-any-catch": "error",
     "etc/no-internal": "error",
-    "etc/no-misused-generics": "error",
   },
 };
