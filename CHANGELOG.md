@@ -1,3 +1,10 @@
+<a name="1.1.4"></a>
+## [1.1.4](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.3...v1.1.4) (2020-10-27)
+
+## Fixes
+
+* Include any signature type parameters in `prefer-interface` fixer output for function types. ([aaebbd9](https://github.com/cartant/eslint-plugin-etc/commit/aaebbd9))
+
 <a name="1.1.3"></a>
 ## [1.1.3](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.2...v1.1.3) (2020-10-27)
 
