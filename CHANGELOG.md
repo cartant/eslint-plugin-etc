@@ -1,3 +1,10 @@
+<a name="1.1.5"></a>
+## [1.1.5](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.4...v1.1.5) (2020-10-28)
+
+## Changes
+
+* Removed `no-misused-generics` from the recommended set of rules. ATM, it's too likely that the rule will emit false-positive failures - see [#15](https://github.com/cartant/eslint-plugin-etc/issues/15) and [#24](https://github.com/cartant/eslint-plugin-etc/issues/24).
+
 <a name="1.1.4"></a>
 ## [1.1.4](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.3...v1.1.4) (2020-10-27)
 
