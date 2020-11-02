@@ -1,3 +1,10 @@
+<a name="1.1.6"></a>
+## [1.1.6](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.5...v1.1.6) (2020-11-03)
+
+## Changes
+
+* Update rule metadata.
+
 <a name="1.1.5"></a>
 ## [1.1.5](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.4...v1.1.5) (2020-10-28)
 
