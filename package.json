@@ -32,6 +32,11 @@
   "engines": {
     "node": ">=10"
   },
+  "files": [
+    "dist",
+    "docs",
+    "THIRD_PARTY_NOTICES"
+  ],
   "homepage": "https://github.com/cartant/eslint-plugin-etc",
   "husky": {
     "hooks": {
