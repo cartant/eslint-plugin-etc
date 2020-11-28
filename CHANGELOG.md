@@ -1,3 +1,10 @@
+<a name="1.1.7"></a>
+## [1.1.7](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.6...v1.1.7) (2020-11-28)
+
+## Changes
+
+* Use `files` in `package.json` instead of `.npmignore`. ([5ace4c7](https://github.com/cartant/eslint-plugin-etc/commit/5ace4c7))
+
 <a name="1.1.6"></a>
 ## [1.1.6](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.5...v1.1.6) (2020-11-03)
 
