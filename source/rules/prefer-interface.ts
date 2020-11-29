@@ -7,7 +7,8 @@ import {
   TSESLint as eslint,
   TSESTree as es,
 } from "@typescript-eslint/experimental-utils";
-import { getParent } from "eslint-etc";
+import { getParent, getParserServices, getTypeServices } from "eslint-etc";
+import * as ts from "typescript";
 import { ruleCreator } from "../utils";
 
 function isExportNamedDeclaration(
@@ -16,7 +17,16 @@ function isExportNamedDeclaration(
   return node.type === "ExportNamedDeclaration";
 }
 
+function isTSTypeLiteral(node: es.Node): node is es.TSTypeLiteral {
+  return node.type === "TSTypeLiteral";
+}
+
+function isTSTypeReference(node: es.Node): node is es.TSTypeReference {
+  return node.type === "TSTypeReference";
+}
+
 const defaultOptions: {
+  allowIntersection?: boolean;
   allowLocal?: boolean;
 }[] = [];
 
@@ -45,7 +55,14 @@ const rule = ruleCreator({
   },
   name: "prefer-interface",
   create: (context, unused: typeof defaultOptions) => {
-    const [{ allowLocal = false } = {}] = context.options;
+    const [
+      { allowIntersection = false, allowLocal = false } = {},
+    ] = context.options;
+    const { esTreeNodeToTSNodeMap } = getParserServices(context);
+    let typeChecker: ts.TypeChecker | undefined;
+    try {
+      ({ typeChecker } = getTypeServices(context));
+    } catch (error) {}
     return {
       "TSTypeAliasDeclaration > TSFunctionType": (
         functionTypeNode: es.TSFunctionType
@@ -88,6 +105,52 @@ const rule = ruleCreator({
             },
           ],
         });
+      },
+      "TSTypeAliasDeclaration > TSIntersectionType": (
+        intersectionTypeNode: es.TSIntersectionType
+      ) => {
+        if (allowIntersection) {
+          return;
+        }
+        const typeAliasNode = getParent(
+          intersectionTypeNode
+        ) as es.TSTypeAliasDeclaration;
+        // https://github.com/microsoft/TypeScript/wiki/Performance#preferring-interfaces-over-intersections
+        const literals: es.TSTypeLiteral[] = [];
+        const references: es.TSTypeReference[] = [];
+        for (const node of intersectionTypeNode.types) {
+          if (isTSTypeLiteral(node)) {
+            literals.push(node);
+          } else if (isTSTypeReference(node)) {
+            references.push(node);
+          }
+        }
+        // If there are types other than type literals and interfaces, bail
+        // out the rule needs to be sure that the types can be extended.
+        if (
+          literals.length + references.length !==
+          intersectionTypeNode.types.length
+        ) {
+          return;
+        }
+        for (const reference of references) {
+          const type = typeChecker.getTypeFromTypeNode(
+            esTreeNodeToTSNodeMap.get(reference)
+          );
+          if (!type.isClassOrInterface() || type.isClass()) {
+            return;
+          }
+        }
+        if (literals.length > 1) {
+          context.report({
+            messageId: "forbidden",
+            node: typeAliasNode.id,
+          });
+        } else if (literals.length === 1) {
+          // TODO: is there a literal? extend type references and use literal members as the interface body
+        } else {
+          // TODO: extend type references
+        }
       },
       "TSTypeAliasDeclaration > TSTypeLiteral": (
         typeLiteralNode: es.TSTypeLiteral

@@ -8,7 +8,7 @@ import { fromFixture } from "eslint-etc";
 import rule = require("../../source/rules/prefer-interface");
 import { ruleTester } from "../utils";
 
-ruleTester({ types: true }).run("prefer-interface", rule, {
+ruleTester({ types: false }).run("prefer-interface", rule, {
   valid: [
     `type T = string;`,
     `type T = string | number;`,
@@ -24,6 +24,21 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
     },
     {
       code: `type T = (value: string) => string;`,
+      options: [{ allowLocal: true }],
+    },
+    {
+      code: `type T = { name: string; } | { age: number; };`,
+    },
+    {
+      code: `type T = { name: string; } & { age: number; };`,
+    },
+    {
+      code: `
+        // type intersection
+        type Name = { name: string; };
+        type Age = { age: number; };
+        type T = Name & Age;
+      `,
       options: [{ allowLocal: true }],
     },
   ],
@@ -149,6 +164,70 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
       {
         output: stripIndent`
           interface Func<Foo> { <Bar>(foo: Foo): Bar; }
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        // interface intersection
+        interface Name { name: string; }
+        interface Age { age: number; }
+        type T = Name & Age;
+             ~ [forbidden]
+      `,
+      {
+        output: stripIndent`
+          // interface intersection
+          interface Name { name: string; }
+          interface Age { age: number; }
+          interface T extends Name, Age {}
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        // interface-literal intersection
+        interface Name { name: string; }
+        type T = Name & { age: number; };
+             ~ [forbidden]
+      `,
+      {
+        output: stripIndent`
+          // interface-literal intersection
+          interface Name { name: string; }
+          interface T extends Name { age: number; }
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        // literal-interface intersection
+        interface Age { age: number; }
+        type T = { name: string; } & Age;
+             ~ [forbidden]
+      `,
+      {
+        output: stripIndent`
+          // literal-interface intersection
+          interface Age { age: number; }
+          interface T extends Age { name: string; }
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        // interface-literal-interface intersection
+        interface Name { name: string; }
+        interface Role { role: string; }
+        type T = Name & { age: number; } & Role;
+             ~ [forbidden]
+      `,
+      {
+        output: stripIndent`
+          // interface-literal-interface intersection
+          interface Name { name: string; }
+          interface Role { role: string; }
+          interface T extends Name, Role { age: number; }
         `,
       }
     ),
