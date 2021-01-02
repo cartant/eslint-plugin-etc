@@ -8,7 +8,7 @@ import { fromFixture } from "eslint-etc";
 import rule = require("../../source/rules/prefer-interface");
 import { ruleTester } from "../utils";
 
-ruleTester({ types: false }).run("prefer-interface", rule, {
+ruleTester({ types: true }).run("prefer-interface", rule, {
   valid: [
     `type T = string;`,
     `type T = string | number;`,
