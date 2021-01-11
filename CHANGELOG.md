@@ -1,3 +1,10 @@
+<a name="1.1.8"></a>
+## [1.1.8](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.7...v1.1.8) (2021-01-11)
+
+## Changes
+
+* Fix GitHub URL to docs. ([0add586](https://github.com/cartant/eslint-plugin-etc/commit/0add586))
+
 <a name="1.1.7"></a>
 ## [1.1.7](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.6...v1.1.7) (2020-11-28)
 
