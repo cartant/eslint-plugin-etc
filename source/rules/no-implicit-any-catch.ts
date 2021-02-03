@@ -17,6 +17,21 @@ import {
 } from "eslint-etc";
 import { ruleCreator } from "../utils";
 
+function isParenthesised(
+  sourceCode: Readonly<eslint.SourceCode>,
+  node: es.Node
+) {
+  const before = sourceCode.getTokenBefore(node);
+  const after = sourceCode.getTokenAfter(node);
+  return (
+    Boolean(before && after) &&
+    before.value === "(" &&
+    before.range[1] <= node.range[0] &&
+    after.value === ")" &&
+    after.range[0] >= node.range[1]
+  );
+}
+
 const defaultOptions: {
   allowExplicitAny?: boolean;
 }[] = [];
@@ -57,6 +72,7 @@ const rule = ruleCreator({
     const { couldBeType } = getTypeServices(context);
     const [config = {}] = context.options;
     const { allowExplicitAny = false } = config;
+    const sourceCode = context.getSourceCode();
 
     function checkRejectionCallback(
       callExpression: es.CallExpression,
@@ -121,7 +137,13 @@ const rule = ruleCreator({
           return;
         }
         function fix(fixer: eslint.RuleFixer) {
-          return fixer.insertTextAfter(param, ": unknown");
+          if (isParenthesised(sourceCode, param)) {
+            return fixer.insertTextAfter(param, ": unknown");
+          }
+          return [
+            fixer.insertTextBefore(param, "("),
+            fixer.insertTextAfter(param, ": unknown)"),
+          ];
         }
         context.report({
           fix,
