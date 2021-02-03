@@ -175,6 +175,23 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
     ),
     fromFixture(
       stripIndent`
+        // arrow; no parentheses; implicit any
+        Promise.reject("Kaboom!").catch(
+          error => console.error(error)
+          ~~~~~ [implicitAny]
+        );
+      `,
+      {
+        output: stripIndent`
+          // arrow; no parentheses; implicit any
+          Promise.reject("Kaboom!").catch(
+            (error: unknown) => console.error(error)
+          );
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
         // non-arrow; implicit any
         Promise.reject("Kaboom!").catch(
           function (error) { console.error(error); }
@@ -290,6 +307,25 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
       {
         output: stripIndent`
           // then; arrow; implicit any
+          Promise.reject("Kaboom!").then(
+            () => {},
+            (error: unknown) => console.error(error)
+          );
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        // then; arrow; no parentheses; implicit any
+        Promise.reject("Kaboom!").then(
+          () => {},
+          error => console.error(error)
+          ~~~~~ [implicitAny]
+        );
+      `,
+      {
+        output: stripIndent`
+          // then; arrow; no parentheses; implicit any
           Promise.reject("Kaboom!").then(
             () => {},
             (error: unknown) => console.error(error)
