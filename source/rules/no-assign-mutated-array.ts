@@ -15,6 +15,10 @@ import {
 } from "eslint-etc";
 import { ruleCreator } from "../utils";
 
+function isNewExpression(node: es.Node): node is es.NewExpression {
+  return node.type === "NewExpression";
+}
+
 const mutatorRegExp = /^(fill|reverse|sort)$/;
 const creatorRegExp = /^(concat|entries|filter|keys|map|slice|splice|values)$/;
 
@@ -56,6 +60,29 @@ const rule = ruleCreator({
       },
     };
 
+    function isNewArray(node: es.LeftHandSideExpression): boolean {
+      if (isArrayExpression(node)) {
+        return true;
+      }
+      if (isNewExpression(node)) {
+        return true;
+      }
+      if (isCallExpression(node)) {
+        const { callee } = node;
+        if (isIdentifier(callee) && callee.name === "Array") {
+          return true;
+        }
+        if (
+          isMemberExpression(callee) &&
+          isIdentifier(callee.object) &&
+          callee.object.name === "Array"
+        ) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     function mutatesReferencedArray(
       callExpression: es.CallExpression
     ): boolean {
@@ -65,11 +92,11 @@ const rule = ruleCreator({
         if (isIdentifier(property) && creatorRegExp.test(property.name)) {
           return false;
         }
+        if (isNewArray(object)) {
+          return false;
+        }
         if (isCallExpression(object)) {
           return mutatesReferencedArray(object);
-        }
-        if (isArrayExpression(object)) {
-          return false;
         }
       }
       return true;
