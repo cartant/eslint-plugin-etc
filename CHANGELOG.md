@@ -1,3 +1,11 @@
+<a name="1.1.10"></a>
+
+## [1.1.10](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.9...v1.1.10) (2021-02-05)
+
+## Fixes:
+
+-   Support `Array` constructors in `no-assign-mutated-array`. ([a5837e5](https://github.com/cartant/eslint-plugin-etc/commit/a5837e5))
+
 <a name="1.1.9"></a>
 
 ## [1.1.9](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.8...v1.1.9) (2021-02-03)
