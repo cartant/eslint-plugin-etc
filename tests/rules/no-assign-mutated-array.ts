@@ -144,6 +144,15 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
         );
       `,
     },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/eslint-plugin-etc/issues/27
+        const a = new Array(10).fill(0);
+        const b = Array(10).fill(0);
+        const c = Array.from([0, 1, 2]).reverse();
+        const d = Array.of(0, 1, 2).sort();
+      `,
+    },
   ],
   invalid: [
     fromFixture(
