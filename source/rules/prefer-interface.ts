@@ -142,10 +142,7 @@ const rule = ruleCreator({
           }
         }
         if (literals.length > 1) {
-          context.report({
-            messageId: "forbidden",
-            node: typeAliasNode.id,
-          });
+          return;
         } else if (literals.length === 1) {
           // TODO: is there a literal? extend type references and use literal members as the interface body
         } else {

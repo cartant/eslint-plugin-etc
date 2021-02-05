@@ -27,12 +27,6 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
       options: [{ allowLocal: true }],
     },
     {
-      code: `type T = { name: string; } | { age: number; };`,
-    },
-    {
-      code: `type T = { name: string; } & { age: number; };`,
-    },
-    {
       code: `
         // type intersection
         type Name = { name: string; };
