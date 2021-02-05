@@ -7,8 +7,12 @@ import {
   TSESLint as eslint,
   TSESTree as es,
 } from "@typescript-eslint/experimental-utils";
-import { getParent, getParserServices, getTypeServices } from "eslint-etc";
-import * as ts from "typescript";
+import {
+  getParent,
+  getParserServices,
+  getTypeServices,
+  isIdentifier,
+} from "eslint-etc";
 import { ruleCreator } from "../utils";
 
 function isExportNamedDeclaration(
@@ -56,13 +60,33 @@ const rule = ruleCreator({
   name: "prefer-interface",
   create: (context, unused: typeof defaultOptions) => {
     const [
-      { allowIntersection = false, allowLocal = false } = {},
+      { allowIntersection = true, allowLocal = false } = {},
     ] = context.options;
-    const { esTreeNodeToTSNodeMap } = getParserServices(context);
-    let typeChecker: ts.TypeChecker | undefined;
-    try {
-      ({ typeChecker } = getTypeServices(context));
-    } catch (error) {}
+
+    function formatTypeParameters(
+      typeParameters?:
+        | es.TSTypeParameterDeclaration
+        | es.TSTypeParameterInstantiation
+    ): string {
+      return typeParameters
+        ? context.getSourceCode().getText(typeParameters)
+        : "";
+    }
+
+    function formatTypeReferences(
+      typeReferences: es.TSTypeReference[]
+    ): string {
+      return typeReferences
+        .map((typeReference) => {
+          if (!isIdentifier(typeReference.typeName)) {
+            throw new Error("Expected typeName to be an identifier.");
+          }
+          const parameters = formatTypeParameters(typeReference.typeParameters);
+          return `${typeReference.typeName.name}${parameters}`;
+        })
+        .join(", ");
+    }
+
     return {
       "TSTypeAliasDeclaration > TSFunctionType": (
         functionTypeNode: es.TSFunctionType
@@ -74,12 +98,12 @@ const rule = ruleCreator({
           return;
         }
         function fix(fixer: eslint.RuleFixer) {
-          const interfaceTypeParameters = typeAliasNode.typeParameters
-            ? context.getSourceCode().getText(typeAliasNode.typeParameters)
-            : "";
-          const functionTypeParameters = functionTypeNode.typeParameters
-            ? context.getSourceCode().getText(functionTypeNode.typeParameters)
-            : "";
+          const interfaceTypeParameters = formatTypeParameters(
+            typeAliasNode.typeParameters
+          );
+          const functionTypeParameters = formatTypeParameters(
+            functionTypeNode.typeParameters
+          );
           const params = functionTypeNode.params
             .map((param) => context.getSourceCode().getText(param))
             .join(",");
@@ -112,6 +136,8 @@ const rule = ruleCreator({
         if (allowIntersection) {
           return;
         }
+        const { esTreeNodeToTSNodeMap } = getParserServices(context);
+        const { typeChecker } = getTypeServices(context);
         const typeAliasNode = getParent(
           intersectionTypeNode
         ) as es.TSTypeAliasDeclaration;
@@ -137,17 +163,52 @@ const rule = ruleCreator({
           const type = typeChecker.getTypeFromTypeNode(
             esTreeNodeToTSNodeMap.get(reference)
           );
-          if (!type.isClassOrInterface() || type.isClass()) {
+          // It seems like it ought to be possible to use the isClass and
+          // isClassOrInterface methods here, but the isClassOrInterface method
+          // return false for generic interfaces.
+          if (type.isUnion()) {
             return;
           }
         }
         if (literals.length > 1) {
           return;
-        } else if (literals.length === 1) {
-          // TODO: is there a literal? extend type references and use literal members as the interface body
-        } else {
-          // TODO: extend type references
         }
+        let fix: (fixer: eslint.RuleFixer) => any;
+        if (literals.length === 1) {
+          fix = function (fixer: eslint.RuleFixer) {
+            const parameters = formatTypeParameters(
+              typeAliasNode.typeParameters
+            );
+            const bases = formatTypeReferences(references);
+            const literal = context.getSourceCode().getText(literals[0]);
+            return fixer.replaceText(
+              typeAliasNode,
+              `interface ${typeAliasNode.id.name}${parameters} extends ${bases} ${literal}`
+            );
+          };
+        } else {
+          fix = function (fixer: eslint.RuleFixer) {
+            const parameters = formatTypeParameters(
+              typeAliasNode.typeParameters
+            );
+            const bases = formatTypeReferences(references);
+            return fixer.replaceText(
+              typeAliasNode,
+              `interface ${typeAliasNode.id.name}${parameters} extends ${bases} {}`
+            );
+          };
+        }
+        context.report({
+          fix,
+          messageId: "forbidden",
+          node: typeAliasNode.id,
+          suggest: [
+            {
+              fix,
+              messageId: "suggest",
+            },
+          ],
+        });
       },
       "TSTypeAliasDeclaration > TSTypeLiteral": (
         typeLiteralNode: es.TSTypeLiteral
@@ -159,13 +220,11 @@ const rule = ruleCreator({
           return;
         }
         function fix(fixer: eslint.RuleFixer) {
-          const typeParameters = typeAliasNode.typeParameters
-            ? context.getSourceCode().getText(typeAliasNode.typeParameters)
-            : "";
+          const parameters = formatTypeParameters(typeAliasNode.typeParameters);
           const literal = context.getSourceCode().getText(typeLiteralNode);
           return fixer.replaceText(
             typeAliasNode,
-            `interface ${typeAliasNode.id.name}${typeParameters} ${literal}`
+            `interface ${typeAliasNode.id.name}${parameters} ${literal}`
           );
         }
         context.report({

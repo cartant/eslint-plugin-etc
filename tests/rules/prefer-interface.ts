@@ -8,7 +8,7 @@ import { fromFixture } from "eslint-etc";
 import rule = require("../../source/rules/prefer-interface");
 import { ruleTester } from "../utils";
 
-ruleTester({ types: true }).run("prefer-interface", rule, {
+ruleTester({ types: false }).run("prefer-interface", rule, {
   valid: [
     `type T = string;`,
     `type T = string | number;`,
@@ -161,6 +161,12 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
         `,
       }
     ),
+  ],
+});
+
+ruleTester({ types: true }).run("prefer-interface", rule, {
+  valid: [],
+  invalid: [
     fromFixture(
       stripIndent`
         // interface intersection
@@ -170,11 +176,30 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
              ~ [forbidden]
       `,
       {
+        options: [{ allowIntersection: false }],
         output: stripIndent`
           // interface intersection
           interface Name { name: string; }
           interface Age { age: number; }
           interface T extends Name, Age {}
+        `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        // generic interface intersection
+        interface Name<S> { name: S; }
+        interface Age<N> { age: N; }
+        type T<S, N> = Name<S> & Age<N>;
+             ~ [forbidden]
+      `,
+      {
+        options: [{ allowIntersection: false }],
+        output: stripIndent`
+          // generic interface intersection
+          interface Name<S> { name: S; }
+          interface Age<N> { age: N; }
+          interface T<S, N> extends Name<S>, Age<N> {}
         `,
       }
     ),
@@ -186,6 +211,7 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
              ~ [forbidden]
       `,
       {
+        options: [{ allowIntersection: false }],
         output: stripIndent`
           // interface-literal intersection
           interface Name { name: string; }
@@ -201,6 +227,7 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
              ~ [forbidden]
       `,
       {
+        options: [{ allowIntersection: false }],
         output: stripIndent`
           // literal-interface intersection
           interface Age { age: number; }
@@ -217,6 +244,7 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
              ~ [forbidden]
       `,
       {
+        options: [{ allowIntersection: false }],
         output: stripIndent`
           // interface-literal-interface intersection
           interface Name { name: string; }
