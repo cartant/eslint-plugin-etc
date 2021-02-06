@@ -14,8 +14,8 @@ Examples of **incorrect** code for this rule:
 
 ```ts
 type Person = {
-  age: number;
-  name: string;
+    age: number;
+    name: string;
 };
 ```
 
@@ -27,13 +27,15 @@ Examples of **correct** code for this rule:
 
 ```ts
 interface Person {
-  age: number;
-  name: string;
+    age: number;
+    name: string;
 }
 ```
 
 ```ts
-interface Comparator<T> { (left: T, right: T): number; }
+interface Comparator<T> {
+    (left: T, right: T): number;
+}
 ```
 
 ```ts
@@ -42,28 +44,51 @@ type Worker = Person | Robot;
 
 ```ts
 type DeepReadonly<T> = {
-  readonly [P in keyof T]: DeepReadonly<T[P]>
+    readonly [P in keyof T]: DeepReadonly<T[P]>;
 };
 ```
 
 ## Options
 
-This rule accepts a single option which is an object with an `allowLocal` property that determines whether local - i.e. non-exported - type aliases that could be declared as interfaces are allowed. By default, they are not.
+This rule accepts a single option which is an object with `allowIntersection` and `allowLocal` properties.
+
+The `allowIntersection` option defaults to `true`. If set to `false`, the rule will disallow type aliases that are intersections:
+
+<!-- prettier-ignore -->
+```ts
+interface Name { name: string; }
+interface Age { age: number; }
+type T = Name & Age;
+```
+
+and the rules fixer will replace the type alias declaration with an interface:
+
+<!-- prettier-ignore -->
+```ts
+interface Name { name: string; }
+interface Age { age: number; }
+interface T extends Name, Age {}
+```
+
+The `allowLocal` option determines whether local - i.e. non-exported - type aliases that could be declared as interfaces are allowed. By default, they are not.
 
 ```json
 {
-  "etc/prefer-interface": [
-    "error",
-    { "allowLocal": true }
-  ]
+    "etc/prefer-interface": [
+        "error",
+        {
+            "allowIntersection": true,
+            "allowLocal": true
+        }
+    ]
 }
 ```
 
 ## Related to
 
-- [`no-type-alias`](https://github.com/typescript-eslint/typescript-eslint/blob/880ac753b90d63034f0a33f8f512d9fabc17c8f9/packages/eslint-plugin/docs/rules/no-type-alias.md)
+-   [`no-type-alias`](https://github.com/typescript-eslint/typescript-eslint/blob/880ac753b90d63034f0a33f8f512d9fabc17c8f9/packages/eslint-plugin/docs/rules/no-type-alias.md)
 
 ## Further reading
 
-- The [Twitter thread](https://twitter.com/robpalmer2/status/1319188885197422594) from which the above quote was taken.
-- [Prefer Interfaces](https://ncjamieson.com/prefer-interfaces)
+-   The [Twitter thread](https://twitter.com/robpalmer2/status/1319188885197422594) from which the above quote was taken.
+-   [Prefer Interfaces](https://ncjamieson.com/prefer-interfaces)
