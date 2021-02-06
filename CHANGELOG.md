@@ -1,3 +1,11 @@
+<a name="1.2.0"></a>
+
+## [1.2.0](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.10...v1.2.0) (2021-02-06)
+
+## Features:
+
+-   The `prefer-interface` rule now has an `allowIntersection` option that - when set to `false` - will replace intersection type aliases with interface extensions. See the [docs](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/prefer-interface.md) for more information. ([12fab8d](https://github.com/cartant/eslint-plugin-etc/commit/12fab8d))
+
 <a name="1.1.10"></a>
 
 ## [1.1.10](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.9...v1.1.10) (2021-02-05)
