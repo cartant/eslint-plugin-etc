@@ -165,7 +165,14 @@ ruleTester({ types: false }).run("prefer-interface", rule, {
 });
 
 ruleTester({ types: true }).run("prefer-interface", rule, {
-  valid: [],
+  valid: [
+    stripIndent`
+      // union intersection
+      type Name = { name: string; } | { label: string; };
+      interface Age { age: number; }
+      type T = Name & Age;
+    `,
+  ],
   invalid: [
     fromFixture(
       stripIndent`
