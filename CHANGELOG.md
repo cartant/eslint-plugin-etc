@@ -1,3 +1,11 @@
+<a name="1.3.2"></a>
+
+## [1.3.2](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.1...v1.3.2) (2021-02-11)
+
+## Fixes:
+
+-   Ignore whitespace-only comments in the `no-commented-out-code` rule. ([4cfccfa](https://github.com/cartant/eslint-plugin-etc/commit/4cfccfa))
+
 <a name="1.3.1"></a>
 
 ## [1.3.1](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.0...v1.3.1) (2021-02-11)
