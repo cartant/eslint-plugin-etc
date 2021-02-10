@@ -67,6 +67,7 @@ The package includes the following rules:
 | Rule | Description | Recommended |
 | --- | --- | --- |
 | [`no-assign-mutated-array`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-assign-mutated-array.md) | Forbids the assignment of returned, mutated arrays. | Yes |
+| [`no-commented-out-code`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-commented-out-code.md) | Forbids commented-out code. | No |
 | [`no-const-enum`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-const-enum.md) | Forbids the use of `const enum`. Constant enums are [not compatible with isolated modules](https://ncjamieson.com/dont-export-const-enums/). | No |
 | [`no-deprecated`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-deprecated.md) | Forbids the use of deprecated APIs. | Yes |
 | [`no-enum`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-enum.md) | Forbids the use of `enum`. | No |
