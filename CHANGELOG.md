@@ -1,3 +1,11 @@
+<a name="1.3.0"></a>
+
+## [1.3.0](https://github.com/cartant/eslint-plugin-etc/compare/v1.2.0...v1.3.0) (2021-02-10)
+
+## Features:
+
+-   Add a `no-commented-out-code` rule. ([4a7cbc5](https://github.com/cartant/eslint-plugin-etc/commit/4a7cbc5))
+
 <a name="1.2.0"></a>
 
 ## [1.2.0](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.10...v1.2.0) (2021-02-06)
