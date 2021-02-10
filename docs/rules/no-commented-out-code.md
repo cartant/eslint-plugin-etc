@@ -14,10 +14,10 @@ const answer = 42;
 Examples of **correct** code for this rule:
 
 ```ts
-// This comment includes code is not code.
+// This comment is not code.
 const answer = 42;
 ```
-
+ 
 ```ts
 // This comment includes code as an example:
 // const answer = 54;
