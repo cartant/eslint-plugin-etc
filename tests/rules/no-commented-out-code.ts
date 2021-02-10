@@ -55,6 +55,24 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
         const answer = 42;
       `,
     },
+    {
+      code: stripIndent`
+        // TODO
+        const answer = 42;
+      `,
+    },
+    {
+      code: stripIndent`
+        // TODO:
+        const answer = 42;
+      `,
+    },
+    {
+      code: stripIndent`
+        // TODO: fix
+        const answer = 42;
+      `,
+    },
   ],
   invalid: [
     fromFixture(

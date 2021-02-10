@@ -31,17 +31,24 @@ const rule = ruleCreator({
         const blocks = toBlocks(comments);
         for (const block of blocks) {
           try {
-            parse(block.content, parserOptions);
-            context.report({
-              loc: block.loc,
-              messageId: "forbidden",
-            });
+            const { content, loc } = block;
+            if (!isUnintentionallyParsable(content)) {
+              parse(content, parserOptions);
+              context.report({
+                loc,
+                messageId: "forbidden",
+              });
+            }
           } catch (error) {}
         }
       },
     };
   },
 });
+
+function isUnintentionallyParsable(content: string) {
+  return /^\s*[a-z]+(:\s*[a-z]+)?\s*$/i.test(content);
+}
 
 function toBlocks(comments: es.Comment[]) {
   const blocks: {
@@ -52,7 +59,7 @@ function toBlocks(comments: es.Comment[]) {
   for (const comment of comments) {
     if (comment.type === "Block") {
       blocks.push({
-        content: comment.value.replace(/^\s+\*/, "").replace(/\n\s+\*/g, "\n"),
+        content: comment.value.replace(/^\s*\*/, "").replace(/\n\s*\*/g, "\n"),
         loc: { ...comment.loc },
       });
       prevLine = undefined;
