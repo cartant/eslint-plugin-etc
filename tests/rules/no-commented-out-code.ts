@@ -73,6 +73,12 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
         const answer = 42;
       `,
     },
+    {
+      code: stripIndent`
+        //
+        const answer = 42;
+      `,
+    },
   ],
   invalid: [
     fromFixture(

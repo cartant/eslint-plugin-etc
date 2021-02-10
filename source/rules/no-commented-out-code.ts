@@ -47,7 +47,7 @@ const rule = ruleCreator({
 });
 
 function isUnintentionallyParsable(content: string) {
-  return /^\s*[a-z]+(:\s*[a-z]+)?\s*$/i.test(content);
+  return /^\s*$/.test(content) || /^\s*[a-z]+(:\s*[a-z]+)?\s*$/i.test(content);
 }
 
 function toBlocks(comments: es.Comment[]) {
