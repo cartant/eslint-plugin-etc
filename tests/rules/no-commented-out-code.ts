@@ -205,9 +205,10 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
     fromFixture(
       stripIndent`
         // within import
-        import  {
+        import {
           a,
           // b,
+          ~~~~~ [forbidden]
           c
         } from "outer";
       `
@@ -249,13 +250,10 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
       stripIndent`
         // within switch
         switch (value) {
-          case "a":
-            return a;
-          // case "b":
-          //   return b;
-          ~~~~~~~~~~~~~~ [forbidden]
-          case "c":
-            return c;
+          case "a": return a;
+          // case "b": return b;
+          ~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+          case "c": return c;
         };
       `
     ),

@@ -83,8 +83,27 @@ function toBlocks(comments: es.Comment[]) {
   return blocks;
 }
 
-function wrapContent(content: string, node: es.Node): string {
-  return content;
+function wrapContent(content: string, node: es.Node | null): string {
+  switch (node?.type) {
+    case "ArrayExpression":
+      return `let wrapper = [${content}]`;
+    case "ClassBody":
+      return `class Wrapper { ${content} }`;
+    case "ImportDeclaration":
+      return `import { ${content} } from "wrapper"`;
+    case "ObjectExpression":
+      return `let wrapper = { ${content} }`;
+    case "FunctionDeclaration":
+      return `function wrapper(${content}) {}`;
+    case "SwitchStatement":
+      return `switch (wrapper) { ${content} }`;
+    case "TSInterfaceBody":
+      return `interface Wrapper { ${content} }`;
+    case "TSTypeLiteral":
+      return `type Wrapper = { ${content} }`;
+    default:
+      return content;
+  }
 }
 
 export = rule;
