@@ -1,8 +1,16 @@
 <a name="1.3.2"></a>
 
+## [1.3.3](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.2...v1.3.3) (2021-02-18)
+
+## Changes
+
+-   Tweaked the `no-commented-out-code` rule to find more comments. ([15648f5](https://github.com/cartant/eslint-plugin-etc/commit/15648f5))
+
+<a name="1.3.2"></a>
+
 ## [1.3.2](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.1...v1.3.2) (2021-02-11)
 
-## Fixes:
+## Fixes
 
 -   Ignore whitespace-only comments in the `no-commented-out-code` rule. ([4cfccfa](https://github.com/cartant/eslint-plugin-etc/commit/4cfccfa))
 
@@ -10,7 +18,7 @@
 
 ## [1.3.1](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.0...v1.3.1) (2021-02-11)
 
-## Fixes:
+## Fixes
 
 -   Ignore some basic, unintentionally-parsable comments in the `no-commented-out-code` rule. ([b1263e7](https://github.com/cartant/eslint-plugin-etc/commit/b1263e7))
 
@@ -18,7 +26,7 @@
 
 ## [1.3.0](https://github.com/cartant/eslint-plugin-etc/compare/v1.2.0...v1.3.0) (2021-02-10)
 
-## Features:
+## Features
 
 -   Add a `no-commented-out-code` rule. ([4a7cbc5](https://github.com/cartant/eslint-plugin-etc/commit/4a7cbc5))
 
@@ -26,7 +34,7 @@
 
 ## [1.2.0](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.10...v1.2.0) (2021-02-06)
 
-## Features:
+## Features
 
 -   The `prefer-interface` rule now has an `allowIntersection` option that - when set to `false` - will replace intersection type aliases with interface extensions. See the [docs](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/prefer-interface.md) for more information. ([12fab8d](https://github.com/cartant/eslint-plugin-etc/commit/12fab8d))
 
@@ -34,7 +42,7 @@
 
 ## [1.1.10](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.9...v1.1.10) (2021-02-05)
 
-## Fixes:
+## Fixes
 
 -   Support `Array` constructors in `no-assign-mutated-array`. ([a5837e5](https://github.com/cartant/eslint-plugin-etc/commit/a5837e5))
 
@@ -42,7 +50,7 @@
 
 ## [1.1.9](https://github.com/cartant/eslint-plugin-etc/compare/v1.1.8...v1.1.9) (2021-02-03)
 
-## Fixes:
+## Fixes
 
 -   Support arrow functions without parameter parentheses in `no-implicit-any-catch`. ([f4f4089](https://github.com/cartant/eslint-plugin-etc/commit/f4f4089))
 
