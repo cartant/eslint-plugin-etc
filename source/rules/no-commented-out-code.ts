@@ -25,6 +25,7 @@ const rule = ruleCreator({
   create: (context) => {
     const { parse } = require(context.parserPath);
     const { project, ...parserOptions } = context.parserOptions;
+    const sourceCode = context.getSourceCode();
     return {
       Program: () => {
         const comments = context.getSourceCode().getAllComments();
@@ -33,7 +34,9 @@ const rule = ruleCreator({
           try {
             const { content, loc } = block;
             if (!isUnintentionallyParsable(content)) {
-              parse(content, parserOptions);
+              const index = sourceCode.getIndexFromLoc(loc.start);
+              const node = sourceCode.getNodeByRangeIndex(index);
+              parse(wrapContent(content, node), parserOptions);
               context.report({
                 loc,
                 messageId: "forbidden",
@@ -78,6 +81,10 @@ function toBlocks(comments: es.Comment[]) {
     }
   }
   return blocks;
+}
+
+function wrapContent(content: string, node: es.Node): string {
+  return content;
 }
 
 export = rule;

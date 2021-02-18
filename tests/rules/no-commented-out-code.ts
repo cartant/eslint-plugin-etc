@@ -180,5 +180,95 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
         },
       ],
     },
+    fromFixture(
+      stripIndent`
+        // within array
+        const outer = [
+          a,
+          // b,
+          ~~~~~ [forbidden]
+          c
+        ];
+      `
+    ),
+    fromFixture(
+      stripIndent`
+        // within class
+        class Outer {
+          public a: string;
+          // public b: string;
+          ~~~~~~~~~~~~~~~~~~~~ [forbidden]
+          public c: string;
+        }
+      `
+    ),
+    fromFixture(
+      stripIndent`
+        // within import
+        import  {
+          a,
+          // b,
+          c
+        } from "outer";
+      `
+    ),
+    fromFixture(
+      stripIndent`
+        // within interface
+        interface Outer {
+          readonly a: string;
+          // readonly b: string;
+          ~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+          readonly c: string;
+        }
+      `
+    ),
+    fromFixture(
+      stripIndent`
+        // within object
+        const outer = {
+          a: "a",
+          // b: "b",
+          ~~~~~~~~~~ [forbidden]
+          c: "c"
+        };
+      `
+    ),
+    fromFixture(
+      stripIndent`
+        // within parameters
+        function outer(
+          a: string,
+          // b: string,
+          ~~~~~~~~~~~~~ [forbidden]
+          c: string
+        ) {};
+      `
+    ),
+    fromFixture(
+      stripIndent`
+        // within switch
+        switch (value) {
+          case "a":
+            return a;
+          // case "b":
+          //   return b;
+          ~~~~~~~~~~~~~~ [forbidden]
+          case "c":
+            return c;
+        };
+      `
+    ),
+    fromFixture(
+      stripIndent`
+        // within type
+        type Outer = {
+          readonly a: string;
+          // readonly b: string;
+          ~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+          readonly c: string;
+        };
+      `
+    ),
   ],
 });
