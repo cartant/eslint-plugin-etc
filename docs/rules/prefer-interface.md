@@ -1,5 +1,9 @@
 # Use interfaces instead of type aliases (`prefer-interface`)
 
+_Some time after this rule was written, Anders Hejlsberg opened a PR that [preserves type aliases for union and intersection types](https://github.com/microsoft/TypeScript/pull/42149). That PR's changes should included in TypeScript 4.2, so when that version is released, the reasons for preferring interfaces might be less compelling._
+
+---
+
 This rule effects failures for type alias declarations that can be declared as interfaces.
 
 > Honestly, my take is that it should really just be interfaces for anything that they can model. There is no benefit to type aliases when there are so many issues around display/perf.
