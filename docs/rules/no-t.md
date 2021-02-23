@@ -22,15 +22,15 @@ type Entry<K, V> = {
 Examples of **correct** code for this rule:
 
 ```ts
-function toArray<TElement>(elements: ArrayLike<TElement>) {
+function toArray<Element>(elements: ArrayLike<Element>) {
   return Array.from(elements);
 }
 ```
 
 ```ts
-type Entry<TKey, TValue> = {
-  key: TKey;
-  value: TValue;
+type Entry<Key, Value> = {
+  key: Key;
+  value: Value;
 };
 ```
 
