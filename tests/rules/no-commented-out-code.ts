@@ -79,6 +79,23 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
         const answer = 42;
       `,
     },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/eslint-plugin-etc/issues/28
+        enum Data {
+          // City
+          Zero,
+          // Город
+          One,
+          // 町
+          Two,
+          // İlçe
+          Three,
+          // Քաղաք
+          Four,
+        }
+      `,
+    },
   ],
   invalid: [
     fromFixture(
