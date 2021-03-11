@@ -1,4 +1,12 @@
-<a name="1.3.2"></a>
+<a name="1.3.4"></a>
+
+## [1.3.4](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.3...v1.3.4) (2021-03-11)
+
+## Fixes
+
+-   Match non-Latin characters in the `no-commented-out-code` rule to avoid more false positives. ([9a7411a](https://github.com/cartant/eslint-plugin-etc/commit/9a7411a))
+
+<a name="1.3.3"></a>
 
 ## [1.3.3](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.2...v1.3.3) (2021-02-18)
 
