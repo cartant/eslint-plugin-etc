@@ -325,5 +325,29 @@ ruleTester({ comments: true, types: true }).run("no-deprecated", rule, {
         ],
       }
     ),
+    fromFixture(
+      stripIndent`
+        // Multi-line comments
+        /**
+         * @deprecated Don't
+         * use this
+         * function
+         */
+        declare function func(): void;
+        func();
+        ~~~~ [forbidden { "comment": "Don't use this function", "name": "func" }]
+      `
+    ),
+    fromFixture(
+      stripIndent`
+        // Multi-space comments
+        /**
+         * @deprecated Don't use  this   function
+         */
+        declare function func(): void;
+        func();
+        ~~~~ [forbidden { "comment": "Don't use this function", "name": "func" }]
+      `
+    ),
   ],
 });

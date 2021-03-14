@@ -92,10 +92,13 @@ const rule = ruleCreator({
         ) {
           return;
         }
-        const comment = getTag("deprecated", identifier, typeChecker);
-        if (comment !== undefined) {
+        const tag = getTag("deprecated", identifier, typeChecker);
+        if (tag !== undefined) {
           context.report({
-            data: { comment, name: identifier.text },
+            data: {
+              comment: tag.replace(/[\n\r\s\t]+/g, " "),
+              name: identifier.text,
+            },
             messageId: "forbidden",
             node,
           });
