@@ -1,3 +1,11 @@
+<a name="1.3.5"></a>
+
+## [1.3.5](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.4...v1.3.5) (2021-03-14)
+
+## Fixes
+
+-   New lines and excess whitespace are now striped from deprecations reported by the `no-deprecated` rule. ([16d19d0](https://github.com/cartant/eslint-plugin-etc/commit/16d19d0))
+
 <a name="1.3.4"></a>
 
 ## [1.3.4](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.3...v1.3.4) (2021-03-11)
