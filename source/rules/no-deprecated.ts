@@ -96,7 +96,7 @@ const rule = ruleCreator({
         if (tag !== undefined) {
           context.report({
             data: {
-              comment: tag.replace(/[\n\r\s\t]+/g, " "),
+              comment: tag.trim().replace(/[\n\r\s\t]+/g, " "),
               name: identifier.text,
             },
             messageId: "forbidden",
