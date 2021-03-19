@@ -64,7 +64,7 @@ const rule = ruleCreator({
           return;
         }
         variable.references.forEach(({ identifier }) => {
-          const parent = getParent(identifier);
+          const parent = getParent(identifier) as es.Node;
           if (isCallExpression(parent) && identifier === parent.callee) {
             checkRejection(parent);
           }
@@ -72,6 +72,7 @@ const rule = ruleCreator({
       },
       ThrowStatement: (node: es.ThrowStatement) => {
         if (
+          node.argument &&
           !isAny(node.argument) &&
           !couldBeType(node.argument, /^(Error|DOMException)$/)
         ) {

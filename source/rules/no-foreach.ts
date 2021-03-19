@@ -7,7 +7,7 @@ import { TSESTree as es } from "@typescript-eslint/experimental-utils";
 import { getTypeServices, isMemberExpression } from "eslint-etc";
 import { ruleCreator } from "../utils";
 
-const defaultOptions: {
+const defaultOptions: readonly {
   types?: string[];
 }[] = [];
 

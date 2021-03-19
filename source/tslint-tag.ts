@@ -191,7 +191,6 @@ function getDeprecationsFromDeclaration(
     if (comment.tags === undefined) {
       continue;
     }
-    console.log(comment.tags);
     for (const tag of comment.tags) {
       if (tag.tagName.text === tagName) {
         result.push(tag.comment === undefined ? "" : tag.comment);

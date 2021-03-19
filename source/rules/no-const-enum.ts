@@ -9,7 +9,7 @@ import * as tsutils from "tsutils";
 import * as ts from "typescript";
 import { ruleCreator } from "../utils";
 
-const defaultOptions: {
+const defaultOptions: readonly {
   allowLocal?: boolean;
 }[] = [];
 

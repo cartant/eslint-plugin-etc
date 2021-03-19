@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
+
 // Not internal
 
 export interface NotInternalInterface {
@@ -12,7 +14,7 @@ export type NotInternalType = {
 
 export class NotInternalClass {
   static notInternalStaticMethod(): void {}
-  notInternalProperty: string;
+  notInternalProperty: string = "";
   get notInternalGetter(): string {
     return "";
   }
@@ -45,7 +47,7 @@ export type InternalType = {
 /** @internal */
 export class InternalClass {
   static notInternalStaticMethod(): void {}
-  notInternalProperty: string;
+  notInternalProperty: string = "";
   get notInternalGetter(): string {
     return "";
   }
@@ -89,8 +91,8 @@ export class SomeInternalClass {
   static internalStaticMethod(): void {}
   static notInternalStaticMethod(): void {}
   /** @internal */
-  internalProperty: string;
-  notInternalProperty: string;
+  internalProperty: string = "";
+  notInternalProperty: string = "";
   /** @internal */
   get internalGetter(): string {
     return "";

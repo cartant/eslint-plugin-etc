@@ -14,7 +14,7 @@ import { ruleCreator } from "../utils";
 
 const internalNamesByProgram = new WeakMap<ts.Program, Set<string>>();
 
-const defaultOptions: {
+const defaultOptions: readonly {
   ignored?: Record<string, string>;
 }[] = [];
 
@@ -63,16 +63,14 @@ const rule = ruleCreator({
       const type = typeChecker.getTypeAtLocation(identifier);
       return typeChecker.getFullyQualifiedName(type.symbol);
     };
-    let internalNames: Set<string>;
-    if (internalNamesByProgram.has(program)) {
-      internalNames = internalNamesByProgram.get(program);
-    } else {
+    let internalNames = internalNamesByProgram.get(program);
+    if (!internalNames) {
       internalNames = findTaggedNames("internal", program);
       internalNamesByProgram.set(program, internalNames);
     }
     return {
       Identifier: (node: es.Identifier) => {
-        switch (getParent(node).type) {
+        switch (getParent(node)?.type) {
           case "ExportSpecifier":
           case "ImportDefaultSpecifier":
           case "ImportNamespaceSpecifier":
@@ -82,7 +80,7 @@ const rule = ruleCreator({
             break;
         }
         const identifier = esTreeNodeToTSNodeMap.get(node) as ts.Identifier;
-        if (!internalNames.has(identifier.text)) {
+        if (!internalNames?.has(identifier.text)) {
           return;
         }
         if (isDeclaration(identifier)) {

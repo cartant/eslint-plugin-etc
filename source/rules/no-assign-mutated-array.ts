@@ -12,12 +12,9 @@ import {
   isExpressionStatement,
   isIdentifier,
   isMemberExpression,
+  isNewExpression,
 } from "eslint-etc";
 import { ruleCreator } from "../utils";
-
-function isNewExpression(node: es.Node): node is es.NewExpression {
-  return node.type === "NewExpression";
-}
 
 const mutatorRegExp = /^(fill|reverse|sort)$/;
 const creatorRegExp = /^(concat|entries|filter|keys|map|slice|splice|values)$/;
@@ -46,7 +43,7 @@ const rule = ruleCreator({
       ) => {
         const callExpression = getParent(memberExpression) as es.CallExpression;
         const parent = getParent(callExpression);
-        if (!isExpressionStatement(parent)) {
+        if (parent && !isExpressionStatement(parent)) {
           if (
             couldBeType(memberExpression.object, "Array") &&
             mutatesReferencedArray(callExpression)

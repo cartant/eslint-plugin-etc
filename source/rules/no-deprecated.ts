@@ -12,7 +12,7 @@ import { ruleCreator } from "../utils";
 
 const deprecatedNamesByProgram = new WeakMap<ts.Program, Set<string>>();
 
-const defaultOptions: {
+const defaultOptions: readonly {
   ignored?: Record<string, string>;
 }[] = [];
 
@@ -61,16 +61,14 @@ const rule = ruleCreator({
       const type = typeChecker.getTypeAtLocation(identifier);
       return typeChecker.getFullyQualifiedName(type.symbol);
     };
-    let deprecatedNames: Set<string>;
-    if (deprecatedNamesByProgram.has(program)) {
-      deprecatedNames = deprecatedNamesByProgram.get(program);
-    } else {
+    let deprecatedNames = deprecatedNamesByProgram.get(program);
+    if (!deprecatedNames) {
       deprecatedNames = findTaggedNames("deprecated", program);
       deprecatedNamesByProgram.set(program, deprecatedNames);
     }
     return {
       Identifier: (node: es.Identifier) => {
-        switch (getParent(node).type) {
+        switch (getParent(node)?.type) {
           case "ExportSpecifier":
           case "ImportDefaultSpecifier":
           case "ImportNamespaceSpecifier":
@@ -80,7 +78,7 @@ const rule = ruleCreator({
             break;
         }
         const identifier = esTreeNodeToTSNodeMap.get(node) as ts.Identifier;
-        if (!deprecatedNames.has(identifier.text)) {
+        if (!deprecatedNames?.has(identifier.text)) {
           return;
         }
         if (isDeclaration(identifier)) {

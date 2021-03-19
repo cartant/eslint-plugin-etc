@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
+
 // Not deprecated
 
 export interface NotDeprecatedInterface {
@@ -12,7 +14,7 @@ export type NotDeprecatedType = {
 
 export class NotDeprecatedClass {
   static notDeprecatedStaticMethod(): void {}
-  notDeprecatedProperty: string;
+  notDeprecatedProperty: string = "";
   get notDeprecatedGetter(): string {
     return "";
   }
@@ -45,7 +47,7 @@ export type DeprecatedType = {
 /** @deprecated Don't use this */
 export class DeprecatedClass {
   static notDeprecatedStaticMethod(): void {}
-  notDeprecatedProperty: string;
+  notDeprecatedProperty: string = "";
   get notDeprecatedGetter(): string {
     return "";
   }
@@ -89,8 +91,8 @@ export class SomeDeprecatedClass {
   static deprecatedStaticMethod(): void {}
   static notDeprecatedStaticMethod(): void {}
   /** @deprecated Don't use this */
-  deprecatedProperty: string;
-  notDeprecatedProperty: string;
+  deprecatedProperty: string = "";
+  notDeprecatedProperty: string = "";
   /** @deprecated Don't use this */
   get deprecatedGetter(): string {
     return "";

@@ -24,7 +24,8 @@ function isParenthesised(
   const before = sourceCode.getTokenBefore(node);
   const after = sourceCode.getTokenAfter(node);
   return (
-    Boolean(before && after) &&
+    before &&
+    after &&
     before.value === "(" &&
     before.range[1] <= node.range[0] &&
     after.value === ")" &&
@@ -32,7 +33,7 @@ function isParenthesised(
   );
 }
 
-const defaultOptions: {
+const defaultOptions: readonly {
   allowExplicitAny?: boolean;
 }[] = [];
 

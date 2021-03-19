@@ -11,25 +11,14 @@ import {
   getParent,
   getParserServices,
   getTypeServices,
+  isExportNamedDeclaration,
   isIdentifier,
+  isTSTypeLiteral,
+  isTSTypeReference,
 } from "eslint-etc";
 import { ruleCreator } from "../utils";
 
-function isExportNamedDeclaration(
-  node: es.Node
-): node is es.ExportNamedDeclaration {
-  return node.type === "ExportNamedDeclaration";
-}
-
-function isTSTypeLiteral(node: es.Node): node is es.TSTypeLiteral {
-  return node.type === "TSTypeLiteral";
-}
-
-function isTSTypeReference(node: es.Node): node is es.TSTypeReference {
-  return node.type === "TSTypeReference";
-}
-
-const defaultOptions: {
+const defaultOptions: readonly {
   allowIntersection?: boolean;
   allowLocal?: boolean;
 }[] = [];
@@ -94,7 +83,10 @@ const rule = ruleCreator({
         const typeAliasNode = getParent(
           functionTypeNode
         ) as es.TSTypeAliasDeclaration;
-        if (allowLocal && !isExportNamedDeclaration(getParent(typeAliasNode))) {
+        if (
+          allowLocal &&
+          !isExportNamedDeclaration(getParent(typeAliasNode) as es.Node)
+        ) {
           return;
         }
         function fix(fixer: eslint.RuleFixer) {
@@ -216,7 +208,10 @@ const rule = ruleCreator({
         const typeAliasNode = getParent(
           typeLiteralNode
         ) as es.TSTypeAliasDeclaration;
-        if (allowLocal && !isExportNamedDeclaration(getParent(typeAliasNode))) {
+        if (
+          allowLocal &&
+          !isExportNamedDeclaration(getParent(typeAliasNode) as es.Node)
+        ) {
           return;
         }
         function fix(fixer: eslint.RuleFixer) {

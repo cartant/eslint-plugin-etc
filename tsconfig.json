@@ -6,17 +6,13 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitHelpers": true,
-    "noImplicitAny": true,
     "outDir": "build",
     "removeComments": true,
     "skipLibCheck": true,
     "sourceMap": false,
-    "suppressImplicitAnyIndexErrors": true,
+    "strict": true,
     "target": "es2018"
   },
   "exclude": [],
-  "include": [
-    "source/**/*.ts",
-    "tests/**/*.ts"
-  ]
+  "include": ["source/**/*.ts", "tests/**/*.ts"]
 }

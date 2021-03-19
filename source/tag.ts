@@ -27,10 +27,14 @@ export function findTaggedNames(
       if (ts.isConstructorDeclaration(node)) {
         const { parent } = node;
         const { name } = parent;
-        taggedNames.add(name.text);
+        if (name?.text) {
+          taggedNames.add(name.text);
+        }
       } else {
-        const { name } = node as ts.Node & { name: ts.Identifier };
-        taggedNames.add(name.text);
+        const { name } = node as ts.Node & { name?: ts.Identifier };
+        if (name?.text) {
+          taggedNames.add(name.text);
+        }
       }
     });
   });
