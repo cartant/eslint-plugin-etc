@@ -7,7 +7,7 @@ import { TSESTree as es } from "@typescript-eslint/experimental-utils";
 import { getParent, getParserServices } from "eslint-etc";
 import * as ts from "typescript";
 import { findTaggedNames } from "../tag";
-import { getTag, isDeclaration } from "../tslint-tag";
+import { getTags, isDeclaration } from "../tslint-tag";
 import { ruleCreator } from "../utils";
 
 const deprecatedNamesByProgram = new WeakMap<ts.Program, Set<string>>();
@@ -92,16 +92,18 @@ const rule = ruleCreator({
         ) {
           return;
         }
-        const tag = getTag("deprecated", identifier, typeChecker);
-        if (tag !== undefined) {
-          context.report({
-            data: {
-              comment: tag.trim().replace(/[\n\r\s\t]+/g, " "),
-              name: identifier.text,
-            },
-            messageId: "forbidden",
-            node,
-          });
+        const tags = getTags("deprecated", identifier, typeChecker);
+        if (tags.length > 0) {
+          for (const tag of tags) {
+            context.report({
+              data: {
+                comment: tag.trim().replace(/[\n\r\s\t]+/g, " "),
+                name: identifier.text,
+              },
+              messageId: "forbidden",
+              node,
+            });
+          }
         }
       },
     };

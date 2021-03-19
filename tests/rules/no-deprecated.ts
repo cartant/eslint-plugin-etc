@@ -349,5 +349,18 @@ ruleTester({ comments: true, types: true }).run("no-deprecated", rule, {
         ~~~~ [forbidden { "comment": "Don't use this function", "name": "func" }]
       `
     ),
+    fromFixture(
+      stripIndent`
+        // Multiple deprecated tags
+        /**
+         * @deprecated This function is slow
+         * @deprecated This function is buggy
+         */
+        declare function func(): void;
+        func();
+        ~~~~ [forbidden { "comment": "This function is slow", "name": "func" }]
+        ~~~~ [forbidden { "comment": "This function is buggy", "name": "func" }]
+      `
+    ),
   ],
 });

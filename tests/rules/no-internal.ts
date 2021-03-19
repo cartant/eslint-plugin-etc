@@ -325,5 +325,18 @@ ruleTester({ comments: true, types: true }).run("no-internal", rule, {
         ],
       }
     ),
+    fromFixture(
+      stripIndent`
+        // Multiple internal tags
+        /**
+         * @internal This function is internal
+         * @internal This function is experimental
+         */
+        declare function func(): void;
+        func();
+        ~~~~ [forbidden { "comment": "This function is internal", "name": "func" }]
+        ~~~~ [forbidden { "comment": "This function is experimental", "name": "func" }]
+      `
+    ),
   ],
 });

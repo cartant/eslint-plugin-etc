@@ -77,18 +77,18 @@ function getCallExpresion(
     : undefined;
 }
 
-export function getTag(
+export function getTags(
   tagName: string,
   node: ts.Identifier,
   tc: ts.TypeChecker
-): string | undefined {
+): string[] {
   const callExpression = getCallExpresion(node);
   if (callExpression !== undefined) {
-    const result = getSignatureTag(
+    const result = getSignatureTags(
       tagName,
       tc.getResolvedSignature(callExpression)
     );
-    if (result !== undefined) {
+    if (result.length > 0) {
       return result;
     }
   }
@@ -119,51 +119,49 @@ export function getTag(
     // stop here to avoid collecting JsDoc of all overload signatures
     (callExpression !== undefined && isFunctionOrMethod(symbol.declarations))
   ) {
-    return undefined;
+    return [];
   }
-  return getSymbolTag(tagName, symbol);
+  return getSymbolTags(tagName, symbol);
 }
 
-function findTag(tagName: string, tags: ts.JSDocTagInfo[]): string | undefined {
+function findTags(tagName: string, tags: ts.JSDocTagInfo[]): string[] {
+  const result: string[] = [];
   for (const tag of tags) {
     if (tag.name === tagName) {
-      return tag.text === undefined ? "" : tag.text;
+      result.push(tag.text === undefined ? "" : tag.text);
     }
   }
-  return undefined;
+  return result;
 }
 
-function getSymbolTag(tagName: string, symbol: ts.Symbol): string | undefined {
+function getSymbolTags(tagName: string, symbol: ts.Symbol): string[] {
   if (symbol.getJsDocTags !== undefined) {
-    return findTag(tagName, symbol.getJsDocTags());
+    return findTags(tagName, symbol.getJsDocTags());
   }
   // for compatibility with typescript@<2.3.0
-  return getDeprecationFromDeclarations(tagName, symbol.declarations);
+  return getDeprecationsFromDeclarations(tagName, symbol.declarations);
 }
 
-function getSignatureTag(
-  tagName: string,
-  signature?: ts.Signature
-): string | undefined {
+function getSignatureTags(tagName: string, signature?: ts.Signature): string[] {
   if (signature === undefined) {
-    return undefined;
+    return [];
   }
   if (signature.getJsDocTags !== undefined) {
-    return findTag(tagName, signature.getJsDocTags());
+    return findTags(tagName, signature.getJsDocTags());
   }
 
   // for compatibility with typescript@<2.3.0
   return signature.declaration === undefined
-    ? undefined
-    : getDeprecationFromDeclaration(tagName, signature.declaration);
+    ? []
+    : getDeprecationsFromDeclaration(tagName, signature.declaration);
 }
 
-function getDeprecationFromDeclarations(
+function getDeprecationsFromDeclarations(
   tagName: string,
   declarations?: ts.Declaration[]
-): string | undefined {
+): string[] {
   if (declarations === undefined) {
-    return undefined;
+    return [];
   }
   let declaration: ts.Node;
   for (declaration of declarations) {
@@ -176,29 +174,31 @@ function getDeprecationFromDeclarations(
     if (tsutils.isVariableDeclarationList(declaration)) {
       declaration = declaration.parent;
     }
-    const result = getDeprecationFromDeclaration(tagName, declaration);
-    if (result !== undefined) {
+    const result = getDeprecationsFromDeclaration(tagName, declaration);
+    if (result.length > 0) {
       return result;
     }
   }
-  return undefined;
+  return [];
 }
 
-function getDeprecationFromDeclaration(
+function getDeprecationsFromDeclaration(
   tagName: string,
   declaration: ts.Node
-): string | undefined {
+): string[] {
+  const result: string[] = [];
   for (const comment of tsutils.getJsDoc(declaration)) {
     if (comment.tags === undefined) {
       continue;
     }
+    console.log(comment.tags);
     for (const tag of comment.tags) {
       if (tag.tagName.text === tagName) {
-        return tag.comment === undefined ? "" : tag.comment;
+        result.push(tag.comment === undefined ? "" : tag.comment);
       }
     }
   }
-  return undefined;
+  return result;
 }
 
 function isFunctionOrMethod(declarations?: ts.Declaration[]) {
