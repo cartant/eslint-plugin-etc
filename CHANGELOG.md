@@ -1,3 +1,12 @@
+<a name="1.3.6"></a>
+
+## [1.3.6](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.5...v1.3.6) (2021-03-20)
+
+## Fixes
+
+-   Support multiple `@deprecated` and `@internal` tags in the `no-deprecated` and `no-internal` rules. ([20eb236](https://github.com/cartant/eslint-plugin-etc/commit/20eb236))
+-   Enable TypeScript's `strict` option and fix related problems. ([826953c](https://github.com/cartant/eslint-plugin-etc/commit/826953c))
+
 <a name="1.3.5"></a>
 
 ## [1.3.5](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.4...v1.3.5) (2021-03-14)
