@@ -1,3 +1,11 @@
+<a name="1.3.7"></a>
+
+## [1.3.7](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.6...v1.3.7) (2021-03-22)
+
+## Fixes
+
+- Set minimum `eslint-etc` version. ([fadbbf4](https://github.com/cartant/eslint-plugin-etc/commit/fadbbf4))
+
 <a name="1.3.6"></a>
 
 ## [1.3.6](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.5...v1.3.6) (2021-03-20)
