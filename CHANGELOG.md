@@ -1,3 +1,11 @@
+<a name="1.3.8"></a>
+
+## [1.3.8](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.7...v1.3.8) (2021-03-30)
+
+## Fixes
+
+- Support `// #endregion` comments in `no-commented-out-code`. ([6cb6d67](https://github.com/cartant/eslint-plugin-etc/commit/6cb6d67))
+
 <a name="1.3.7"></a>
 
 ## [1.3.7](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.6...v1.3.7) (2021-03-22)
