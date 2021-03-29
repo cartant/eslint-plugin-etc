@@ -53,7 +53,7 @@ function isUnintentionallyParsable(content: string) {
   // https://stackoverflow.com/a/2008444/6680611
   return (
     /^\s*$/.test(content) ||
-    /^\s*[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*(:\s*[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*)?\s*$/i.test(
+    /^\s*[_#$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*(:\s*[_#$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*)?\s*$/i.test(
       content
     )
   );

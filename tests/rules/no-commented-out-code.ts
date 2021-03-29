@@ -96,6 +96,16 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
         }
       `,
     },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/eslint-plugin-etc/issues/29
+        class SomeClass {
+          // #region Some region
+          someMethod() {}
+          // #endregion
+        }
+      `,
+    },
   ],
   invalid: [
     fromFixture(
