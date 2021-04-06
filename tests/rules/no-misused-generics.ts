@@ -99,9 +99,22 @@ ruleTester({ types: true }).run("no-misused-generics", rule, {
       }
     `),
     fromFixture(stripIndent`
-      <T,>(param): T => null!;
-       ~ [cannotInfer { "name": "T" }]
+      const func = <T,>(param): T => null!;
+                    ~ [cannotInfer { "name": "T" }]
     `),
+    // This test should fail, but it doesn't because the implementation tests
+    // the signature with:
+    //
+    //   tsutils.isFunctionWithBody(signature)
+    //
+    // And if that returns true, the implementation assumes that the type
+    // parameter is used.
+    //
+    // fromFixture(stripIndent`
+    //   // https://github.com/cartant/eslint-plugin-etc/issues/30
+    //   const func = <T,>(param: T) => null;
+    //                 ~ [canReplace { "name": "T", "replacement": "unknown" }]
+    // `),
     fromFixture(stripIndent`
       declare function take<T>(param: T): void; // T not used as constraint -> could just be any/unknown
                             ~ [canReplace { "name": "T", "replacement": "unknown" }]
