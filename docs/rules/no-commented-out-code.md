@@ -21,7 +21,8 @@ const answer = 42;
 ```ts
 // This comment includes code as an example:
 // const answer = 54;
-// So it won't effect a failure.
+// However, the comment - treated as a block - won't parse, so it won't effect
+// a failure.
 const answer = 42;
 ```
 
