@@ -79,3 +79,4 @@ Rules marked with ✅ are recommended and rules marked with 🔧 have fixers.
 | [`no-t`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/no-t.md) | Forbids single-character type parameters. | | |
 | [`prefer-interface`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/prefer-interface.md) | Forbids type aliases where interfaces can be used. | | 🔧 |
 | [`throw-error`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/throw-error.md) | Forbids throwing - or rejecting with - non-`Error` values. | | |
+| [`underscore-internal`](https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/underscore-internal.md) | Forbids internal APIs that are not prefixed with underscores. | | |

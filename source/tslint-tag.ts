@@ -182,7 +182,7 @@ function getTagsFromDeclarations(
   return [];
 }
 
-function getTagsFromDeclaration(
+export function getTagsFromDeclaration(
   tagName: string,
   declaration: ts.Node
 ): string[] {
