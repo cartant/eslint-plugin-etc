@@ -139,7 +139,7 @@ function getSymbolTags(tagName: string, symbol: ts.Symbol): string[] {
     return findTags(tagName, symbol.getJsDocTags());
   }
   // for compatibility with typescript@<2.3.0
-  return getDeprecationsFromDeclarations(tagName, symbol.declarations);
+  return getTagsFromDeclarations(tagName, symbol.declarations);
 }
 
 function getSignatureTags(tagName: string, signature?: ts.Signature): string[] {
@@ -153,10 +153,10 @@ function getSignatureTags(tagName: string, signature?: ts.Signature): string[] {
   // for compatibility with typescript@<2.3.0
   return signature.declaration === undefined
     ? []
-    : getDeprecationsFromDeclaration(tagName, signature.declaration);
+    : getTagsFromDeclaration(tagName, signature.declaration);
 }
 
-function getDeprecationsFromDeclarations(
+function getTagsFromDeclarations(
   tagName: string,
   declarations?: ts.Declaration[]
 ): string[] {
@@ -174,7 +174,7 @@ function getDeprecationsFromDeclarations(
     if (tsutils.isVariableDeclarationList(declaration)) {
       declaration = declaration.parent;
     }
-    const result = getDeprecationsFromDeclaration(tagName, declaration);
+    const result = getTagsFromDeclaration(tagName, declaration);
     if (result.length > 0) {
       return result;
     }
@@ -182,7 +182,7 @@ function getDeprecationsFromDeclarations(
   return [];
 }
 
-function getDeprecationsFromDeclaration(
+function getTagsFromDeclaration(
   tagName: string,
   declaration: ts.Node
 ): string[] {
