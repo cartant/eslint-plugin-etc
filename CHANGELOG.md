@@ -1,3 +1,11 @@
+<a name="1.4.0"></a>
+
+## [1.4.0](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.8...v1.4.0) (2021-04-15)
+
+## Features
+
+- Add `underscore-internal` rule. ([540574e](https://github.com/cartant/eslint-plugin-etc/commit/540574e))
+
 <a name="1.3.8"></a>
 
 ## [1.3.8](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.7...v1.3.8) (2021-03-30)
