@@ -8,18 +8,20 @@ Ensures that APIs tagged with `@internal` are prefixed with underscores, as that
 
 Examples of **incorrect** code for this rule:
 
+<!-- prettier-ignore -->
 ```ts
 /**
  * @internal
  */
-function enableLogging() {}
+export function enableLogging() { /* ... */ }
 ```
 
 Examples of **correct** code for this rule:
 
+<!-- prettier-ignore -->
 ```ts
 /**
  * @internal
  */
-function _enableLogging() {}
+export function _enableLogging() { /* ... */ }
 ```
