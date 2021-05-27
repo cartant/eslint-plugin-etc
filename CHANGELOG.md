@@ -1,3 +1,11 @@
+<a name="1.4.1"></a>
+
+## [1.4.1](https://github.com/cartant/eslint-plugin-etc/compare/v1.4.0...v1.4.1) (2021-05-27)
+
+## Fixes
+
+- Support TypeScript 4.3 in the  `no-deprecated` and `no-internal` rules. ([43fe310](https://github.com/cartant/eslint-plugin-etc/commit/43fe310))
+
 <a name="1.4.0"></a>
 
 ## [1.4.0](https://github.com/cartant/eslint-plugin-etc/compare/v1.3.8...v1.4.0) (2021-04-15)
