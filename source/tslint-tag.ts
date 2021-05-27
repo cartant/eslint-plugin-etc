@@ -128,7 +128,15 @@ function findTags(tagName: string, tags: ts.JSDocTagInfo[]): string[] {
   const result: string[] = [];
   for (const tag of tags) {
     if (tag.name === tagName) {
-      result.push(tag.text === undefined ? "" : tag.text);
+      if (tag.text === undefined) {
+        result.push("");
+      } else if (typeof tag.text === "string") {
+        result.push(tag.text);
+      } else {
+        result.push(
+          tag.text.reduce((text, part) => text.concat(part.text), "")
+        );
+      }
     }
   }
   return result;
@@ -193,7 +201,18 @@ export function getTagsFromDeclaration(
     }
     for (const tag of comment.tags) {
       if (tag.tagName.text === tagName) {
-        result.push(tag.comment === undefined ? "" : tag.comment);
+        if (tag.comment === undefined) {
+          result.push("");
+        } else if (typeof tag.comment === "string") {
+          result.push(tag.comment);
+        } else {
+          result.push(
+            tag.comment.reduce(
+              (text, node) => text.concat(node.getFullText()),
+              ""
+            )
+          );
+        }
       }
     }
   }
