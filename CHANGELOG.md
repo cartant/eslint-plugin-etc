@@ -1,3 +1,11 @@
+<a name="1.5.0"></a>
+
+## [1.5.0](https://github.com/cartant/eslint-plugin-etc/compare/v1.4.1...v1.5.0) (2021-05-27)
+
+## Features
+
+- Add the `prefer-less-than` rule. ([17fafab](https://github.com/cartant/eslint-plugin-etc/commit/17fafab))
+
 <a name="1.4.1"></a>
 
 ## [1.4.1](https://github.com/cartant/eslint-plugin-etc/compare/v1.4.0...v1.4.1) (2021-05-27)
