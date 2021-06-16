@@ -1,3 +1,11 @@
+<a name="1.5.1"></a>
+
+## [1.5.1](https://github.com/cartant/eslint-plugin-etc/compare/v1.5.0...v1.5.1) (2021-06-16)
+
+## Fixes
+
+- Deem labeled statements to be non-code in the `no-commented-out-code` rule. ([e64c8e2](https://github.com/cartant/eslint-plugin-etc/commit/e64c8e2))
+
 <a name="1.5.0"></a>
 
 ## [1.5.0](https://github.com/cartant/eslint-plugin-etc/compare/v1.4.1...v1.5.0) (2021-05-27)
