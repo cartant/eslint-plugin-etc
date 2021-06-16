@@ -106,6 +106,15 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
         }
       `,
     },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/eslint-plugin-etc/issues/31
+        /* webpackChunkName: 'my_component' */
+        /* webpackMode: true */
+        /* webpackPreload: true */
+        /* webpackPrefetch: true */
+      `,
+    },
   ],
   invalid: [
     fromFixture(

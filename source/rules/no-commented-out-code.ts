@@ -36,11 +36,13 @@ const rule = ruleCreator({
             if (!isUnintentionallyParsable(content)) {
               const index = sourceCode.getIndexFromLoc(loc.start);
               const node = sourceCode.getNodeByRangeIndex(index);
-              parse(wrapContent(content, node), parserOptions);
-              context.report({
-                loc,
-                messageId: "forbidden",
-              });
+              const program = parse(wrapContent(content, node), parserOptions);
+              if (!isLabeledStatement(program)) {
+                context.report({
+                  loc,
+                  messageId: "forbidden",
+                });
+              }
             }
           } catch (error) {}
         }
@@ -49,13 +51,19 @@ const rule = ruleCreator({
   },
 });
 
+function isLabeledStatement(program: es.Program) {
+  return (
+    program.type === "Program" &&
+    program.body.length === 1 &&
+    program.body[0].type === "LabeledStatement"
+  );
+}
+
 function isUnintentionallyParsable(content: string) {
   // https://stackoverflow.com/a/2008444/6680611
   return (
     /^\s*$/.test(content) ||
-    /^\s*[_#$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*(:\s*[_#$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*)?\s*$/i.test(
-      content
-    )
+    /^\s*[_#$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*\s*$/i.test(content)
   );
 }
 
