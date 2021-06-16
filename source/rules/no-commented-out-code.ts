@@ -31,27 +31,66 @@ const rule = ruleCreator({
         const comments = context.getSourceCode().getAllComments();
         const blocks = toBlocks(comments);
         for (const block of blocks) {
+          const { content, loc } = block;
+          // Comments for collapsible regions can be parsed as private
+          // properties within class declarations, but they're not
+          // commented-out code.
+          if (isRegionComment(content)) {
+            continue;
+          }
+
+          // If the comment can be parsed as a trivial program, it's probably
+          // not commented-out code.
           try {
-            const { content, loc } = block;
-            if (!isUnintentionallyParsable(content)) {
-              const index = sourceCode.getIndexFromLoc(loc.start);
-              const node = sourceCode.getNodeByRangeIndex(index);
-              const program = parse(wrapContent(content, node), parserOptions);
-              if (!isLabeledStatement(program)) {
-                context.report({
-                  loc,
-                  messageId: "forbidden",
-                });
-              }
+            const program = parse(content, parserOptions);
+            if (
+              !hasEmptyBody(program) &&
+              !hasIdentifierBody(program) &&
+              !hasLabeledStatementBody(program)
+            ) {
+              context.report({
+                loc,
+                messageId: "forbidden",
+              });
+              continue;
             }
           } catch (error) {}
+
+          // Comments within certain nodes - e.g. class declarations - need to
+          // be wrapped in a similar context to determine whether or not they
+          // are commented-out code.
+          const index = sourceCode.getIndexFromLoc(loc.start);
+          const node = sourceCode.getNodeByRangeIndex(index);
+          const wrappedContent = wrapContent(content, node);
+          if (wrappedContent) {
+            try {
+              parse(wrappedContent, parserOptions);
+              context.report({
+                loc,
+                messageId: "forbidden",
+              });
+            } catch (error) {}
+          }
         }
       },
     };
   },
 });
 
-function isLabeledStatement(program: es.Program) {
+function hasEmptyBody(program: es.Program) {
+  return program.type === "Program" && program.body.length === 0;
+}
+
+function hasIdentifierBody(program: es.Program) {
+  return (
+    program.type === "Program" &&
+    program.body.length === 1 &&
+    program.body[0].type === "ExpressionStatement" &&
+    program.body[0].expression.type === "Identifier"
+  );
+}
+
+function hasLabeledStatementBody(program: es.Program) {
   return (
     program.type === "Program" &&
     program.body.length === 1 &&
@@ -59,12 +98,8 @@ function isLabeledStatement(program: es.Program) {
   );
 }
 
-function isUnintentionallyParsable(content: string) {
-  // https://stackoverflow.com/a/2008444/6680611
-  return (
-    /^\s*$/.test(content) ||
-    /^\s*[_#$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*\s*$/i.test(content)
-  );
+function isRegionComment(content: string) {
+  return /\s*#(end)?region/.test(content);
 }
 
 function toBlocks(comments: es.Comment[]) {
@@ -97,7 +132,10 @@ function toBlocks(comments: es.Comment[]) {
   return blocks;
 }
 
-function wrapContent(content: string, node: es.Node | null): string {
+function wrapContent(
+  content: string,
+  node: es.Node | null
+): string | undefined {
   switch (node?.type) {
     case "ArrayExpression":
       return `let wrapper = [${content}]`;
@@ -116,7 +154,7 @@ function wrapContent(content: string, node: es.Node | null): string {
     case "TSTypeLiteral":
       return `type Wrapper = { ${content} }`;
     default:
-      return content;
+      return undefined;
   }
 }
 
