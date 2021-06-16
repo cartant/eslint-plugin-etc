@@ -1,5 +1,13 @@
 <a name="1.5.1"></a>
 
+## [1.5.2](https://github.com/cartant/eslint-plugin-etc/compare/v1.5.1...v1.5.2) (2021-06-16)
+
+## Changes
+
+- Replace the use of `RegExp` to identify comments that can be parsed that aren't really commented-out code. ([03517cc](https://github.com/cartant/eslint-plugin-etc/commit/03517cc))
+
+<a name="1.5.1"></a>
+
 ## [1.5.1](https://github.com/cartant/eslint-plugin-etc/compare/v1.5.0...v1.5.1) (2021-06-16)
 
 ## Fixes
