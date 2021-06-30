@@ -98,6 +98,27 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
     },
     {
       code: stripIndent`
+        // https://github.com/cartant/eslint-plugin-etc/issues/32
+        interface MyExample {
+          // City
+          a: string;
+          /**
+           * City
+           */
+          a1: string;
+          // Город
+          b: string;
+          // 町
+          c: string;
+          // İlçe
+          d: string;
+          // Քաղաք
+          e: string;
+        }
+      `,
+    },
+    {
+      code: stripIndent`
         // https://github.com/cartant/eslint-plugin-etc/issues/29
         class SomeClass {
           // #region Some region
