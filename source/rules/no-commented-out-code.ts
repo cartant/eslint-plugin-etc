@@ -52,8 +52,8 @@ const rule = ruleCreator({
                 loc,
                 messageId: "forbidden",
               });
-              continue;
             }
+            continue;
           } catch (error) {}
 
           // Comments within certain nodes - e.g. class declarations - need to
