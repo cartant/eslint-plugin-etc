@@ -136,6 +136,40 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
         /* webpackPrefetch: true */
       `,
     },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/eslint-plugin-etc/issues/33
+        enum MyExample {
+          // all-powerful
+          Zero,
+          /**
+           * play-group
+           */
+          One,
+          // and/or
+          Two,
+          /**
+           * his/her
+           */
+          Three,
+        }
+      `,
+    },
+    {
+      code: stripIndent`
+        // 00000000-0000-0000-0000-000000000000
+      `,
+    },
+    {
+      code: stripIndent`
+        // 42
+      `,
+    },
+    {
+      code: stripIndent`
+        // true
+      `,
+    },
   ],
   invalid: [
     fromFixture(

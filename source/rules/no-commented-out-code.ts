@@ -45,7 +45,7 @@ const rule = ruleCreator({
             const program = parse(content, parserOptions);
             if (
               !hasEmptyBody(program) &&
-              !hasIdentifierBody(program) &&
+              !hasExpressionBody(program) &&
               !hasLabeledStatementBody(program)
             ) {
               context.report({
@@ -81,12 +81,12 @@ function hasEmptyBody(program: es.Program) {
   return program.type === "Program" && program.body.length === 0;
 }
 
-function hasIdentifierBody(program: es.Program) {
+function hasExpressionBody(program: es.Program) {
   return (
     program.type === "Program" &&
     program.body.length === 1 &&
     program.body[0].type === "ExpressionStatement" &&
-    program.body[0].expression.type === "Identifier"
+    isExpressionOrIdentifierOrLiteral(program.body[0].expression)
   );
 }
 
@@ -96,6 +96,22 @@ function hasLabeledStatementBody(program: es.Program) {
     program.body.length === 1 &&
     program.body[0].type === "LabeledStatement"
   );
+}
+
+function isExpressionOrIdentifierOrLiteral(node: es.Node): boolean {
+  if (node.type === "Identifier") {
+    return true;
+  }
+  if (node.type === "Literal") {
+    return true;
+  }
+  if (node.type === "BinaryExpression") {
+    return (
+      isExpressionOrIdentifierOrLiteral(node.left) &&
+      isExpressionOrIdentifierOrLiteral(node.right)
+    );
+  }
+  return false;
 }
 
 function isRegionComment(content: string) {
