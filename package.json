@@ -21,7 +21,7 @@
     "@typescript-eslint/parser": "^4.0.0",
     "common-tags": "^1.8.0",
     "eslint": "^7.0.0",
-    "husky": "^6.0.0",
+    "husky": "^7.0.0",
     "lint-staged": "^11.0.0",
     "mocha": "^9.0.0",
     "prettier": "~2.3.0",
