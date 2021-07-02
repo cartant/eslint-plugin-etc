@@ -1,3 +1,11 @@
+<a name="1.5.4"></a>
+
+## [1.5.4](https://github.com/cartant/eslint-plugin-etc/compare/v1.5.3...v1.5.4) (2021-07-02)
+
+## Fixes
+
+- Deem binary expressions, identifiers and literals to be non-code in the `no-commented-out-code` rule. ([3317531](https://github.com/cartant/eslint-plugin-etc/commit/3317531))
+
 <a name="1.5.3"></a>
 
 ## [1.5.3](https://github.com/cartant/eslint-plugin-etc/compare/v1.5.2...v1.5.3) (2021-06-30)
