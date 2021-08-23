@@ -5,6 +5,10 @@
 
 import { TSESTree as es } from "@typescript-eslint/experimental-utils";
 import { ruleCreator } from "../utils";
+import {
+  RuleFix,
+  RuleFixer,
+} from "@typescript-eslint/experimental-utils/dist/ts-eslint/Rule";
 
 const rule = ruleCreator({
   defaultOptions: [],
@@ -14,7 +18,7 @@ const rule = ruleCreator({
       description: "Forbids commented-out code.",
       recommended: false,
     },
-    fixable: undefined,
+    fixable: "code",
     messages: {
       forbidden: "Commented-out code is forbidden.",
     },
@@ -31,6 +35,9 @@ const rule = ruleCreator({
         const comments = context.getSourceCode().getAllComments();
         const blocks = toBlocks(comments);
         for (const block of blocks) {
+          const fix = (fixer: RuleFixer): RuleFix => {
+            return fixer.removeRange([block.range[0], block.range[1]]);
+          };
           const { content, loc } = block;
           // Comments for collapsible regions can be parsed as private
           // properties within class declarations, but they're not
@@ -51,6 +58,7 @@ const rule = ruleCreator({
               context.report({
                 loc,
                 messageId: "forbidden",
+                fix,
               });
             }
             continue;
@@ -68,6 +76,7 @@ const rule = ruleCreator({
               context.report({
                 loc,
                 messageId: "forbidden",
+                fix,
               });
             } catch (error) {}
           }
@@ -122,6 +131,7 @@ function toBlocks(comments: es.Comment[]) {
   const blocks: {
     content: string;
     loc: es.SourceLocation;
+    range: [number, number];
   }[] = [];
   let prevLine: es.LineComment | undefined;
   for (const comment of comments) {
@@ -129,6 +139,7 @@ function toBlocks(comments: es.Comment[]) {
       blocks.push({
         content: comment.value.replace(/^\s*\*/, "").replace(/\n\s*\*/g, "\n"),
         loc: { ...comment.loc },
+        range: comment.range,
       });
       prevLine = undefined;
     } else if (comment.type === "Line") {
@@ -136,10 +147,12 @@ function toBlocks(comments: es.Comment[]) {
         const prevBlock = blocks[blocks.length - 1];
         prevBlock.content += `\n${comment.value}`;
         prevBlock.loc.end = comment.loc.end;
+        prevBlock.range[1] = comment.range[1];
       } else {
         blocks.push({
           content: comment.value,
           loc: { ...comment.loc },
+          range: comment.range,
         });
       }
       prevLine = comment;

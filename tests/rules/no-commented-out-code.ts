@@ -177,14 +177,20 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
         // const answer = 54;
         ~~~~~~~~~~~~~~~~~~~~~ [forbidden]
         const answer = 42;
-      `
+      `,
+      {
+        output: `\nconst answer = 42;`,
+      }
     ),
     fromFixture(
       stripIndent`
         /* const answer = 54; */
         ~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
         const answer = 42;
-      `
+      `,
+      {
+        output: `\nconst answer = 42;`,
+      }
     ),
     {
       code: stripIndent`
@@ -193,6 +199,7 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
          */
         const answer = 42;
       `,
+      output: `\nconst answer = 42;`,
       errors: [
         {
           column: 1,
@@ -209,6 +216,7 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
         // const answer = 54;
         const answer = 42;
       `,
+      output: `\nconst answer = 42;`,
       errors: [
         {
           column: 1,
@@ -225,6 +233,7 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
         // const answer = 54;
         const answer = 42;
       `,
+      output: `\nconst answer = 42;`,
       errors: [
         {
           column: 1,
@@ -243,6 +252,7 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
         */
         const answer = 42;
       `,
+      output: `\nconst answer = 42;`,
       errors: [
         {
           column: 1,
@@ -261,6 +271,7 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
          */
         const answer = 42;
       `,
+      output: `\nconst answer = 42;`,
       errors: [
         {
           column: 1,
@@ -280,7 +291,17 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
           ~~~~~ [forbidden]
           c
         ];
-      `
+      `,
+      {
+        output: stripIndent`
+        // within array
+        const outer = [
+          a,
+         ${' '}
+          c
+        ];
+      `,
+      }
     ),
     fromFixture(
       stripIndent`
@@ -291,7 +312,17 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
           ~~~~~~~~~~~~~~~~~~~~ [forbidden]
           public c: string;
         }
-      `
+      `,
+      {
+        output: stripIndent`
+        // within class
+        class Outer {
+          public a: string;
+         ${' '}
+          public c: string;
+        }
+      `,
+      }
     ),
     fromFixture(
       stripIndent`
@@ -302,7 +333,17 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
           ~~~~~ [forbidden]
           c
         } from "outer";
-      `
+      `,
+      {
+        output: stripIndent`
+        // within import
+        import {
+          a,
+         ${' '}
+          c
+        } from "outer";
+      `,
+      }
     ),
     fromFixture(
       stripIndent`
@@ -313,7 +354,16 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
           ~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
           readonly c: string;
         }
-      `
+      `,
+      {
+        output: stripIndent`
+        // within interface
+        interface Outer {
+          readonly a: string;
+         ${' '}
+          readonly c: string;
+        }`,
+      }
     ),
     fromFixture(
       stripIndent`
@@ -324,7 +374,17 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
           ~~~~~~~~~~ [forbidden]
           c: "c"
         };
-      `
+      `,
+      {
+        output: stripIndent`
+        // within object
+        const outer = {
+          a: "a",
+         ${' '}
+          c: "c"
+        };
+        `,
+      }
     ),
     fromFixture(
       stripIndent`
@@ -335,7 +395,17 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
           ~~~~~~~~~~~~~ [forbidden]
           c: string
         ) {};
-      `
+      `,
+      {
+        output: stripIndent`
+        // within parameters
+        function outer(
+          a: string,
+         ${' '}
+          c: string
+        ) {};
+      `,
+      }
     ),
     fromFixture(
       stripIndent`
@@ -346,7 +416,17 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
           ~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
           case "c": return c;
         };
-      `
+      `,
+      {
+        output: stripIndent`
+        // within switch
+        switch (value) {
+          case "a": return a;
+         ${' '}
+          case "c": return c;
+        };
+        `,
+      }
     ),
     fromFixture(
       stripIndent`
@@ -357,7 +437,36 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
           ~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
           readonly c: string;
         };
-      `
+      `,
+      {
+        output: stripIndent`
+        // within type
+        type Outer = {
+          readonly a: string;
+         ${' '}
+          readonly c: string;
+        };
+      `,
+      }
+    ),
+    fromFixture(
+      stripIndent`
+        // as an inline comment
+        type Outer = {
+          readonly a: string; // readonly a: string | number;
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [forbidden]
+          readonly c: string;
+        };
+      `,
+      {
+        output: stripIndent`
+        // as an inline comment
+        type Outer = {
+          readonly a: string;${' '}
+          readonly c: string;
+        };
+      `,
+      }
     ),
   ],
 });
