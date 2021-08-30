@@ -2,6 +2,8 @@
 
 This rule forbids commented-out code by effecting failures for comment blocks can be parsed without error.
 
+The rule uses a relatively simple heuristic and if a comment is mistakenly deemed to be commented out code, using `/// ...` or `/*/ ... */` will function as a workaround.
+
 ## Rule details
 
 Examples of **incorrect** code for this rule:
@@ -17,7 +19,7 @@ Examples of **correct** code for this rule:
 // This comment is not code.
 const answer = 42;
 ```
- 
+
 ```ts
 // This comment includes code as an example:
 // const answer = 54;
