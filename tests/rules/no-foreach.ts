@@ -95,11 +95,10 @@ ruleTester({ types: true }).run("no-foreach", rule, {
     ),
     fromFixture(
       stripIndent`
-      // array variable with options
-      const values = [42];
-      values.forEach(value => console.log(value));
-             ~~~~~~~ [forbidden]
-
+        // array variable with options
+        const values = [42];
+        values.forEach(value => console.log(value));
+               ~~~~~~~ [forbidden]
       `,
       {
         options: [{ types: ["Array"] }],
