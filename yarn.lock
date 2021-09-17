@@ -161,9 +161,9 @@
   integrity sha512-scN0hAWyLVAvLR9AyW7HoFF5sJZglyBsbPuHO4fv7JRvfmPBMfp1ozWqOf/e4wwPNxezBZXRfWzMb6iFLgEVRA==
 
 "@types/node@^16.0.0":
-  version "16.9.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.9.1.tgz#0611b37db4246c937feef529ddcc018cf8e35708"
-  integrity sha512-QpLcX9ZSsq3YYUUnD3nFDY8H7wctAhQj/TFKL8Ya8v5fMm3CFXxo8zStsLAl780ltoYoo1WvKUVGBQK+1ifr7g==
+  version "16.9.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.9.2.tgz#81f5a039d6ed1941f8cc57506c74e7c2b8fc64b9"
+  integrity sha512-ZHty/hKoOLZvSz6BtP1g7tc7nUeJhoCf3flLjh8ZEv1vFKBWHXcnMbJMyN/pftSljNyy0kNW/UqI3DccnBnZ8w==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -717,9 +717,9 @@ escape-string-regexp@^1.0.5:
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
 eslint-etc@^4.0.4:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-etc/-/eslint-etc-4.1.0.tgz#5176b70b33abc4548775b0c140a26c86fbcb4a28"
-  integrity sha512-ACYd3MAKSlHlsYEZFzLbse4e9v3iYffGhzRnH4slDh82Z9MooNhkRAN9VWPaZvV2fEz82TzgOw/lwKVcA3ayRQ==
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/eslint-etc/-/eslint-etc-4.2.3.tgz#0b4b0157bedf91113c8d570b48f1ad1b130c5744"
+  integrity sha512-0JXAehmSRn/BwpAB9irKtIT6fuKzrVodtiPveVLrk5D4JhVnYAoTXfvh4ihMzp4OcPPWZoYpYJyq40lgRMm+zw==
   dependencies:
     "@typescript-eslint/experimental-utils" "^4.0.0"
     tsutils "^3.17.1"
