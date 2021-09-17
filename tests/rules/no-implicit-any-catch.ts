@@ -171,6 +171,17 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             (error: unknown) => console.error(error)
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // arrow; implicit any
+              Promise.reject("Kaboom!").catch(
+                (error: unknown) => console.error(error)
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -188,6 +199,17 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             (error: unknown) => console.error(error)
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // arrow; no parentheses; implicit any
+              Promise.reject("Kaboom!").catch(
+                (error: unknown) => console.error(error)
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -205,6 +227,17 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             function (error: unknown) { console.error(error); }
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // non-arrow; implicit any
+              Promise.reject("Kaboom!").catch(
+                function (error: unknown) { console.error(error); }
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -222,6 +255,17 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             (error: unknown) => console.error(error)
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // arrow; explicit any; default option
+              Promise.reject("Kaboom!").catch(
+                (error: unknown) => console.error(error)
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -239,6 +283,17 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             function (error: unknown) { console.error(error); }
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // non-arrow; explicit any; default option
+              Promise.reject("Kaboom!").catch(
+                function (error: unknown) { console.error(error); }
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -257,6 +312,17 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             (error: unknown) => console.error(error)
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // arrow; explicit any; explicit option
+              Promise.reject("Kaboom!").catch(
+                (error: unknown) => console.error(error)
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -275,6 +341,17 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             function (error: unknown) { console.error(error); }
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // non-arrow; explicit any; explicit option
+              Promise.reject("Kaboom!").catch(
+                function (error: unknown) { console.error(error); }
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -312,6 +389,18 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             (error: unknown) => console.error(error)
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // then; arrow; implicit any
+              Promise.reject("Kaboom!").then(
+                () => {},
+                (error: unknown) => console.error(error)
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -331,6 +420,18 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             (error: unknown) => console.error(error)
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // then; arrow; no parentheses; implicit any
+              Promise.reject("Kaboom!").then(
+                () => {},
+                (error: unknown) => console.error(error)
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -350,6 +451,18 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             function (error: unknown) { console.error(error); }
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // then; non-arrow; implicit any
+              Promise.reject("Kaboom!").then(
+                function () {},
+                function (error: unknown) { console.error(error); }
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -369,6 +482,18 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             (error: unknown) => console.error(error)
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // then; arrow; explicit any; default option
+              Promise.reject("Kaboom!").then(
+                () => {},
+                (error: unknown) => console.error(error)
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -388,6 +513,18 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             function (error: unknown) { console.error(error); }
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // then; non-arrow; explicit any; default option
+              Promise.reject("Kaboom!").then(
+                function () {},
+                function (error: unknown) { console.error(error); }
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -408,6 +545,18 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             (error: unknown) => console.error(error)
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // then; arrow; explicit any; explicit option
+              Promise.reject("Kaboom!").then(
+                () => {},
+                (error: unknown) => console.error(error)
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -428,6 +577,18 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
             function (error: unknown) { console.error(error); }
           );
         `,
+        suggestions: [
+          {
+            messageId: "suggestExplicitUnknown",
+            output: stripIndent`
+              // then; non-arrow; explicit any; explicit option
+              Promise.reject("Kaboom!").then(
+                function () {},
+                function (error: unknown) { console.error(error); }
+              );
+            `,
+          },
+        ],
       }
     ),
     fromFixture(

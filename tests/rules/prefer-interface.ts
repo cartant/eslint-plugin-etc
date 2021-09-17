@@ -190,6 +190,17 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
           interface Age { age: number; }
           interface T extends Name, Age {}
         `,
+        suggestions: [
+          {
+            messageId: "suggest",
+            output: stripIndent`
+              // interface intersection
+              interface Name { name: string; }
+              interface Age { age: number; }
+              interface T extends Name, Age {}
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -208,6 +219,17 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
           interface Age<N> { age: N; }
           interface T<S, N> extends Name<S>, Age<N> {}
         `,
+        suggestions: [
+          {
+            messageId: "suggest",
+            output: stripIndent`
+              // generic interface intersection
+              interface Name<S> { name: S; }
+              interface Age<N> { age: N; }
+              interface T<S, N> extends Name<S>, Age<N> {}
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -224,6 +246,16 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
           interface Name { name: string; }
           interface T extends Name { age: number; }
         `,
+        suggestions: [
+          {
+            messageId: "suggest",
+            output: stripIndent`
+              // interface-literal intersection
+              interface Name { name: string; }
+              interface T extends Name { age: number; }
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -240,6 +272,16 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
           interface Age { age: number; }
           interface T extends Age { name: string; }
         `,
+        suggestions: [
+          {
+            messageId: "suggest",
+            output: stripIndent`
+              // literal-interface intersection
+              interface Age { age: number; }
+              interface T extends Age { name: string; }
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -258,6 +300,17 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
           interface Role { role: string; }
           interface T extends Name, Role { age: number; }
         `,
+        suggestions: [
+          {
+            messageId: "suggest",
+            output: stripIndent`
+              // interface-literal-interface intersection
+              interface Name { name: string; }
+              interface Role { role: string; }
+              interface T extends Name, Role { age: number; }
+            `,
+          },
+        ],
       }
     ),
   ],

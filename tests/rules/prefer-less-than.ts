@@ -29,6 +29,14 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
         output: stripIndent`
           const result = 42 < 54;
         `,
+        suggestions: [
+          {
+            messageId: "suggestLT",
+            output: stripIndent`
+              const result = 42 < 54;
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -40,6 +48,14 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
         output: stripIndent`
           const result = 42 <= 54;
         `,
+        suggestions: [
+          {
+            messageId: "suggestLTE",
+            output: stripIndent`
+              const result = 42 <= 54;
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -51,6 +67,14 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
         output: stripIndent`
           const result = 42 < 54.0;
         `,
+        suggestions: [
+          {
+            messageId: "suggestLT",
+            output: stripIndent`
+              const result = 42 < 54.0;
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -62,6 +86,14 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
         output: stripIndent`
           const result = 42 <= 54.0;
         `,
+        suggestions: [
+          {
+            messageId: "suggestLTE",
+            output: stripIndent`
+              const result = 42 <= 54.0;
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -73,6 +105,14 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
         output: stripIndent`
           const result = 42.0 < 54;
         `,
+        suggestions: [
+          {
+            messageId: "suggestLT",
+            output: stripIndent`
+              const result = 42.0 < 54;
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -84,6 +124,14 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
         output: stripIndent`
           const result = 42.0 <= 54;
         `,
+        suggestions: [
+          {
+            messageId: "suggestLTE",
+            output: stripIndent`
+              const result = 42.0 <= 54;
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -95,6 +143,14 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
         output: stripIndent`
           if (a < x && x < b) { /* .. */ }
         `,
+        suggestions: [
+          {
+            messageId: "suggestLT",
+            output: stripIndent`
+              if (a < x && x < b) { /* .. */ }
+            `,
+          },
+        ],
       }
     ),
     fromFixture(
@@ -106,6 +162,14 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
         output: stripIndent`
           if (a <= x && x <= b) { /* .. */ }
         `,
+        suggestions: [
+          {
+            messageId: "suggestLTE",
+            output: stripIndent`
+              if (a <= x && x <= b) { /* .. */ }
+            `,
+          },
+        ],
       }
     ),
   ],
