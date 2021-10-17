@@ -161,7 +161,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         // arrow; implicit any
         Promise.reject("Kaboom!").catch(
           (error) => console.error(error)
-           ~~~~~ [implicitAny]
+           ~~~~~ [implicitAny suggest]
         );
       `,
       {
@@ -189,7 +189,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         // arrow; no parentheses; implicit any
         Promise.reject("Kaboom!").catch(
           error => console.error(error)
-          ~~~~~ [implicitAny]
+          ~~~~~ [implicitAny suggest]
         );
       `,
       {
@@ -217,7 +217,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         // non-arrow; implicit any
         Promise.reject("Kaboom!").catch(
           function (error) { console.error(error); }
-                    ~~~~~ [implicitAny]
+                    ~~~~~ [implicitAny suggest]
         );
       `,
       {
@@ -245,7 +245,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         // arrow; explicit any; default option
         Promise.reject("Kaboom!").catch(
           (error: any) => console.error(error)
-           ~~~~~~~~~~ [explicitAny]
+           ~~~~~~~~~~ [explicitAny suggest]
         );
       `,
       {
@@ -273,7 +273,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         // non-arrow; explicit any; default option
         Promise.reject("Kaboom!").catch(
           function (error: any) { console.error(error); }
-                    ~~~~~~~~~~ [explicitAny]
+                    ~~~~~~~~~~ [explicitAny suggest]
         );
       `,
       {
@@ -301,7 +301,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         // arrow; explicit any; explicit option
         Promise.reject("Kaboom!").catch(
           (error: any) => console.error(error)
-           ~~~~~~~~~~ [explicitAny]
+           ~~~~~~~~~~ [explicitAny suggest]
         );
       `,
       {
@@ -330,7 +330,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         // non-arrow; explicit any; explicit option
         Promise.reject("Kaboom!").catch(
           function (error: any) { console.error(error); }
-                    ~~~~~~~~~~ [explicitAny]
+                    ~~~~~~~~~~ [explicitAny suggest]
         );
       `,
       {
@@ -378,7 +378,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         Promise.reject("Kaboom!").then(
           () => {},
           (error) => console.error(error)
-           ~~~~~ [implicitAny]
+           ~~~~~ [implicitAny suggest]
         );
       `,
       {
@@ -409,7 +409,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         Promise.reject("Kaboom!").then(
           () => {},
           error => console.error(error)
-          ~~~~~ [implicitAny]
+          ~~~~~ [implicitAny suggest]
         );
       `,
       {
@@ -440,7 +440,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         Promise.reject("Kaboom!").then(
           function () {},
           function (error) { console.error(error); }
-                    ~~~~~ [implicitAny]
+                    ~~~~~ [implicitAny suggest]
         );
       `,
       {
@@ -471,7 +471,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         Promise.reject("Kaboom!").then(
           () => {},
           (error: any) => console.error(error)
-           ~~~~~~~~~~ [explicitAny]
+           ~~~~~~~~~~ [explicitAny suggest]
         );
       `,
       {
@@ -502,7 +502,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         Promise.reject("Kaboom!").then(
           function () {},
           function (error: any) { console.error(error); }
-                    ~~~~~~~~~~ [explicitAny]
+                    ~~~~~~~~~~ [explicitAny suggest]
         );
       `,
       {
@@ -533,7 +533,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         Promise.reject("Kaboom!").then(
           () => {},
           (error: any) => console.error(error)
-           ~~~~~~~~~~ [explicitAny]
+           ~~~~~~~~~~ [explicitAny suggest]
         );
       `,
       {
@@ -565,7 +565,7 @@ ruleTester({ types: true }).run("no-implicit-any-catch", rule, {
         Promise.reject("Kaboom!").then(
           function () {},
           function (error: any) { console.error(error); }
-                    ~~~~~~~~~~ [explicitAny]
+                    ~~~~~~~~~~ [explicitAny suggest]
         );
       `,
       {

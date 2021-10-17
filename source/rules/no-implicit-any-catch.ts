@@ -41,13 +41,13 @@ const rule = ruleCreator({
   defaultOptions,
   meta: {
     docs: {
-      category: "Possible Errors",
       description:
         "Forbids implicit `any` error parameters in promise rejections.",
       recommended: false,
       suggestion: true,
     },
     fixable: "code",
+    hasSuggestions: true,
     messages: {
       explicitAny: "Explicit `any` in promise rejection.",
       implicitAny: "Implicit `any` in promise rejection.",

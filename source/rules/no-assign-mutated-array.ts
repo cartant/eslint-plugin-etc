@@ -23,11 +23,11 @@ const rule = ruleCreator({
   defaultOptions: [],
   meta: {
     docs: {
-      category: "Possible Errors",
       description: "Forbids the assignment of returned, mutated arrays.",
       recommended: false,
     },
     fixable: undefined,
+    hasSuggestions: false,
     messages: {
       forbidden: "Assignment of mutated arrays is forbidden.",
     },
@@ -38,23 +38,24 @@ const rule = ruleCreator({
   create: (context) => {
     const { couldBeType } = getTypeServices(context);
     return {
-      [`CallExpression > MemberExpression[property.name=${mutatorRegExp.toString()}]`]: (
-        memberExpression: es.MemberExpression
-      ) => {
-        const callExpression = getParent(memberExpression) as es.CallExpression;
-        const parent = getParent(callExpression);
-        if (parent && !isExpressionStatement(parent)) {
-          if (
-            couldBeType(memberExpression.object, "Array") &&
-            mutatesReferencedArray(callExpression)
-          ) {
-            context.report({
-              messageId: "forbidden",
-              node: memberExpression.property,
-            });
+      [`CallExpression > MemberExpression[property.name=${mutatorRegExp.toString()}]`]:
+        (memberExpression: es.MemberExpression) => {
+          const callExpression = getParent(
+            memberExpression
+          ) as es.CallExpression;
+          const parent = getParent(callExpression);
+          if (parent && !isExpressionStatement(parent)) {
+            if (
+              couldBeType(memberExpression.object, "Array") &&
+              mutatesReferencedArray(callExpression)
+            ) {
+              context.report({
+                messageId: "forbidden",
+                node: memberExpression.property,
+              });
+            }
           }
-        }
-      },
+        },
     };
 
     function isNewArray(node: es.LeftHandSideExpression): boolean {

@@ -11,11 +11,11 @@ const rule = ruleCreator({
   defaultOptions: [],
   meta: {
     docs: {
-      category: "Best Practices",
       description: "Forbids throwing - or rejecting with - non-`Error` values.",
       recommended: false,
     },
     fixable: undefined,
+    hasSuggestions: false,
     messages: {
       forbidden: "{{usage}} non-`Error` values is forbidden.",
     },
@@ -49,27 +49,26 @@ const rule = ruleCreator({
         }
         checkRejection(getParent(node) as es.CallExpression);
       },
-      "NewExpression[callee.name='Promise'] > ArrowFunctionExpression, NewExpression[callee.name='Promise'] > FunctionExpression": (
-        node: es.ArrowFunctionExpression | es.FunctionExpression
-      ) => {
-        const [, param] = node.params;
-        if (!param) {
-          return;
-        }
-        const text = sourceCode.getText(param);
-        const variable = context
-          .getDeclaredVariables(node)
-          .find((variable) => variable.name === text);
-        if (!variable) {
-          return;
-        }
-        variable.references.forEach(({ identifier }) => {
-          const parent = getParent(identifier) as es.Node;
-          if (isCallExpression(parent) && identifier === parent.callee) {
-            checkRejection(parent);
+      "NewExpression[callee.name='Promise'] > ArrowFunctionExpression, NewExpression[callee.name='Promise'] > FunctionExpression":
+        (node: es.ArrowFunctionExpression | es.FunctionExpression) => {
+          const [, param] = node.params;
+          if (!param) {
+            return;
           }
-        });
-      },
+          const text = sourceCode.getText(param);
+          const variable = context
+            .getDeclaredVariables(node)
+            .find((variable) => variable.name === text);
+          if (!variable) {
+            return;
+          }
+          variable.references.forEach(({ identifier }) => {
+            const parent = getParent(identifier) as es.Node;
+            if (isCallExpression(parent) && identifier === parent.callee) {
+              checkRejection(parent);
+            }
+          });
+        },
       ThrowStatement: (node: es.ThrowStatement) => {
         if (
           node.argument &&

@@ -27,11 +27,11 @@ const rule = ruleCreator({
   defaultOptions: defaultOptions,
   meta: {
     docs: {
-      category: "Best Practices",
       description: "Forbids type aliases where interfaces can be used.",
       recommended: false,
     },
     fixable: "code",
+    hasSuggestions: true,
     messages: {
       forbidden: "Type can be declared using an interface.",
       suggest: "Use an interface instead of a type alias.",
@@ -48,9 +48,8 @@ const rule = ruleCreator({
   },
   name: "prefer-interface",
   create: (context, unused: typeof defaultOptions) => {
-    const [
-      { allowIntersection = true, allowLocal = false } = {},
-    ] = context.options;
+    const [{ allowIntersection = true, allowLocal = false } = {}] =
+      context.options;
 
     function formatTypeParameters(
       typeParameters?:

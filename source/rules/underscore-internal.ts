@@ -13,12 +13,12 @@ const rule = ruleCreator({
   defaultOptions: [],
   meta: {
     docs: {
-      category: "Best Practices",
       description:
         "Forbids internal APIs that are not prefixed with underscores.",
       recommended: false,
     },
     fixable: undefined,
+    hasSuggestions: false,
     messages: {
       forbidden: "Internal APIs not prefixed with underscores are forbidden.",
     },
@@ -45,7 +45,7 @@ const rule = ruleCreator({
           checkDeclaration(node.id, esTreeNodeToTSNodeMap.get(node));
         }
       },
-      "ClassProperty[key.name=/^[^_]/]": (node: es.ClassProperty) => {
+      "PropertyDefinition[key.name=/^[^_]/]": (node: es.PropertyDefinition) => {
         if (isIdentifier(node.key)) {
           checkDeclaration(node.key, esTreeNodeToTSNodeMap.get(node));
         }

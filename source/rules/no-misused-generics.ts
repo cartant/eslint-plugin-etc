@@ -15,12 +15,12 @@ const rule = ruleCreator({
   defaultOptions: [],
   meta: {
     docs: {
-      category: "Best Practices",
       description:
         "Forbids type parameters without inference sites and type parameters that don't add type safety to declarations.",
       recommended: false,
     },
     fixable: undefined,
+    hasSuggestions: false,
     messages: {
       canReplace:
         "Type parameter '{{name}}' is not used to enforce a constraint between types and can be replaced with '{{replacement}}'.",

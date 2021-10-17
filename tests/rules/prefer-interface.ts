@@ -180,7 +180,7 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
         interface Name { name: string; }
         interface Age { age: number; }
         type T = Name & Age;
-             ~ [forbidden]
+             ~ [forbidden suggest]
       `,
       {
         options: [{ allowIntersection: false }],
@@ -209,7 +209,7 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
         interface Name<S> { name: S; }
         interface Age<N> { age: N; }
         type T<S, N> = Name<S> & Age<N>;
-             ~ [forbidden]
+             ~ [forbidden suggest]
       `,
       {
         options: [{ allowIntersection: false }],
@@ -237,7 +237,7 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
         // interface-literal intersection
         interface Name { name: string; }
         type T = Name & { age: number; };
-             ~ [forbidden]
+             ~ [forbidden suggest]
       `,
       {
         options: [{ allowIntersection: false }],
@@ -263,7 +263,7 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
         // literal-interface intersection
         interface Age { age: number; }
         type T = { name: string; } & Age;
-             ~ [forbidden]
+             ~ [forbidden suggest]
       `,
       {
         options: [{ allowIntersection: false }],
@@ -290,7 +290,7 @@ ruleTester({ types: true }).run("prefer-interface", rule, {
         interface Name { name: string; }
         interface Role { role: string; }
         type T = Name & { age: number; } & Role;
-             ~ [forbidden]
+             ~ [forbidden suggest]
       `,
       {
         options: [{ allowIntersection: false }],

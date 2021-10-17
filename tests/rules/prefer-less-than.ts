@@ -23,7 +23,7 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
     fromFixture(
       stripIndent`
         const result = 54 > 42;
-                       ~~~~~~~ [forbiddenGT]
+                       ~~~~~~~ [forbiddenGT suggest]
        `,
       {
         output: stripIndent`
@@ -42,7 +42,7 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
     fromFixture(
       stripIndent`
         const result = 54 >= 42;
-                       ~~~~~~~~ [forbiddenGTE]
+                       ~~~~~~~~ [forbiddenGTE suggest]
        `,
       {
         output: stripIndent`
@@ -61,7 +61,7 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
     fromFixture(
       stripIndent`
         const result = 54.0 > 42;
-                       ~~~~~~~~~ [forbiddenGT]
+                       ~~~~~~~~~ [forbiddenGT suggest]
        `,
       {
         output: stripIndent`
@@ -80,7 +80,7 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
     fromFixture(
       stripIndent`
         const result = 54.0 >= 42;
-                       ~~~~~~~~~~ [forbiddenGTE]
+                       ~~~~~~~~~~ [forbiddenGTE suggest]
        `,
       {
         output: stripIndent`
@@ -99,7 +99,7 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
     fromFixture(
       stripIndent`
         const result = 54 > 42.0;
-                       ~~~~~~~~~ [forbiddenGT]
+                       ~~~~~~~~~ [forbiddenGT suggest]
        `,
       {
         output: stripIndent`
@@ -118,7 +118,7 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
     fromFixture(
       stripIndent`
         const result = 54 >= 42.0;
-                       ~~~~~~~~~~ [forbiddenGTE]
+                       ~~~~~~~~~~ [forbiddenGTE suggest]
        `,
       {
         output: stripIndent`
@@ -137,7 +137,7 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
     fromFixture(
       stripIndent`
         if (x > a && x < b) { /* .. */ }
-            ~~~~~ [forbiddenGT]
+            ~~~~~ [forbiddenGT suggest]
        `,
       {
         output: stripIndent`
@@ -156,7 +156,7 @@ ruleTester({ types: false }).run("prefer-less-than", rule, {
     fromFixture(
       stripIndent`
         if (x >= a && x <= b) { /* .. */ }
-            ~~~~~~ [forbiddenGTE]
+            ~~~~~~ [forbiddenGTE suggest]
        `,
       {
         output: stripIndent`

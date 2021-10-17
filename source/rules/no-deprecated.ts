@@ -20,11 +20,11 @@ const rule = ruleCreator({
   defaultOptions,
   meta: {
     docs: {
-      category: "Best Practices",
       description: "Forbids the use of deprecated APIs.",
       recommended: false,
     },
     fixable: undefined,
+    hasSuggestions: false,
     messages: {
       forbidden: `"{{name}}" is deprecated: {{comment}}`,
     },

@@ -13,11 +13,11 @@ const rule = ruleCreator({
   defaultOptions: [],
   meta: {
     docs: {
-      category: "Best Practices",
       description: "Forbids greater-than comparisons.",
       recommended: false,
     },
     fixable: "code",
+    hasSuggestions: true,
     messages: {
       forbiddenGT: "Greater-than comparisons are forbidden.",
       forbiddenGTE: "Greater-than-or-equal comparisons are forbidden.",

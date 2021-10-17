@@ -14,11 +14,11 @@ const rule = ruleCreator({
   defaultOptions,
   meta: {
     docs: {
-      category: "Best Practices",
       description: "Forbids single-character type parameters.",
       recommended: false,
     },
     fixable: undefined,
+    hasSuggestions: false,
     messages: {
       forbidden: `Single-character type parameters are forbidden. Choose a more descriptive name for "{{name}}"`,
       prefix: `Type parameter "{{name}}" does not have prefix "{{prefix}}"`,
