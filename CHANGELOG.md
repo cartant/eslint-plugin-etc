@@ -1,3 +1,11 @@
+<a name="2.0.1"></a>
+
+## [2.0.1](https://github.com/cartant/eslint-plugin-etc/compare/v2.0.0...v2.0.1) (2021-11-08)
+
+## Fixes
+
+- Don't effect failures in the `throw-error` rule when `unknown` is thrown. See [this issue](https://github.com/cartant/eslint-plugin-etc/issues/39). ([88494f2](https://github.com/cartant/eslint-plugin-etc/commit/88494f2))
+
 <a name="2.0.0"></a>
 
 ## [2.0.0](https://github.com/cartant/eslint-plugin-etc/compare/v1.5.4...v2.0.0) (2021-10-17)
