@@ -14,7 +14,17 @@ ruleTester({ types: true }).run("throw-error", rule, {
       code: stripIndent`
         // throwing errors
         export const a = () => { throw new Error("kaboom"); };
-
+      `,
+    },
+    {
+      code: stripIndent`
+        // throwing DOMExceptions
+        export const a = () => { throw new DOMException("kaboom"); };
+      `,
+    },
+    {
+      code: stripIndent`
+        // throwing any
         try {
           throw new Error("kaboom");
         } catch (error: any) {
@@ -28,16 +38,14 @@ ruleTester({ types: true }).run("throw-error", rule, {
     },
     {
       code: stripIndent`
-        // throwing DOMExceptions
-        export const a = () => { throw new DOMException("kaboom"); };
-
+        // throwing unknown
         try {
-          throw new DOMException("kaboom");
-        } catch (error: any) {
+          throw new Error("kaboom");
+        } catch (error: unknown) {
           throw error;
         }
 
-        function b(error: any): never {
+        function b(error: unknown): never {
           throw error;
         }
       `,

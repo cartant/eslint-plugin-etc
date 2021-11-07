@@ -25,13 +25,13 @@ const rule = ruleCreator({
   name: "throw-error",
   create: (context) => {
     const sourceCode = context.getSourceCode();
-    const { couldBeType, isAny } = getTypeServices(context);
+    const { couldBeType, isAny, isUnknown } = getTypeServices(context);
 
     const checkRejection = (node: es.CallExpression) => {
       const {
         arguments: [arg],
       } = node;
-      if (!isAny(arg) && !couldBeType(arg, "Error")) {
+      if (!isAny(arg) && !isUnknown(arg) && !couldBeType(arg, "Error")) {
         context.report({
           data: { usage: "Rejecting with" },
           messageId: "forbidden",
@@ -73,6 +73,7 @@ const rule = ruleCreator({
         if (
           node.argument &&
           !isAny(node.argument) &&
+          !isUnknown(node.argument) &&
           !couldBeType(node.argument, /^(Error|DOMException)$/)
         ) {
           context.report({
