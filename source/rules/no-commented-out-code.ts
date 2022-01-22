@@ -84,9 +84,11 @@ function hasEmptyBody(program: es.Program) {
 function hasExpressionBody(program: es.Program) {
   return (
     program.type === "Program" &&
-    program.body.length === 1 &&
-    program.body[0].type === "ExpressionStatement" &&
-    isExpressionOrIdentifierOrLiteral(program.body[0].expression)
+    program.body.every(
+      (statement) =>
+        statement.type === "ExpressionStatement" &&
+        isExpressionOrIdentifierOrLiteral(statement.expression)
+    )
   );
 }
 
