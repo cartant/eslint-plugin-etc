@@ -71,5 +71,5 @@
     "test": "mocha -r ts-node/register -t 5000 tests/**/*.ts",
     "test:debug": "mocha -r ts-node/register -t 5000 tests/rules/no-t.ts"
   },
-  "version": "2.0.1"
+  "version": "2.0.2"
 }
