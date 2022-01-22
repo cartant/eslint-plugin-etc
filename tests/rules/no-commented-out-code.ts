@@ -170,6 +170,13 @@ ruleTester({ types: false }).run("no-commented-out-code", rule, {
         // true
       `,
     },
+    {
+      code: stripIndent`
+        // arrange
+        // act
+        // assert
+      `,
+    },
   ],
   invalid: [
     fromFixture(
