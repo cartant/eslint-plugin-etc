@@ -8,7 +8,7 @@ Examples of **incorrect** code for this rule:
 
 ```ts
 Promise
-  .reject(new Error("Kaboom!")
+  .reject(new Error("Kaboom!"))
   .catch(error => console.log(error));
 ```
 
@@ -16,7 +16,7 @@ Examples of **correct** code for this rule:
 
 ```ts
 Promise
-  .reject(new Error("Kaboom!")
+  .reject(new Error("Kaboom!"))
   .catch((error: unknown) => console.log(error));
 ```
 
