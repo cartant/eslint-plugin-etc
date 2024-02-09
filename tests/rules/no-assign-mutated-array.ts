@@ -146,6 +146,24 @@ ruleTester({ types: true }).run("no-assign-mutated-array", rule, {
     },
     {
       code: stripIndent`
+      // flat & mutated variable assignment
+      const a = [[0, 1], [2, 3]];
+      const b = a.flat().fill(0);
+      const c = a.flat().reverse();
+      const d = a.flat().sort();
+      `,
+    },
+    {
+      code: stripIndent`
+      // flatMap & mutated variable assignment
+      const a = [[0, 1], [2, 3]];
+      const b = a.flatMap(e => e).fill(0);
+      const c = a.flatMap(e => e).reverse();
+      const d = a.flatMap(e => e).sort();
+      `,
+    },
+    {
+      code: stripIndent`
         // https://github.com/cartant/eslint-plugin-etc/issues/27
         const a = new Array(10).fill(0);
         const b = Array(10).fill(0);
