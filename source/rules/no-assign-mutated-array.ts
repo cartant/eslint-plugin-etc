@@ -17,7 +17,8 @@ import {
 import { ruleCreator } from "../utils";
 
 const mutatorRegExp = /^(fill|reverse|sort)$/;
-const creatorRegExp = /^(concat|entries|filter|keys|map|slice|splice|values)$/;
+const creatorRegExp =
+  /^(concat|entries|filter|keys|map|slice|splice|values|flat|flatMap)$/;
 
 const rule = ruleCreator({
   defaultOptions: [],
