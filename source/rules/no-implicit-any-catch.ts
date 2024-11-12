@@ -91,9 +91,7 @@ const rule = ruleCreator({
       }
       if (hasTypeAnnotation(param)) {
         const { typeAnnotation } = param;
-        const {
-          typeAnnotation: { type },
-        } = typeAnnotation;
+        const type = typeAnnotation?.typeAnnotation?.type;
         if (type === AST_NODE_TYPES.TSAnyKeyword) {
           if (allowExplicitAny) {
             return;
